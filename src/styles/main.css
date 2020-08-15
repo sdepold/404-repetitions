@@ -9,3 +9,41 @@ body {
 body {
   background-color: cornflowerblue;
 }
+
+#game {
+  margin: 10px;
+  position: relative;
+}
+
+.stats {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+}
+
+.stats > div {
+  border: 1px solid black;
+  margin-left: 10px;
+}
+
+.stats .icon {
+  border-right: 1px solid black;
+}
+
+.stats .icon,
+.stats .value {
+  padding: 10px;
+  display: inline-block;
+}
+
+.time {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+
+.time .day {
+  margin-right: 10px;
+}

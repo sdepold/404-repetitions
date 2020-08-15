@@ -1,3 +1,7 @@
-import { HELLO } from './hello'
+import Game from "./game";
 
-document.write(HELLO)
+const game = new Game();
+
+game.run();
+
+
