@@ -20,11 +20,11 @@ let workItems = [
   },
   {
     title: "Dog walk",
-    salary: 50,
-    experience: 15,
+    salary: 10,
+    experience: 10,
     stamina: 15,
     strength: 0,
-    time: 30,
+    time: 45,
   },
 ];
 const minutesPerTick = 30;
@@ -90,7 +90,7 @@ export default class Game {
         currentWork.current = false;
 
         this.player.updateStat("money", currentWork.salary);
-        console.log("done", currentWork);
+        this.player.updateStat('experience', currentWork.experience)
       }
     }
   }

@@ -14,11 +14,20 @@ export default class Player {
       rank: 10000 + ~~(Math.random() * 10000),
       money: 4.04,
       experience: 0,
-      level: 1
+      level: 1,
     };
   }
 
   updateStat(property, delta) {
     this.currentStats[property] += delta;
+
+    if (
+      property === "experience" &&
+      this.currentStats.experience >= this.levelStats.requiredExperience
+    ) {
+      this.currentStats.level += 1;
+      this.currentStats.experience -= this.levelStats.requiredExperience;
+      this.levelStats.requiredExperience *= 2;
+    }
   }
 }
