@@ -12,6 +12,7 @@ export default class UI {
     const staminaContainer = document.createElement("div");
     const powerContainer = document.createElement("div");
     const moneyContainer = document.createElement("div");
+    const levelContainer = document.createElement("div");
 
     rankContainer.innerHTML = `
         <span class="icon">🏅</span>
@@ -29,6 +30,10 @@ export default class UI {
         <span class="icon">💰</span>
         <span class="value"></span>
     `;
+    levelContainer.innerHTML = `
+        <span class="icon">💡</span>
+        <span class="value"></span>
+    `;
 
     this.game.appendChild(statsContainer);
     statsContainer.classList.add("stats");
@@ -36,6 +41,7 @@ export default class UI {
     statsContainer.appendChild(staminaContainer);
     statsContainer.appendChild(powerContainer);
     statsContainer.appendChild(moneyContainer);
+    statsContainer.appendChild(levelContainer);
 
     return {
       statsContainer,
@@ -43,6 +49,7 @@ export default class UI {
       staminaContainer,
       powerContainer,
       moneyContainer,
+      levelContainer
     };
   }
 
@@ -66,6 +73,9 @@ export default class UI {
       player.currentStats.stamina;
     this.stats.powerContainer.querySelector(".value").innerHTML = player.levelStats.strength;
     this.stats.moneyContainer.querySelector(".value").innerHTML = player.currentStats.money;
+    this.stats.levelContainer.querySelector(".value").innerHTML = `
+      Level: ${player.currentStats.level} | ${player.currentStats.experience} XP 
+    `;
   }
 
   updateTime(time) {
