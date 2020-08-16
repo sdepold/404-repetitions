@@ -13,14 +13,22 @@ export default class UI {
     const powerContainer = document.createElement("div");
     const moneyContainer = document.createElement("div");
 
-    rankContainer.innerHTML =
-      '<span class="icon">R</span><span class="value"></span>';
-    staminaContainer.innerHTML =
-      '<span class="icon">S</span><span class="value"></span>';
-    powerContainer.innerHTML =
-      '<span class="icon">P</span><span class="value"></span>';
-    moneyContainer.innerHTML =
-      '<span class="icon">$</span><span class="value"></span>';
+    rankContainer.innerHTML = `
+        <span class="icon">🏅</span>
+        <span class="value"></span>
+    `;
+    staminaContainer.innerHTML = `
+        <span class="icon">🏃‍♂️</span>
+        <span class="value"></span>
+    `;
+    powerContainer.innerHTML = `
+        <span class="icon">🏋️‍♀️</span>
+        <span class="value"></span>
+    `;
+    moneyContainer.innerHTML = `
+        <span class="icon">💰</span>
+        <span class="value"></span>
+    `;
 
     this.game.appendChild(statsContainer);
     statsContainer.classList.add("stats");
@@ -41,7 +49,7 @@ export default class UI {
   createTimeContainer() {
     const timeContainer = document.createElement("div");
 
-    timeContainer.classList.add('time')
+    timeContainer.classList.add("time");
     timeContainer.innerHTML = '<div class="day"></div><div class="hour"></div>';
     this.game.appendChild(timeContainer);
 
@@ -53,11 +61,11 @@ export default class UI {
   }
 
   updateStats(player) {
-    this.stats.rankContainer.querySelector(".value").innerHTML = player.rank;
+    this.stats.rankContainer.querySelector(".value").innerHTML = player.currentStats.rank;
     this.stats.staminaContainer.querySelector(".value").innerHTML =
-      player.stamina;
-    this.stats.powerContainer.querySelector(".value").innerHTML = player.power;
-    this.stats.moneyContainer.querySelector(".value").innerHTML = player.money;
+      player.currentStats.stamina;
+    this.stats.powerContainer.querySelector(".value").innerHTML = player.levelStats.strength;
+    this.stats.moneyContainer.querySelector(".value").innerHTML = player.currentStats.money;
   }
 
   updateTime(time) {

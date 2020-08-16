@@ -25,6 +25,7 @@ body {
 .stats > div {
   border: 1px solid black;
   margin-left: 10px;
+  display: flex;
 }
 
 .stats .icon {
@@ -35,6 +36,8 @@ body {
 .stats .value {
   padding: 10px;
   display: inline-block;
+  height:24px;
+  line-height: 24px;
 }
 
 .time {
