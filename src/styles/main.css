@@ -50,3 +50,12 @@ body {
 .time .day {
   margin-right: 10px;
 }
+
+ul.work {
+  position: relative;
+  top:200px;
+}
+
+ul.work .current {
+  color: grey;
+}

@@ -3,6 +3,7 @@ export default class UI {
     this.game = document.querySelector(gameContainerSelector);
     this.stats = this.createStatsContainer();
     this.time = this.createTimeContainer();
+    this.work = this.createWorkContainer();
   }
 
   createStatsContainer() {
@@ -49,7 +50,7 @@ export default class UI {
       staminaContainer,
       powerContainer,
       moneyContainer,
-      levelContainer
+      levelContainer,
     };
   }
 
@@ -67,12 +68,26 @@ export default class UI {
     };
   }
 
+  createWorkContainer() {
+    const workContainer = document.createElement("ul");
+
+    workContainer.classList.add('work');
+    this.game.appendChild(workContainer)
+
+    return {
+      workContainer,
+    };
+  }
+
   updateStats(player) {
-    this.stats.rankContainer.querySelector(".value").innerHTML = player.currentStats.rank;
+    this.stats.rankContainer.querySelector(".value").innerHTML =
+      player.currentStats.rank;
     this.stats.staminaContainer.querySelector(".value").innerHTML =
       player.currentStats.stamina;
-    this.stats.powerContainer.querySelector(".value").innerHTML = player.levelStats.strength;
-    this.stats.moneyContainer.querySelector(".value").innerHTML = player.currentStats.money;
+    this.stats.powerContainer.querySelector(".value").innerHTML =
+      player.levelStats.strength;
+    this.stats.moneyContainer.querySelector(".value").innerHTML =
+      player.currentStats.money;
     this.stats.levelContainer.querySelector(".value").innerHTML = `
       Level: ${player.currentStats.level} | ${player.currentStats.experience} XP 
     `;
@@ -84,5 +99,26 @@ export default class UI {
     this.time.hourContainer.innerHTML = `${pad(time.hours)}:${pad(
       time.minutes
     )}`;
+  }
+
+  updateWork(items, onClick) {
+    this.work.workContainer.innerHTML = "";
+
+    items.forEach((item) => {
+      const itemContainer = document.createElement("li");
+
+      itemContainer.addEventListener('click', ()=>onClick(item))
+      itemContainer.innerHTML = `
+        <span class="title">${item.title}</span>
+        <span class="earnings">$: ${item.salary}, XP: ${item.experience}</span>
+        <span class="requirements">Time: ${item.time}, Stamina: ${item.stamina}, Strength: ${item.strength}</span>
+      `;
+
+      if(item.current) {
+        itemContainer.classList.add('current');
+      }
+
+      this.work.workContainer.appendChild(itemContainer);
+    });
   }
 }
