@@ -71,8 +71,8 @@ export default class UI {
   createWorkContainer() {
     const workContainer = document.createElement("ul");
 
-    workContainer.classList.add('work');
-    this.game.appendChild(workContainer)
+    workContainer.classList.add("work");
+    this.game.appendChild(workContainer);
 
     return {
       workContainer,
@@ -82,12 +82,12 @@ export default class UI {
   updateStats(player) {
     this.stats.rankContainer.querySelector(".value").innerHTML =
       player.currentStats.rank;
-    this.stats.staminaContainer.querySelector(".value").innerHTML =
-      player.currentStats.stamina;
+    this.stats.staminaContainer.querySelector(".value").innerHTML = ~~player
+      .currentStats.stamina;
     this.stats.powerContainer.querySelector(".value").innerHTML =
       player.levelStats.strength;
     this.stats.moneyContainer.querySelector(".value").innerHTML =
-      player.currentStats.money;
+      player.currentStats.money.toFixed(2);
     this.stats.levelContainer.querySelector(".value").innerHTML = `
       Level: ${player.currentStats.level} | ${player.currentStats.experience} XP 
     `;
@@ -102,23 +102,26 @@ export default class UI {
   }
 
   updateWork(items, onClick) {
-    this.work.workContainer.innerHTML = "";
-
     items.forEach((item) => {
-      const itemContainer = document.createElement("li");
+      let itemContainer = this.work[item.title];
 
-      itemContainer.addEventListener('click', ()=>onClick(item))
-      itemContainer.innerHTML = `
-        <span class="title">${item.title}</span>
-        <span class="earnings">$: ${item.salary}, XP: ${item.experience}</span>
-        <span class="requirements">Time: ${item.time}, Stamina: ${item.stamina}, Strength: ${item.strength}</span>
-      `;
+      if (!itemContainer) {
+        this.work[item.title] = itemContainer = document.createElement("li");
 
-      if(item.current) {
-        itemContainer.classList.add('current');
+        itemContainer.addEventListener("click", () => onClick(item));
+        itemContainer.innerHTML = `
+          <span class="title">${item.title}</span>
+          <span class="earnings">$: ${item.salary}, XP: ${item.experience}</span>
+          <span class="requirements">Time: ${item.time}, Stamina: ${item.stamina}, Strength: ${item.strength}</span>
+        `;
+        this.work.workContainer.appendChild(itemContainer);
       }
 
-      this.work.workContainer.appendChild(itemContainer);
+      itemContainer.classList.remove("current");
+
+      if (item.current) {
+        itemContainer.classList.add("current");
+      }
     });
   }
 }

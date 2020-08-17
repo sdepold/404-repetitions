@@ -27,7 +27,9 @@ let workItems = [
     time: 45,
   },
 ];
-const minutesPerTick = 30;
+const minutesPerTick = 1;
+const staminaPerTick = 0.01;
+const tickDelay=33;
 
 export default class Game {
   constructor() {
@@ -54,14 +56,14 @@ export default class Game {
     setInterval(() => {
       this.increaseTime();
 
-      this.player.updateStat("stamina", -1);
+      this.player.updateStat("stamina", -staminaPerTick);
 
       this.ui.updateStats(this.player);
       this.ui.updateTime(this.time);
 
       this.checkCurrentWork();
       this.ui.updateWork(workItems, (item) => this.onWork(item));
-    }, 1000);
+    }, tickDelay);
 
     this.ui.updateStats(this.player);
     this.ui.updateTime(this.time);
