@@ -8,20 +8,20 @@ fs.unlinkSync("./dist/main.css");
 const zipDist = "./dist/build.zip";
 let output = fs.createWriteStream(zipDist);
 let archive = archiver("zip", {
-  zlib: { level: 9 } // set compression to best
+  zlib: { level: 9 }, // set compression to best
 });
 
 const MAX = 13 * 1024; // 13kb
 
-output.on("close", function() {
+output.on("close", function () {
   let bytes = archive.pointer();
-  let percent = (bytes / MAX * 100).toFixed(2);
+  let percent = ((bytes / MAX) * 100).toFixed(2);
 
   console.log(`Normal zip size: ${bytes} bytes (${percent}%)`);
-  execFile("./bin/ect", ["-9", "-zip", zipDist], err => {
+  execFile("./bin/ect", ["-9", "-zip", zipDist], (err) => {
     const stats = fs.statSync(zipDist);
     bytes = stats.size;
-    percent = (bytes / MAX * 100).toFixed(2);
+    percent = ((bytes / MAX) * 100).toFixed(2);
 
     if (bytes > MAX) {
       console.error(`ect size overflow: ${bytes} bytes (${percent}%)`);
@@ -31,7 +31,7 @@ output.on("close", function() {
   });
 });
 
-archive.on("warning", function(err) {
+archive.on("warning", function (err) {
   if (err.code === "ENOENT") {
     console.warn(err);
   } else {
@@ -39,19 +39,18 @@ archive.on("warning", function(err) {
   }
 });
 
-archive.on("error", function(err) {
+archive.on("error", function (err) {
   throw err;
 });
 
 archive.pipe(output);
 archive.append(fs.createReadStream("./dist/index.html"), {
-  name: "index.html"
+  name: "index.html",
 });
 
-// fs.readdirSync("./dist").filter(f => f.endsWith("gif")).forEach(file => {
-//   archive.append(fs.createReadStream(`./dist/${file}`), {
-//     name: file
-//   });
-// });
+try {
+  fs.unlinkSync("./index.html");
+} catch (e) {}
+fs.copyFileSync("./dist/index.html", "index.html");
 
 archive.finalize();
