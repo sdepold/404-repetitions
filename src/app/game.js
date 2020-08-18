@@ -36,8 +36,9 @@ export default class Game {
     this.player = new Player();
     this.ui = new UI();
     this.time = { day: 0, hours: 0, minutes: 0 };
-    this.map = {
+    this.state = {
       workEnabled: false,
+      currentlyWorking: false,
     };
   }
 
@@ -59,17 +60,19 @@ export default class Game {
     setInterval(() => {
       this.increaseTime();
 
-      this.player.updateStat("stamina", -staminaPerTick);
+      if (!this.state.currentlyWorking) {
+        this.player.updateStat("stamina", -staminaPerTick);
+      }
 
       this.ui.updateStats(this.player);
       this.ui.updateTime(this.time);
 
       this.checkCurrentWork();
 
-      this.map.workEnabled
+      this.state.workEnabled
         ? this.ui.updateWork(workItems, (item) => this.onWork(item))
         : this.ui.clearWork(() => {
-            this.map.workEnabled = true;
+            this.state.workEnabled = true;
           });
     }, tickDelay);
 
@@ -84,6 +87,7 @@ export default class Game {
       if (workItem.title === chosenWorkItem.title) {
         workItem.current = true;
         workItem.investedTime = 0;
+        this.state.currentlyWorking = true;
       }
     });
   }
@@ -97,8 +101,9 @@ export default class Game {
       if (currentWork.investedTime >= currentWork.time) {
         delete currentWork.investedTime;
         currentWork.current = false;
-        this.map.workEnabled=false;
+        this.state.workEnabled = this.state.currentlyWorking = false;
 
+        this.player.updateStat("stamina", -currentWork.stamina);
         this.player.updateStat("money", currentWork.salary);
         this.player.updateStat("experience", currentWork.experience);
       }
