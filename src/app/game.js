@@ -29,13 +29,16 @@ let workItems = [
 ];
 const minutesPerTick = 1;
 const staminaPerTick = 0.01;
-const tickDelay=33;
+const tickDelay = 33;
 
 export default class Game {
   constructor() {
     this.player = new Player();
     this.ui = new UI();
     this.time = { day: 0, hours: 0, minutes: 0 };
+    this.map = {
+      workEnabled: false,
+    };
   }
 
   increaseTime() {
@@ -62,7 +65,12 @@ export default class Game {
       this.ui.updateTime(this.time);
 
       this.checkCurrentWork();
-      this.ui.updateWork(workItems, (item) => this.onWork(item));
+
+      this.map.workEnabled
+        ? this.ui.updateWork(workItems, (item) => this.onWork(item))
+        : this.ui.clearWork(() => {
+            this.map.workEnabled = true;
+          });
     }, tickDelay);
 
     this.ui.updateStats(this.player);
@@ -70,7 +78,6 @@ export default class Game {
   }
 
   onWork(chosenWorkItem) {
-    console.log(chosenWorkItem);
     workItems.forEach((workItem) => {
       workItem.current = false;
 
@@ -90,9 +97,10 @@ export default class Game {
       if (currentWork.investedTime >= currentWork.time) {
         delete currentWork.investedTime;
         currentWork.current = false;
+        this.map.workEnabled=false;
 
         this.player.updateStat("money", currentWork.salary);
-        this.player.updateStat('experience', currentWork.experience)
+        this.player.updateStat("experience", currentWork.experience);
       }
     }
   }

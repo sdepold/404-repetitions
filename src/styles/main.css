@@ -59,3 +59,7 @@ ul.work {
 ul.work .current {
   color: grey;
 }
+
+ul.work.disabled {
+  font-size:50px;
+}

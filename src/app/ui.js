@@ -86,8 +86,9 @@ export default class UI {
       .currentStats.stamina;
     this.stats.powerContainer.querySelector(".value").innerHTML =
       player.levelStats.strength;
-    this.stats.moneyContainer.querySelector(".value").innerHTML =
-      player.currentStats.money.toFixed(2);
+    this.stats.moneyContainer.querySelector(
+      ".value"
+    ).innerHTML = player.currentStats.money.toFixed(2);
     this.stats.levelContainer.querySelector(".value").innerHTML = `
       Level: ${player.currentStats.level} | ${player.currentStats.experience} XP 
     `;
@@ -101,7 +102,22 @@ export default class UI {
     )}`;
   }
 
+  clearWork(onClick) {
+    if (!this.work.workContainer.classList.contains("disabled")) {
+      this.work.workContainer.classList.add("disabled");
+      this.work.workContainer.innerHTML = "🏭";
+
+      this.work.workContainer.addEventListener("click", onClick);
+    }
+  }
+
   updateWork(items, onClick) {
+    if (this.work.workContainer.classList.contains("disabled")) {
+      this.work.workContainer.innerHTML = "";
+      this.work.workContainer.classList.remove("disabled");
+      this.work = { workContainer: this.work.workContainer };
+    }
+
     items.forEach((item) => {
       let itemContainer = this.work[item.title];
 
@@ -112,7 +128,11 @@ export default class UI {
         itemContainer.innerHTML = `
           <span class="title">${item.title}</span>
           <span class="earnings">$: ${item.salary}, XP: ${item.experience}</span>
-          <span class="requirements">Time: ${item.time}, Stamina: ${item.stamina}, Strength: ${item.strength}</span>
+          <span class="requirements">
+            Time: ${item.time}
+            Stamina: ${item.stamina}
+            Strength: ${item.strength}
+          </span>
         `;
         this.work.workContainer.appendChild(itemContainer);
       }
