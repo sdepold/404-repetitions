@@ -1,7 +1,7 @@
 import Player from "./player";
 import UI from "./ui";
-import workConfig from '../config/work.json';
-import workoutConfig from '../config/workout.json';
+import workConfig from "../config/work.json";
+import workoutConfig from "../config/workout.json";
 
 const minutesPerTick = 1;
 const staminaPerTick = 0.01;
@@ -13,8 +13,9 @@ export default class Game {
     this.ui = new UI();
     this.time = { day: 0, hours: 0, minutes: 0 };
     this.state = {
-      renderWorkMenu: false,
       busy: false,
+      renderWorkMenu: false,
+      renderWorkoutMenu: false,
     };
   }
 
@@ -44,11 +45,19 @@ export default class Game {
       this.ui.updateTime(this.time);
 
       this.checkCurrentWork();
+      this.checkCurrentWorkout();
 
       this.state.renderWorkMenu
         ? this.ui.updateWork(workConfig, (item) => this.onWork(item))
         : this.ui.clearWork(workConfig, () => {
             this.state.renderWorkMenu = true;
+            this.state.renderWorkoutMenu = false;
+          });
+      this.state.renderWorkoutMenu
+        ? this.ui.updateWorkout(workoutConfig, (item) => this.onWorkout(item))
+        : this.ui.clearWorkout(workoutConfig, () => {
+            this.state.renderWorkMenu = false;
+            this.state.renderWorkoutMenu = true;
           });
     }, tickDelay);
 
@@ -68,6 +77,18 @@ export default class Game {
     });
   }
 
+  onWorkout(chosenWorkoutItem) {
+    workoutConfig.items.forEach((item) => {
+      item.current = false;
+
+      if (item.title === chosenWorkoutItem.title) {
+        item.current = true;
+        item.investedTime = 0;
+        this.state.busy = true;
+      }
+    });
+  }
+
   checkCurrentWork() {
     const currentWork = workConfig.items.find((i) => i.current);
 
@@ -79,9 +100,26 @@ export default class Game {
         currentWork.current = false;
         this.state.renderWorkMenu = this.state.busy = false;
 
-        Object.keys(currentWork.effects).forEach(prop => {
+        Object.keys(currentWork.effects).forEach((prop) => {
           this.player.updateStat(prop, currentWork.effects[prop]);
-        })
+        });
+      }
+    }
+  }
+  checkCurrentWorkout() {
+    const currentWorkout = workoutConfig.items.find((i) => i.current);
+
+    if (currentWorkout) {
+      currentWorkout.investedTime += minutesPerTick;
+
+      if (currentWorkout.investedTime >= currentWorkout.requirements.time) {
+        delete currentWorkout.investedTime;
+        currentWorkout.current = false;
+        this.state.renderWorkMenu = this.state.busy = false;
+
+        Object.keys(currentWorkout.effects).forEach((prop) => {
+          this.player.updateStat(prop, currentWorkout.effects[prop]);
+        });
       }
     }
   }

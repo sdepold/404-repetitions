@@ -4,6 +4,7 @@ export default class UI {
     this.stats = this.createStatsContainer();
     this.time = this.createTimeContainer();
     this.work = this.createWorkContainer();
+    this.workout = this.createWorkoutContainer();
   }
 
   createStatsContainer() {
@@ -71,11 +72,22 @@ export default class UI {
   createWorkContainer() {
     const workContainer = document.createElement("ul");
 
-    workContainer.classList.add("work");
+    workContainer.classList.add("work", 'activity');
     this.game.appendChild(workContainer);
 
     return {
       workContainer,
+    };
+  }
+
+  createWorkoutContainer() {
+    const workoutContainer = document.createElement("ul");
+
+    workoutContainer.classList.add("workout", 'activity');
+    this.game.appendChild(workoutContainer);
+
+    return {
+      workoutContainer,
     };
   }
 
@@ -135,6 +147,49 @@ export default class UI {
           </span>
         `;
         this.work.workContainer.appendChild(itemContainer);
+      }
+
+      itemContainer.classList.remove("current");
+
+      if (item.current) {
+        itemContainer.classList.add("current");
+      }
+    });
+  }
+
+  clearWorkout(config, onClick) {
+    if (!this.workout.workoutContainer.classList.contains("disabled")) {
+      this.workout.workoutContainer.classList.add("disabled");
+      this.workout.workoutContainer.innerHTML = config.host;
+
+      this.workout.workoutContainer.addEventListener("click", onClick);
+    }
+  }
+
+  updateWorkout(config, onClick) {
+    if (this.workout.workoutContainer.classList.contains("disabled")) {
+      this.workout.workoutContainer.innerHTML = "";
+      this.workout.workoutContainer.classList.remove("disabled");
+      this.workout = { workoutContainer: this.workout.workoutContainer };
+    }
+
+    config.items.forEach((item) => {
+      let itemContainer = this.workout[item.title];
+
+      if (!itemContainer) {
+        this.workout[item.title] = itemContainer = document.createElement("li");
+
+        itemContainer.addEventListener("click", () => onClick(item));
+        itemContainer.innerHTML = `
+          <span class="title">${item.title}</span>
+          <span class="earnings">XP: ${item.effects.experience}</span>
+          <span class="requirements">
+            Time: ${item.requirements.time}
+            Stamina: ${item.requirements.stamina}
+            Strength: ${item.requirements.strength}
+          </span>
+        `;
+        this.workout.workoutContainer.appendChild(itemContainer);
       }
 
       itemContainer.classList.remove("current");

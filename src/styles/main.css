@@ -56,10 +56,15 @@ ul.work {
   top:200px;
 }
 
-ul.work .current {
+ul.workout {
+  position: relative;
+  left: 400px;
+}
+
+ul.activity .current {
   color: grey;
 }
 
-ul.work.disabled {
+ul.activity.disabled {
   font-size:50px;
 }
