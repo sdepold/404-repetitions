@@ -5,9 +5,10 @@
       "title": "Chop wood",
       "requirements": {
         "strength": 2,
-        "time": 120
+        "time": 120,
+        "stamina": 30
       },
-      "effect": {
+      "effects": {
         "stamina": -30,
         "experience": 25,
         "money": 50
@@ -17,9 +18,10 @@
       "title": "Dog walk",
       "requirements": {
         "strength": 0,
-        "time": 10
+        "time": 10,
+        "stamina": 15
       },
-      "effect": {
+      "effects": {
         "money": 10,
         "experience": 10,
         "stamina": -15

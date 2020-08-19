@@ -1,0 +1,17 @@
+{
+  "host": "💪",
+  "items": [
+    {
+      "title": "WOTD XYZ",
+      "requirements": {
+        "strength": 1,
+        "time": 30,
+        "stamina": "50"
+      },
+      "effects": {
+        "stamina": -50,
+        "experience": 225
+      }
+    }
+  ]
+}

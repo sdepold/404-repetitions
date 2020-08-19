@@ -127,10 +127,10 @@ export default class UI {
         itemContainer.addEventListener("click", () => onClick(item));
         itemContainer.innerHTML = `
           <span class="title">${item.title}</span>
-          <span class="earnings">$: ${item.effect.money}, XP: ${item.effect.experience}</span>
+          <span class="earnings">$: ${item.effects.money}, XP: ${item.effects.experience}</span>
           <span class="requirements">
             Time: ${item.requirements.time}
-            Stamina: ${-item.effect.stamina}
+            Stamina: ${item.requirements.stamina}
             Strength: ${item.requirements.strength}
           </span>
         `;

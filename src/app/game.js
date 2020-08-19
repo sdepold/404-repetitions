@@ -1,6 +1,7 @@
 import Player from "./player";
 import UI from "./ui";
 import workConfig from '../config/work.json';
+import workoutConfig from '../config/workout.json';
 
 const minutesPerTick = 1;
 const staminaPerTick = 0.01;
@@ -12,8 +13,8 @@ export default class Game {
     this.ui = new UI();
     this.time = { day: 0, hours: 0, minutes: 0 };
     this.state = {
-      workEnabled: false,
-      currentlyWorking: false,
+      renderWorkMenu: false,
+      busy: false,
     };
   }
 
@@ -35,7 +36,7 @@ export default class Game {
     setInterval(() => {
       this.increaseTime();
 
-      if (!this.state.currentlyWorking) {
+      if (!this.state.busy) {
         this.player.updateStat("stamina", -staminaPerTick);
       }
 
@@ -44,10 +45,10 @@ export default class Game {
 
       this.checkCurrentWork();
 
-      this.state.workEnabled
+      this.state.renderWorkMenu
         ? this.ui.updateWork(workConfig, (item) => this.onWork(item))
         : this.ui.clearWork(workConfig, () => {
-            this.state.workEnabled = true;
+            this.state.renderWorkMenu = true;
           });
     }, tickDelay);
 
@@ -62,7 +63,7 @@ export default class Game {
       if (workItem.title === chosenWorkItem.title) {
         workItem.current = true;
         workItem.investedTime = 0;
-        this.state.currentlyWorking = true;
+        this.state.busy = true;
       }
     });
   }
@@ -76,10 +77,10 @@ export default class Game {
       if (currentWork.investedTime >= currentWork.requirements.time) {
         delete currentWork.investedTime;
         currentWork.current = false;
-        this.state.workEnabled = this.state.currentlyWorking = false;
+        this.state.renderWorkMenu = this.state.busy = false;
 
-        Object.keys(currentWork.effect).forEach(prop => {
-          this.player.updateStat(prop, currentWork.effect[prop]);
+        Object.keys(currentWork.effects).forEach(prop => {
+          this.player.updateStat(prop, currentWork.effects[prop]);
         })
       }
     }
