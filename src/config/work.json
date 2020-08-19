@@ -1,0 +1,29 @@
+{
+  "host": "🏭",
+  "items": [
+    {
+      "title": "Chop wood",
+      "requirements": {
+        "strength": 2,
+        "time": 120
+      },
+      "effect": {
+        "stamina": -30,
+        "experience": 25,
+        "money": 50
+      }
+    },
+    {
+      "title": "Dog walk",
+      "requirements": {
+        "strength": 0,
+        "time": 10
+      },
+      "effect": {
+        "money": 10,
+        "experience": 10,
+        "stamina": -15
+      }
+    }
+  ]
+}

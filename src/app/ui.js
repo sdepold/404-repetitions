@@ -102,23 +102,23 @@ export default class UI {
     )}`;
   }
 
-  clearWork(onClick) {
+  clearWork(config, onClick) {
     if (!this.work.workContainer.classList.contains("disabled")) {
       this.work.workContainer.classList.add("disabled");
-      this.work.workContainer.innerHTML = "🏭";
+      this.work.workContainer.innerHTML = config.host;
 
       this.work.workContainer.addEventListener("click", onClick);
     }
   }
 
-  updateWork(items, onClick) {
+  updateWork(config, onClick) {
     if (this.work.workContainer.classList.contains("disabled")) {
       this.work.workContainer.innerHTML = "";
       this.work.workContainer.classList.remove("disabled");
       this.work = { workContainer: this.work.workContainer };
     }
 
-    items.forEach((item) => {
+    config.items.forEach((item) => {
       let itemContainer = this.work[item.title];
 
       if (!itemContainer) {
@@ -127,11 +127,11 @@ export default class UI {
         itemContainer.addEventListener("click", () => onClick(item));
         itemContainer.innerHTML = `
           <span class="title">${item.title}</span>
-          <span class="earnings">$: ${item.salary}, XP: ${item.experience}</span>
+          <span class="earnings">$: ${item.effect.money}, XP: ${item.effect.experience}</span>
           <span class="requirements">
-            Time: ${item.time}
-            Stamina: ${item.stamina}
-            Strength: ${item.strength}
+            Time: ${item.requirements.time}
+            Stamina: ${-item.effect.stamina}
+            Strength: ${item.requirements.strength}
           </span>
         `;
         this.work.workContainer.appendChild(itemContainer);

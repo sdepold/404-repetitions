@@ -1,32 +1,7 @@
 import Player from "./player";
 import UI from "./ui";
+import workConfig from '../config/work.json';
 
-let workItems = [
-  {
-    title: "Chop wood",
-    salary: 50,
-    experience: 25,
-    stamina: 30,
-    strength: 2,
-    time: 120,
-  },
-  {
-    title: "Cashier",
-    salary: 30,
-    experience: 20,
-    stamina: 10,
-    strength: 0,
-    time: 480,
-  },
-  {
-    title: "Dog walk",
-    salary: 10,
-    experience: 10,
-    stamina: 15,
-    strength: 0,
-    time: 45,
-  },
-];
 const minutesPerTick = 1;
 const staminaPerTick = 0.01;
 const tickDelay = 33;
@@ -70,8 +45,8 @@ export default class Game {
       this.checkCurrentWork();
 
       this.state.workEnabled
-        ? this.ui.updateWork(workItems, (item) => this.onWork(item))
-        : this.ui.clearWork(() => {
+        ? this.ui.updateWork(workConfig, (item) => this.onWork(item))
+        : this.ui.clearWork(workConfig, () => {
             this.state.workEnabled = true;
           });
     }, tickDelay);
@@ -81,7 +56,7 @@ export default class Game {
   }
 
   onWork(chosenWorkItem) {
-    workItems.forEach((workItem) => {
+    workConfig.items.forEach((workItem) => {
       workItem.current = false;
 
       if (workItem.title === chosenWorkItem.title) {
@@ -93,19 +68,19 @@ export default class Game {
   }
 
   checkCurrentWork() {
-    const currentWork = workItems.find((i) => i.current);
+    const currentWork = workConfig.items.find((i) => i.current);
 
     if (currentWork) {
       currentWork.investedTime += minutesPerTick;
 
-      if (currentWork.investedTime >= currentWork.time) {
+      if (currentWork.investedTime >= currentWork.requirements.time) {
         delete currentWork.investedTime;
         currentWork.current = false;
         this.state.workEnabled = this.state.currentlyWorking = false;
 
-        this.player.updateStat("stamina", -currentWork.stamina);
-        this.player.updateStat("money", currentWork.salary);
-        this.player.updateStat("experience", currentWork.experience);
+        Object.keys(currentWork.effect).forEach(prop => {
+          this.player.updateStat(prop, currentWork.effect[prop]);
+        })
       }
     }
   }
