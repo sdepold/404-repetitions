@@ -29,6 +29,13 @@ export default class Player {
       this.currentStats.experience -= this.levelStats.requiredExperience;
       this.levelStats.requiredExperience *= 2;
     }
+
+    if (property === "stamina") {
+      this.currentStats.stamina = Math.min(
+        this.currentStats.stamina,
+        this.statsLimits.stamina
+      );
+    }
   }
 
   hasStat(statName, value) {
