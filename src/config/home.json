@@ -1,0 +1,25 @@
+{
+    "host": "🏠",
+    "name": "home",
+    "items": [
+      {
+        "title": "Thorough sleep",
+        "requirements": {
+          "time": 480
+        },
+        "effects": {
+          "stamina": 100
+        }
+      }, {
+          "title": "Quick nap",
+          "requirements": {
+            "money": 5,
+            "time": 120
+          },
+          "effects": {
+            "stamina": 50
+          }
+      }
+    ]
+  }
+  

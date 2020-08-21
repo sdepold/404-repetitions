@@ -6,7 +6,7 @@
       "title": "Burger",
       "requirements": {
         "money": 5,
-        "time": 5
+        "time": 10
       },
       "effects": {
         "money": -5,
@@ -17,7 +17,7 @@
       "title": "Veggi Bowl",
       "requirements": {
         "money": 20,
-        "time": 10
+        "time": 60
       },
       "effects": {
         "money": -20,

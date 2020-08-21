@@ -4,6 +4,7 @@ import Activity from "./activity";
 
 import gameConfig from "../config/game.json";
 import foodConfig from '../config/food.json';
+import homeConfig from "../config/home.json";
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
 
@@ -19,6 +20,7 @@ export default class Game {
     };
     this.activities = {
       food: new Activity(foodConfig).appendTo(this.ui.game),
+      home: new Activity(homeConfig).appendTo(this.ui.game),
       work: new Activity(workConfig).appendTo(this.ui.game),
       workout: new Activity(workoutConfig).appendTo(this.ui.game),
     };
