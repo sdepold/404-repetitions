@@ -13,7 +13,6 @@
       }, {
           "title": "Quick nap",
           "requirements": {
-            "money": 5,
             "time": 120
           },
           "effects": {

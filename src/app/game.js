@@ -19,10 +19,10 @@ export default class Game {
       renderWorkoutMenu: false,
     };
     this.activities = {
-      food: new Activity(foodConfig).appendTo(this.ui.game),
-      home: new Activity(homeConfig).appendTo(this.ui.game),
-      work: new Activity(workConfig).appendTo(this.ui.game),
-      workout: new Activity(workoutConfig).appendTo(this.ui.game),
+      food: new Activity(this.player, foodConfig).appendTo(this.ui.game),
+      home: new Activity(this.player, homeConfig).appendTo(this.ui.game),
+      work: new Activity(this.player, workConfig).appendTo(this.ui.game),
+      workout: new Activity(this.player, workoutConfig).appendTo(this.ui.game),
     };
   }
 
@@ -55,7 +55,7 @@ export default class Game {
       this.ui.updateStats(this.player);
       this.ui.updateTime(this.time);
 
-      Object.values(this.activities).forEach((a) => a.update(this.player));
+      Object.values(this.activities).forEach((a) => a.update());
       Object.values(this.activities).forEach((a) => a.render());
     }, gameConfig.tickDelay);
 

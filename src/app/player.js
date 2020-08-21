@@ -30,4 +30,18 @@ export default class Player {
       this.levelStats.requiredExperience *= 2;
     }
   }
+
+  hasStat(statName, value) {
+    if (statName === "time") return true;
+
+    if (Object.keys(this.currentStats).includes(statName)) {
+      return this.currentStats[statName] >= value;
+    }
+
+    if (Object.keys(this.levelStats).includes(statName)) {
+      return this.levelStats[statName] >= value;
+    }
+
+    return false;
+  }
 }

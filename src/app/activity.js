@@ -1,9 +1,10 @@
 import gameConfig from "../config/game.json";
 
 export default class Activity {
-  constructor(config, { onActivityStart, onActivityEnd } = {}) {
+  constructor(player, config, { onActivityStart, onActivityEnd } = {}) {
     this.container = document.createElement("div");
 
+    this.player = player;
     this.config = config;
     this.state = {
       showItems: false,
@@ -25,7 +26,7 @@ export default class Activity {
     return this;
   }
 
-  update(player) {
+  update() {
     if (this.hasCurrent()) {
       this.state.investedTime += gameConfig.minutesPerTick;
 
@@ -33,11 +34,24 @@ export default class Activity {
         this.state.investedTime = 0;
 
         Object.keys(this.state.currentItem.effects).forEach((prop) => {
-          player.updateStat(prop, this.state.currentItem.effects[prop]);
+          this.player.updateStat(prop, this.state.currentItem.effects[prop]);
         });
 
         this.resetCurrent();
       }
+    }
+
+    if (this.state.showItems && this.listContainer) {
+      this.listContainer.querySelectorAll("li").forEach((li) => {
+        const liTitle = li.querySelector(".title").innerText;
+        const liItem = this.config.items.find((i) => i.title === liTitle);
+
+        if (this.requirementsFulfilled(liItem.requirements)) {
+          li.classList.contains("disabled") && li.classList.remove("disabled");
+        } else {
+          li.classList.contains("disabled") || li.classList.add("disabled");
+        }
+      });
     }
   }
 
@@ -107,7 +121,10 @@ export default class Activity {
   }
 
   onItemClick(item) {
-    if (!this.hasCurrent()) {
+    if (
+      !this.hasCurrent() &&
+      !this.findItemContainer(item).classList.contains("disabled")
+    ) {
       this.state.currentItem = item;
       this.state.investedTime = 0;
     }
@@ -120,5 +137,19 @@ export default class Activity {
 
     this.state.currentItem = null;
     this.state.showItems = false;
+  }
+
+  requirementsFulfilled(requirements) {
+    return Object.entries(requirements).every(([statName, minValue]) => {
+      return this.player.hasStat(statName, minValue);
+    });
+  }
+
+  findItemContainer(item) {
+    return Array.from(this.listContainer.querySelectorAll("li")).find((li) => {
+      const liTitle = li.querySelector(".title").innerText;
+
+      return liTitle === item.title;
+    });
   }
 }
