@@ -1,9 +1,11 @@
 import Player from "./player";
 import UI from "./ui";
+import Activity from "./activity";
+
+import gameConfig from "../config/game.json";
+import foodConfig from '../config/food.json';
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
-import gameConfig from "../config/game.json";
-import Activity from "./activity";
 
 export default class Game {
   constructor() {
@@ -16,6 +18,7 @@ export default class Game {
       renderWorkoutMenu: false,
     };
     this.activities = {
+      food: new Activity(foodConfig).appendTo(this.ui.game),
       work: new Activity(workConfig).appendTo(this.ui.game),
       workout: new Activity(workoutConfig).appendTo(this.ui.game),
     };
