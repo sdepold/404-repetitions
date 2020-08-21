@@ -3,7 +3,6 @@ const archiver = require("archiver");
 const { execFile } = require("child_process");
 
 fs.unlinkSync("./dist/main.js");
-fs.unlinkSync("./dist/main.css");
 
 const zipDist = "./dist/build.zip";
 let output = fs.createWriteStream(zipDist);
