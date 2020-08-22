@@ -2,12 +2,13 @@ import Player from "./player";
 import UI from "./ui";
 import Activity from "./activity";
 
-import competitionConfig from '../config/competition.json';
-import foodConfig from '../config/food.json';
+import competitionConfig from "../config/competition.json";
+import foodConfig from "../config/food.json";
 import gameConfig from "../config/game.json";
 import homeConfig from "../config/home.json";
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
+import Stats from "./stats";
 
 export default class Game {
   constructor() {
@@ -19,13 +20,14 @@ export default class Game {
       renderWorkMenu: false,
       renderWorkoutMenu: false,
     };
-    this.activities = {
-      competition: new Activity(this.player, competitionConfig).appendTo(this.ui.game),
-      food: new Activity(this.player, foodConfig).appendTo(this.ui.game),
-      home: new Activity(this.player, homeConfig).appendTo(this.ui.game),
-      work: new Activity(this.player, workConfig).appendTo(this.ui.game),
-      workout: new Activity(this.player, workoutConfig).appendTo(this.ui.game),
-    };
+    this.renderables = [
+      new Stats(this.player).appendTo(this.ui.game),
+      new Activity(this.player, competitionConfig).appendTo(this.ui.game),
+      new Activity(this.player, foodConfig).appendTo(this.ui.game),
+      new Activity(this.player, homeConfig).appendTo(this.ui.game),
+      new Activity(this.player, workConfig).appendTo(this.ui.game),
+      new Activity(this.player, workoutConfig).appendTo(this.ui.game),
+    ];
   }
 
   increaseTime() {
@@ -47,21 +49,21 @@ export default class Game {
       this.increaseTime();
 
       if (
-        !Object.values(this.activities).find((activity) =>
-          activity.hasCurrent()
+        !this.renderables.find(
+          (activity) => activity.hasCurrent && activity.hasCurrent()
         )
       ) {
         this.player.updateStat("stamina", -gameConfig.staminaPerTick);
       }
 
-      this.ui.updateStats(this.player);
+      // this.ui.updateStats(this.player);
       this.ui.updateTime(this.time);
 
-      Object.values(this.activities).forEach((a) => a.update());
-      Object.values(this.activities).forEach((a) => a.render());
+      this.renderables.forEach((a) => a.update());
+      this.renderables.forEach((a) => a.render());
     }, gameConfig.tickDelay);
 
-    this.ui.updateStats(this.player);
+    // this.ui.updateStats(this.player);
     this.ui.updateTime(this.time);
   }
 }
