@@ -1,0 +1,54 @@
+{
+    "host": "🏆",
+    "name": "competition",
+    "requirements": {
+        "level": 4
+    },
+    "items": [
+      {
+        "title": "Local junior competition",
+        "requirements": {
+          "level": 4,
+          "time": 120
+        },
+        "effects": {
+          "experience": 200,
+          "rank": -50
+        }
+      },
+      {
+        "title": "State competition",
+        "requirements": {
+          "level": 10,
+          "time": 720
+        },
+        "effects": {
+          "experience": 2000,
+          "rank": -200
+        }
+      },
+      {
+        "title": "National competition",
+        "requirements": {
+          "level": 15,
+          "time": 2880
+        },
+        "effects": {
+          "experience": 5000,
+          "rank": -500
+        }
+      },
+      {
+        "title": "World championship",
+        "requirements": {
+          "level": 40,
+          "time": 21600
+        },
+        "effects": {
+          "experience": 10000,
+          "rank": -1000
+        }
+      }
+    ]
+  }
+  

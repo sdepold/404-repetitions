@@ -56,7 +56,9 @@ export default class Activity {
   }
 
   render() {
-    this.state.showItems ? this.renderItems() : this.renderHost();
+    if (this.requirementsFulfilled(this.config.requirements || {})) {
+      this.state.showItems ? this.renderItems() : this.renderHost();
+    }
   }
 
   renderItems() {

@@ -2,8 +2,9 @@ import Player from "./player";
 import UI from "./ui";
 import Activity from "./activity";
 
-import gameConfig from "../config/game.json";
+import competitionConfig from '../config/competition.json';
 import foodConfig from '../config/food.json';
+import gameConfig from "../config/game.json";
 import homeConfig from "../config/home.json";
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
@@ -19,6 +20,7 @@ export default class Game {
       renderWorkoutMenu: false,
     };
     this.activities = {
+      competition: new Activity(this.player, competitionConfig).appendTo(this.ui.game),
       food: new Activity(this.player, foodConfig).appendTo(this.ui.game),
       home: new Activity(this.player, homeConfig).appendTo(this.ui.game),
       work: new Activity(this.player, workConfig).appendTo(this.ui.game),
