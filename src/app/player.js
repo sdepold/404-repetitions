@@ -1,3 +1,5 @@
+export const changeableLevelStats = ['stamina', 'strength', 'luck'];
+
 export default class Player {
   constructor() {
     this.levelStats = {
@@ -17,6 +19,11 @@ export default class Player {
       level: 1,
       availableStatPoints: 0,
     };
+  }
+
+  updateLevelStat(property, delta) {
+    this.levelStats[property] += delta;
+    this.currentStats.availableStatPoints -= delta;
   }
 
   updateStat(property, delta) {

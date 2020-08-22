@@ -1,3 +1,5 @@
+import { changeableLevelStats } from "./player";
+
 export default class Stats {
   constructor(player) {
     this.container = document.createElement("div");
@@ -24,6 +26,23 @@ export default class Stats {
     this.initStatContainer("power", "🏋️‍♀️");
     this.initStatContainer("money", "💰");
     this.initStatContainer("level", "💡");
+
+    this.levelStatContainer = document.createElement("ul");
+
+    changeableLevelStats.forEach((stat) => {
+      const container = document.createElement("li");
+
+      container.statName = stat;
+      container.innerHTML = `
+            <span class="stat-name">${stat}</span>
+            <span class="stat-value">${this.player.levelStats[stat]}</span>
+            <span class="stat-action"></span>
+        `;
+
+      this.levelStatContainer.appendChild(container);
+    });
+
+    this.container.appendChild(this.levelStatContainer);
   }
 
   appendTo(container) {
@@ -47,6 +66,30 @@ export default class Stats {
       "level",
       `Level: ${this.player.currentStats.level} | ${this.player.currentStats.experience} XP `
     );
+
+    Array.from(this.levelStatContainer.querySelectorAll("li")).forEach((li) => {
+      const valueSpan = li.querySelector(".stat-value");
+      const actionSpan = li.querySelector(".stat-action");
+
+      valueSpan.innerHTML = this.player.levelStats[li.statName];
+
+      if (this.player.currentStats.availableStatPoints > 0) {
+        if (!actionSpan.querySelector(".increase-button")) {
+          const increaseButton = document.createElement("button");
+
+          increaseButton.classList.add("increase-button");
+          increaseButton.innerText = "+";
+          actionSpan.appendChild(increaseButton);
+
+          increaseButton.addEventListener("click", () => {
+            this.player.updateLevelStat(li.statName, 1);
+          });
+        }
+      } else {
+        const increaseButton = actionSpan.querySelector(".increase-button");
+        increaseButton && actionSpan.removeChild(increaseButton);
+      }
+    });
   }
 
   render() {}
