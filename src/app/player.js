@@ -15,16 +15,18 @@ export default class Player {
       money: 4.04,
       experience: 0,
       level: 1,
+      availableStatPoints: 0,
     };
   }
 
   updateStat(property, delta) {
     this.currentStats[property] += delta;
 
-    if (
+    while (
       property === "experience" &&
       this.currentStats.experience >= this.levelStats.requiredExperience
     ) {
+      this.currentStats.availableStatPoints += this.currentStats.level;
       this.currentStats.level += 1;
       this.currentStats.experience -= this.levelStats.requiredExperience;
       this.levelStats.requiredExperience *= 2;
