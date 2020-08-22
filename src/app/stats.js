@@ -33,21 +33,20 @@ export default class Stats {
     return this;
   }
 
+  updateItem(statName, value) {
+    const container = this[`${statName}Container`];
+    container.querySelector(".value").innerHTML = value;
+  }
+
   update() {
-    this.rankContainer.querySelector(
-      ".value"
-    ).innerHTML = this.player.currentStats.rank;
-    this.staminaContainer.querySelector(".value").innerHTML = ~~this.player
-      .currentStats.stamina;
-    this.powerContainer.querySelector(
-      ".value"
-    ).innerHTML = this.player.levelStats.strength;
-    this.moneyContainer.querySelector(
-      ".value"
-    ).innerHTML = this.player.currentStats.money.toFixed(2);
-    this.levelContainer.querySelector(".value").innerHTML = `
-      Level: ${this.player.currentStats.level} | ${this.player.currentStats.experience} XP 
-    `;
+    this.updateItem("rank", this.player.currentStats.rank);
+    this.updateItem("stamina", ~~this.player.currentStats.stamina);
+    this.updateItem("power", this.player.levelStats.strength);
+    this.updateItem("money", this.player.currentStats.money.toFixed(2));
+    this.updateItem(
+      "level",
+      `Level: ${this.player.currentStats.level} | ${this.player.currentStats.experience} XP `
+    );
   }
 
   render() {}
