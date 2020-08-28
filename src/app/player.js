@@ -57,6 +57,10 @@ export default class Player {
       if ([39, 68].includes(e.which)) {
         setKeyPressed("right", value);
       }
+
+      if (e.which === 32) {
+        setKeyPressed("space", value);
+      }
     };
 
     window.onkeydown = window.onkeypress = (e) => evalKeyPress(e, true);
@@ -141,11 +145,11 @@ export default class Player {
         this.container.classList.remove("walk");
     }
 
-    if(this.keyPressed.left && !this.container.classList.contains('inverse')){
-      this.container.classList.add('inverse');
+    if (this.keyPressed.left && !this.container.classList.contains("inverse")) {
+      this.container.classList.add("inverse");
     }
-    if(this.keyPressed.right && this.container.classList.contains('inverse')){
-      this.container.classList.remove('inverse');
+    if (this.keyPressed.right && this.container.classList.contains("inverse")) {
+      this.container.classList.remove("inverse");
     }
   }
 }

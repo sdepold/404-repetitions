@@ -1,4 +1,5 @@
 import gameConfig from "../config/game.json";
+import { collides } from "./helper/collision-detection";
 
 export default class Activity {
   constructor(player, config, { onActivityStart, onActivityEnd } = {}) {
@@ -10,6 +11,7 @@ export default class Activity {
       showItems: false,
       currentItem: null,
       investedTime: null,
+      highlight: false,
     };
     this.onActivityStart = onActivityStart;
     this.onActivityEnd = onActivityEnd;
@@ -53,11 +55,24 @@ export default class Activity {
         }
       });
     }
+
+    console.log(this.player.keyPressed.space)
+    if (this.hostContainer) {
+      this.state.highlight = collides(this.player.container,this.hostContainer);
+
+      if(this.state.highlight && this.player.keyPressed.space) {
+        console.log('ho')
+        this.toggle();
+      }else if(!this.state.highlight) {
+        this.state.showItems = false;
+      }
+    }
   }
 
   render() {
     if (this.requirementsFulfilled(this.config.requirements || {})) {
-      this.state.showItems ? this.renderItems() : this.renderHost();
+      this.renderHost();
+      this.state.showItems && this.renderItems();
     }
   }
 
@@ -79,10 +94,6 @@ export default class Activity {
           `;
         this.listContainer.appendChild(itemContainer);
       });
-    }
-
-    if (this.hostContainer && this.container.contains(this.hostContainer)) {
-      this.container.removeChild(this.hostContainer);
     }
 
     if (!this.container.contains(this.listContainer)) {
@@ -116,6 +127,8 @@ export default class Activity {
     if (!this.container.contains(this.hostContainer)) {
       this.container.appendChild(this.hostContainer);
     }
+
+    this.hostContainer.classList.toggle("highlight", this.state.highlight);
   }
 
   toggle() {
