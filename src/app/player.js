@@ -1,5 +1,6 @@
 import "./player.less";
 
+import background from "../char.png";
 export const changeableLevelStats = ["stamina", "strength", "luck"];
 
 export default class Player {
@@ -40,19 +41,19 @@ export default class Player {
     const setKeyPressed = (prop, value) => (this.keyPressed[prop] = value);
     const evalKeyPress = (e, value) => {
       e.preventDefault();
-      
+
       if ([38, 87].includes(e.which)) {
         setKeyPressed("up", value);
-      } 
-      
+      }
+
       if ([40, 83].includes(e.which)) {
         setKeyPressed("down", value);
       }
 
       if ([37, 65].includes(e.which)) {
         setKeyPressed("left", value);
-      } 
-      
+      }
+
       if ([39, 68].includes(e.which)) {
         setKeyPressed("right", value);
       }
@@ -105,7 +106,6 @@ export default class Player {
   appendTo(container) {
     container.appendChild(this.container);
     this.container.classList.add("player");
-    this.container.innerHTML = "🚶‍♂️";
 
     return this;
   }
@@ -127,5 +127,25 @@ export default class Player {
     this.container.style.top = `${this.position.y}px`;
   }
 
-  render() {}
+  render() {
+    if (
+      this.keyPressed.up ||
+      this.keyPressed.down ||
+      this.keyPressed.left ||
+      this.keyPressed.right
+    ) {
+      this.container.classList.contains("walk") ||
+        this.container.classList.add("walk");
+    } else {
+      this.container.classList.contains("walk") &&
+        this.container.classList.remove("walk");
+    }
+
+    if(this.keyPressed.left && !this.container.classList.contains('inverse')){
+      this.container.classList.add('inverse');
+    }
+    if(this.keyPressed.right && this.container.classList.contains('inverse')){
+      this.container.classList.remove('inverse');
+    }
+  }
 }

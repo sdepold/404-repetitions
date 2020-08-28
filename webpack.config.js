@@ -37,6 +37,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.gif|\.png$/,
+        use: "base64-inline-loader?limit=10000&name=[name].[ext]"
       }
     ]
   },

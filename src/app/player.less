@@ -1,4 +1,38 @@
+* {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+@keyframes player-walk {
+  100% {
+    background-position-x: -80px;
+  }
+}
+
 .player {
-    position: absolute;
-    font-size: 50px;
+  position: absolute;
+  font-size: 50px;
+  background: url("../char.png");
+  background-size: 320px;
+  width: 40px;
+  height: 40px;
+
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  &.walk {
+    animation: player-walk 0.4s steps(2) infinite;
+  }
+
+  &.inverse {
+    transform: scaleX(-1);
+  }
+
+  &.with-clothes {
+    background-position-y: -40px;
+  }
 }
