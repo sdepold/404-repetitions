@@ -1,0 +1,26 @@
+@originalTileWidth: 30px;
+@originalTileHeight: 15px;
+@tileMultiplier: 3;
+@tileWidth: calc(@originalTileWidth * @tileMultiplier);
+@tileHeight: calc(@originalTileHeight * @tileMultiplier);
+
+.ground {
+  position: absolute;
+  left: calc(-1 * @tileWidth / 2);
+  top: calc(-1 * @tileHeight / 2);
+  width: 120%;
+
+  .tile {
+    position: absolute;
+    width: @tileWidth;
+    height: @tileHeight;
+    float: left;
+
+    background: url("./ground.png");
+    background-size: calc(2 * @tileWidth);
+
+    &.grass {
+      background-position-x: @tileWidth;
+    }
+  }
+}

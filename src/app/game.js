@@ -9,7 +9,7 @@ import homeConfig from "../config/home.json";
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
 import Stats from "./stats";
-// import World from "./world";
+import World from "./world";
 
 export default class Game {
   constructor() {
@@ -22,7 +22,7 @@ export default class Game {
       renderWorkoutMenu: false,
     };
     this.renderables = [
-      // new World().appendTo(this.ui.game),
+      new World().appendTo(this.ui.game),
       new Stats(this.player).appendTo(this.ui.game),
       new Activity(this.player, competitionConfig).appendTo(this.ui.game),
       new Activity(this.player, foodConfig).appendTo(this.ui.game),

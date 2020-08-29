@@ -1,13 +1,10 @@
 import "./style.less";
-import Gym from "./gym";
-import Home from "./home";
-
+import Ground from './ground';
 export default class World {
   constructor() {
     this.container = document.createElement("div");
     this.entities = [
-      // new Home(),
-      // new Gym()
+      new Ground()
     ];
   }
 
@@ -15,7 +12,7 @@ export default class World {
     container.appendChild(this.container);
     this.container.classList.add("world");
 
-    this.entities.forEach((e) => e.appendTo(container));
+    this.entities.forEach((e) => e.appendTo(this.container));
 
     return this;
   }
