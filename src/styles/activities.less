@@ -3,35 +3,76 @@
 
   .host {
     font-size: 50px;
+
+    &,
+    &::after {
+      background: url("../app/world/houses.png");
+      background-size: 354px;
+    }
+
+    &.highlight {
+      filter: brightness(1.3);
+    }
   }
 
-  .highlight {
-    border: 2px solid white;
-  }
-  
   &.competition {
-      top: 250px;
-      left: 350px;
+    top: 250px;
+    left: 350px;
   }
-  
+
   &.food {
-    top: 400px;
-    left: 300px;
+    top: 388px;
+    left: 285px;
+
+    .host {
+      width: 60px;
+      height: 54px;
+      background-position: -294px 54px;
+    }
   }
 
   &.home {
-    top: 300px;
-    left: 500px;
+    top: 279px;
+    left: 495px;
+
+    .host {
+      width: 90px;
+      height: 60px;
+      background-position: -120px 114px;
+    }
   }
 
   &.work {
-    top: 200px;
-    left: 200px;
+    top: 146px;
+    left: 196px;
+
+    .host {
+      width: 60px;
+      height: 117px;
+      background-position: 0px 117px;
+
+      &::after {
+        content: "";
+        width: 60px;
+        height: 117px;
+        background-position: -60px 117px;
+        position: relative;
+        display: block;
+        top: 23px;
+        left: 44px;
+      }
+    }
   }
 
   &.workout {
-    top: 100px;
-    left: 400px;
+    top: 105px;
+    left: 417px;
+
+    .host {
+      width: 84px;
+      height: 90px;
+      background-position: -210px 90px;
+    }
   }
 
   ul {
