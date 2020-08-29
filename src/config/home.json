@@ -3,6 +3,17 @@
     "name": "home",
     "items": [
       {
+        "title": "Dress up",
+        "requirements": {
+          "dressed": false,
+          "time": 10
+        },
+        "effects": {
+          "dressed": true
+        },
+        "hideIfRequirementsNotMet": true
+      },
+      {
         "title": "Thorough sleep",
         "requirements": {
           "time": 480

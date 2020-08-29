@@ -34,6 +34,9 @@ export default class Player {
       right: false,
       space: false,
     };
+    this.state = {
+      dressed: false,
+    };
     this.observeKeyboard();
   }
 
@@ -73,6 +76,10 @@ export default class Player {
   }
 
   updateStat(property, delta) {
+    if (property === "dressed") {
+      return (this.state.dressed = delta);
+    }
+
     this.currentStats[property] += delta;
 
     while (
@@ -103,6 +110,8 @@ export default class Player {
     if (Object.keys(this.levelStats).includes(statName)) {
       return this.levelStats[statName] >= value;
     }
+
+    if (statName === "dressed") return this.state.dressed === value;
 
     return false;
   }
@@ -151,5 +160,6 @@ export default class Player {
     if (this.keyPressed.right && this.container.classList.contains("inverse")) {
       this.container.classList.remove("inverse");
     }
+    this.container.classList.toggle("dressed", this.state.dressed);
   }
 }

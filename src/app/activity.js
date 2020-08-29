@@ -1,6 +1,8 @@
 import gameConfig from "../config/game.json";
 import { collides } from "./helper/collision-detection";
 
+export const TOGGLE_THRESHOLD = 500;
+
 export default class Activity {
   constructor(player, config, { onActivityStart, onActivityEnd } = {}) {
     this.container = document.createElement("div");
@@ -12,6 +14,7 @@ export default class Activity {
       currentItem: null,
       investedTime: null,
       highlight: false,
+      toggledViaKeyboardAt: new Date(),
     };
     this.onActivityStart = onActivityStart;
     this.onActivityEnd = onActivityEnd;
@@ -47,24 +50,33 @@ export default class Activity {
       this.listContainer.querySelectorAll("li").forEach((li) => {
         const liTitle = li.querySelector(".title").innerText;
         const liItem = this.config.items.find((i) => i.title === liTitle);
+        const requirementsFulfilled = this.requirementsFulfilled(
+          liItem.requirements
+        );
 
-        if (this.requirementsFulfilled(liItem.requirements)) {
-          li.classList.contains("disabled") && li.classList.remove("disabled");
-        } else {
-          li.classList.contains("disabled") || li.classList.add("disabled");
-        }
+        li.classList.toggle("disabled", !requirementsFulfilled);
+        li.classList.toggle(
+          "hidden",
+          !requirementsFulfilled && !!liItem.hideIfRequirementsNotMet
+        );
       });
     }
 
-    console.log(this.player.keyPressed.space)
     if (this.hostContainer) {
-      this.state.highlight = collides(this.player.container,this.hostContainer);
+      this.state.highlight = collides(
+        this.player.container,
+        this.hostContainer
+      );
 
-      if(this.state.highlight && this.player.keyPressed.space) {
-        console.log('ho')
+      if (
+        this.state.highlight &&
+        this.player.keyPressed.space &&
+        this.canBeToggledViaKeyboard()
+      ) {
         this.toggle();
-      }else if(!this.state.highlight) {
-        this.state.showItems = false;
+        this.state.toggledViaKeyboardAt = new Date();
+      } else if (!this.state.highlight) {
+        this.toggle(false);
       }
     }
   }
@@ -72,7 +84,7 @@ export default class Activity {
   render() {
     if (this.requirementsFulfilled(this.config.requirements || {})) {
       this.renderHost();
-      this.state.showItems && this.renderItems();
+      this.renderItems();
     }
   }
 
@@ -103,20 +115,17 @@ export default class Activity {
     if (this.hasCurrent()) {
       this.listContainer.querySelectorAll("li").forEach((li) => {
         const liTitle = li.querySelector(".title").innerText;
-        if (liTitle === this.state.currentItem.title) {
-          li.classList.contains("current") || li.classList.add("current");
-        } else {
-          li.classList.remove("current");
-        }
+        li.classList.toggle(
+          "current",
+          liTitle === this.state.currentItem.title
+        );
       });
     }
+
+    this.listContainer.classList.toggle("hidden", !this.state.showItems);
   }
 
   renderHost() {
-    if (this.listContainer && this.container.contains(this.listContainer)) {
-      this.container.removeChild(this.listContainer);
-    }
-
     if (!this.hostContainer) {
       this.hostContainer = document.createElement("div");
       this.hostContainer.classList.add("host");
@@ -131,8 +140,16 @@ export default class Activity {
     this.hostContainer.classList.toggle("highlight", this.state.highlight);
   }
 
-  toggle() {
+  toggle(force) {
+    if (force !== undefined) {
+      return (this.state.showItems = force);
+    }
+
     this.state.showItems = !this.state.showItems;
+  }
+
+  canBeToggledViaKeyboard() {
+    return new Date() - this.state.toggledViaKeyboardAt > TOGGLE_THRESHOLD;
   }
 
   onItemClick(item) {
@@ -151,20 +168,18 @@ export default class Activity {
     });
 
     this.state.currentItem = null;
-    this.state.showItems = false;
+    this.toggle(false);
   }
 
   requirementsFulfilled(requirements) {
-    return Object.entries(requirements).every(([statName, minValue]) => {
-      return this.player.hasStat(statName, minValue);
-    });
+    return Object.entries(requirements).every(([statName, minValue]) =>
+      this.player.hasStat(statName, minValue)
+    );
   }
 
   findItemContainer(item) {
-    return Array.from(this.listContainer.querySelectorAll("li")).find((li) => {
-      const liTitle = li.querySelector(".title").innerText;
-
-      return liTitle === item.title;
-    });
+    return Array.from(this.listContainer.querySelectorAll("li")).find(
+      (li) => li.querySelector(".title").innerText === item.title
+    );
   }
 }
