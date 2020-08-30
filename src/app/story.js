@@ -32,3 +32,7 @@ export async function gettingDressedDialog() {
   await renderDelayText("Off to the gym!", {ttl: 2});
   window.blockMovement = false;
 }
+
+export async function nakedComplaint() {
+  await renderDelayText("I am naked! Need my clothes!", { ttl: 2 });
+}
