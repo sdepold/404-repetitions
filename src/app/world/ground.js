@@ -9,17 +9,20 @@ const tileHeight = originalTileHeight * tileMultiplier;
 export default class Ground {
   constructor() {
     this.container = document.createElement("div");
-    this.generateTiles();
+    setTimeout(() => {
+      this.generateTiles();
+    });
   }
 
   generateTiles() {
+    const gameContainer = document.querySelector('#game');
     this.container.classList.add("ground");
 
     let x = 0;
     let y = 0;
 
-    for (let x = 0; x < window.innerWidth / tileWidth + 1; x++) {
-      for (let y = 0; y < window.innerHeight / tileHeight + 1; y++) {
+    for (let x = 0; x < gameContainer.clientWidth / tileWidth; x++) {
+      for (let y = 0; y < gameContainer.clientHeight / tileHeight; y++) {
         const tile = document.createElement("div");
         tile.classList.add("tile", "grass");
         tile.style.left = `${x * tileWidth}px`;
