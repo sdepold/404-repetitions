@@ -6,7 +6,7 @@ export function renderText(content, { container, ttl } = {}) {
   const textContainer = createText(content, container);
 
   if (ttl) {
-    destroyText(textContainer, { container });
+    destroyText(textContainer, { container, ttl });
   }
 
   return textContainer;

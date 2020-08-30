@@ -81,7 +81,7 @@ export default class Activity {
       }
 
       if (this.state.highlight && !this.state.textContainer) {
-        this.state.textContainer = renderText(this.config.name);
+        this.state.textContainer = renderText(`${this.config.name} - press space to open`);
       }
 
       if (!this.state.highlight && this.state.textContainer) {

@@ -11,6 +11,7 @@ import workoutConfig from "../config/workout.json";
 import Stats from "./stats";
 import World from "./world";
 import { renderText } from "./helper/text";
+import { initDialog } from "./story";
 
 export default class Game {
   constructor() {
@@ -30,7 +31,7 @@ export default class Game {
       new Activity(this.player, homeConfig).appendTo(this.ui.game),
       new Activity(this.player, workConfig).appendTo(this.ui.game),
       new Activity(this.player, workoutConfig).appendTo(this.ui.game),
-      this.player.appendTo(this.ui.game)
+      this.player.appendTo(this.ui.game),
     ];
   }
 
@@ -69,5 +70,7 @@ export default class Game {
 
     // this.ui.updateStats(this.player);
     this.ui.updateTime(this.time);
+
+    initDialog();
   }
 }
