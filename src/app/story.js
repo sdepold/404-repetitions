@@ -28,7 +28,7 @@ export async function initDialog() {
 export async function gettingDressedDialog() {
   window.blockMovement = true;
   await renderDelayText("Aaah. Better.", { ttl: 2 });
-  await renderDelayText("Hmm. I feel the urge to exercise.", {ttl: 2});
-  await renderDelayText("To the gym! Now!", {ttl: 2});
+  await renderDelayText("I feel the urge to exercise!", {ttl: 2});
+  await renderDelayText("Off to the gym!", {ttl: 2});
   window.blockMovement = false;
 }

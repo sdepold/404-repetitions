@@ -24,8 +24,8 @@ export default class Player {
       availableStatPoints: 0,
     };
     this.position = {
-      x: 0,
-      y: 0,
+      x: 10,
+      y: 40,
     };
     this.keyPressed = {
       up: false,

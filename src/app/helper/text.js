@@ -19,12 +19,17 @@ function createText(content, container) {
   container.appendChild(textContainer);
   textContainer.classList.add("text-overlay");
   textContainer.appendChild(canvas);
-
-  const render = initFont(font, canvas.getContext("2d"));
-
-  render(content.toUpperCase(), 0, 0, 14);
+  renderTextToCanvas(canvas, content.toUpperCase());
 
   return textContainer;
+}
+
+export function renderTextToCanvas(canvas, content) {
+  const ctx = canvas.getContext('2d');
+  const render = initFont(font, ctx);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  render(content, 0, 0, 14);
 }
 
 export function destroyText(textContainer, { container, ttl = 0 } = {}) {
