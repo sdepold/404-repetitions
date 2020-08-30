@@ -10,6 +10,7 @@ import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
 import Stats from "./stats";
 import World from "./world";
+import { renderText } from "./helper/text";
 
 export default class Game {
   constructor() {

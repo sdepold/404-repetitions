@@ -1,5 +1,6 @@
 import gameConfig from "../config/game.json";
 import { collides } from "./helper/collision-detection";
+import { renderText, destroyText } from "./helper/text";
 
 export const TOGGLE_THRESHOLD = 500;
 
@@ -77,6 +78,14 @@ export default class Activity {
         this.state.toggledViaKeyboardAt = new Date();
       } else if (!this.state.highlight) {
         this.toggle(false);
+      }
+
+      if (this.state.highlight && !this.state.textContainer) {
+        this.state.textContainer = renderText(this.config.name);
+      }
+
+      if (!this.state.highlight && this.state.textContainer) {
+        this.state.textContainer = destroyText(this.state.textContainer);
       }
     }
   }
