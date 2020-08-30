@@ -1,6 +1,6 @@
 import "./player.less";
 
-import background from "../char.png";
+import { gettingDressedDialog } from "./story";
 export const changeableLevelStats = ["stamina", "strength", "luck"];
 
 export default class Player {
@@ -77,6 +77,7 @@ export default class Player {
 
   updateStat(property, delta) {
     if (property === "dressed") {
+      gettingDressedDialog();
       return (this.state.dressed = delta);
     }
 
@@ -124,16 +125,18 @@ export default class Player {
   }
 
   update() {
-    if (this.keyPressed.left) {
-      this.position.x -= 5;
-    } else if (this.keyPressed.right) {
-      this.position.x += 5;
-    }
+    if (!window.blockMovement) {
+      if (this.keyPressed.left) {
+        this.position.x -= 5;
+      } else if (this.keyPressed.right) {
+        this.position.x += 5;
+      }
 
-    if (this.keyPressed.up) {
-      this.position.y -= 5;
-    } else if (this.keyPressed.down) {
-      this.position.y += 5;
+      if (this.keyPressed.up) {
+        this.position.y -= 5;
+      } else if (this.keyPressed.down) {
+        this.position.y += 5;
+      }
     }
 
     this.container.style.left = `${this.position.x}px`;
