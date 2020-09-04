@@ -2,6 +2,7 @@ import gameConfig from "../config/game.json";
 import { collides } from "./helper/collision-detection";
 import { renderText, destroyText } from "./helper/text";
 import { nakedComplaint } from "./story";
+import { keyPressed, SPACE } from "./controls";
 
 export const TOGGLE_THRESHOLD = 500;
 
@@ -72,7 +73,7 @@ export default class Activity {
 
       if (
         this.state.highlight &&
-        this.player.keyPressed.space &&
+        keyPressed(SPACE) &&
         this.canBeToggledViaKeyboard()
       ) {
         if(this.config.name !== 'home' && !this.player.state.dressed) {

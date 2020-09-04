@@ -1,6 +1,7 @@
 import "./player.less";
 
 import { gettingDressedDialog } from "./story";
+import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
 export const changeableLevelStats = ["stamina", "strength", "luck"];
 
 export default class Player {
@@ -27,47 +28,9 @@ export default class Player {
       x: 10,
       y: 40,
     };
-    this.keyPressed = {
-      up: false,
-      left: false,
-      top: false,
-      right: false,
-      space: false,
-    };
     this.state = {
       dressed: false,
     };
-    this.observeKeyboard();
-  }
-
-  observeKeyboard() {
-    const setKeyPressed = (prop, value) => (this.keyPressed[prop] = value);
-    const evalKeyPress = (e, value) => {
-      e.preventDefault();
-
-      if ([38, 87].includes(e.which)) {
-        setKeyPressed("up", value);
-      }
-
-      if ([40, 83].includes(e.which)) {
-        setKeyPressed("down", value);
-      }
-
-      if ([37, 65].includes(e.which)) {
-        setKeyPressed("left", value);
-      }
-
-      if ([39, 68].includes(e.which)) {
-        setKeyPressed("right", value);
-      }
-
-      if (e.which === 32) {
-        setKeyPressed("space", value);
-      }
-    };
-
-    window.onkeydown = window.onkeypress = (e) => evalKeyPress(e, true);
-    window.onkeyup = (e) => evalKeyPress(e, false);
   }
 
   updateLevelStat(property, delta) {
@@ -126,15 +89,15 @@ export default class Player {
 
   update() {
     if (!window.blockMovement) {
-      if (this.keyPressed.left) {
+      if (keyPressed(LEFT)) {
         this.position.x -= 5;
-      } else if (this.keyPressed.right) {
+      } else if (keyPressed(RIGHT)) {
         this.position.x += 5;
       }
 
-      if (this.keyPressed.up) {
+      if (keyPressed(UP)) {
         this.position.y -= 5;
-      } else if (this.keyPressed.down) {
+      } else if (keyPressed(DOWN)) {
         this.position.y += 5;
       }
     }
@@ -145,10 +108,10 @@ export default class Player {
 
   render() {
     if (
-      this.keyPressed.up ||
-      this.keyPressed.down ||
-      this.keyPressed.left ||
-      this.keyPressed.right
+      keyPressed(UP) ||
+      keyPressed(DOWN) ||
+      keyPressed(LEFT) ||
+      keyPressed(RIGHT)
     ) {
       this.container.classList.contains("walk") ||
         this.container.classList.add("walk");
@@ -157,10 +120,10 @@ export default class Player {
         this.container.classList.remove("walk");
     }
 
-    if (this.keyPressed.left && !this.container.classList.contains("inverse")) {
+    if (keyPressed(LEFT) && !this.container.classList.contains("inverse")) {
       this.container.classList.add("inverse");
     }
-    if (this.keyPressed.right && this.container.classList.contains("inverse")) {
+    if (keyPressed(RIGHT) && this.container.classList.contains("inverse")) {
       this.container.classList.remove("inverse");
     }
     this.container.classList.toggle("dressed", this.state.dressed);

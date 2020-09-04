@@ -1,5 +1,6 @@
 import "./welcome.less";
-import { renderText, renderLines } from "../helper/text";
+import { renderLines } from "../helper/text";
+import { keyPressed, SPACE } from "../controls";
 
 export default class WelcomeScreen {
   constructor(game) {
@@ -30,7 +31,7 @@ export default class WelcomeScreen {
   update() {}
 
   render() {
-    if (this.game.player.keyPressed.space && this.container) {
+    if (keyPressed(SPACE) && this.container) {
       clearInterval(this.spaceInterval);
       this.hostContainer.removeChild(this.container);
       this.container = undefined;
