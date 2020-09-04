@@ -11,7 +11,7 @@ const INTERACTION_DELAY = 200;
 
 export default class Menu {
   constructor(items, onSelect) {
-    this.items = [EXIT_ACTIVITY, ...items];
+    this.items = [...items, EXIT_ACTIVITY];
     this.state = {
       selectedItem: this.items[0],
       selectedItemIndex: 0,
@@ -65,7 +65,7 @@ export default class Menu {
   render() {
     window.blockMovement = true;
     this.canvas.width = this.hostContainer.clientWidth - 44;
-    this.canvas.height = 160;
+    this.canvas.height = this.items.length * 30 + 60;
 
     clearCanvas(this.canvas);
     let offsetY = 0;
