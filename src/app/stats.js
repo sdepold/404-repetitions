@@ -1,5 +1,5 @@
 import { changeableLevelStats } from "./player";
-import { renderTextToCanvas } from "./helper/text";
+import { renderTextToCanvas, clearAndRenderTextToCanvas } from "./helper/text";
 
 export default class Stats {
   constructor(player) {
@@ -100,7 +100,7 @@ export default class Stats {
         content = content.toFixed(2);
       }
 
-      renderTextToCanvas(canvas, `${statName.toUpperCase()}: ${content}`);
+      clearAndRenderTextToCanvas(canvas, `${statName.toUpperCase()}: ${content}`);
     });
   }
 }
