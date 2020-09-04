@@ -12,6 +12,7 @@ import Stats from "./stats";
 import World from "./world";
 import { renderText } from "./helper/text";
 import { initDialog } from "./story";
+import WelcomeScreen from "./screens/welcome";
 
 export default class Game {
   constructor() {
@@ -22,6 +23,7 @@ export default class Game {
       busy: false,
       renderWorkMenu: false,
       renderWorkoutMenu: false,
+      started: false,
     };
     this.renderables = [
       new World().appendTo(this.ui.game),
@@ -32,6 +34,7 @@ export default class Game {
       new Activity(this.player, workConfig).appendTo(this.ui.game),
       new Activity(this.player, workoutConfig).appendTo(this.ui.game),
       this.player.appendTo(this.ui.game),
+      new WelcomeScreen(this).appendTo(this.ui.game)
     ];
   }
 
@@ -51,26 +54,26 @@ export default class Game {
 
   run() {
     setInterval(() => {
-      this.increaseTime();
+      if (this.state.started) {
+        this.increaseTime();
 
-      if (
-        !this.renderables.find(
-          (activity) => activity.hasCurrent && activity.hasCurrent()
-        )
-      ) {
-        this.player.updateStat("stamina", -gameConfig.staminaPerTick);
+        if (
+          !this.renderables.find(
+            (activity) => activity.hasCurrent && activity.hasCurrent()
+          )
+        ) {
+          this.player.updateStat("stamina", -gameConfig.staminaPerTick);
+        }
+
+        this.ui.updateTime(this.time);
       }
-
-      // this.ui.updateStats(this.player);
-      this.ui.updateTime(this.time);
-
       this.renderables.forEach((a) => a.update());
       this.renderables.forEach((a) => a.render());
     }, gameConfig.tickDelay);
+  }
 
-    // this.ui.updateStats(this.player);
-    this.ui.updateTime(this.time);
-
+  start() {
+    this.state.started = true;
     initDialog();
   }
 }

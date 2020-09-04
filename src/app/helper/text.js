@@ -19,17 +19,32 @@ function createText(content, container) {
   container.appendChild(textContainer);
   textContainer.classList.add("text-overlay");
   textContainer.appendChild(canvas);
-  renderTextToCanvas(canvas, content.toUpperCase());
+  clearAndRenderTextToCanvas(canvas, content.toUpperCase());
 
   return textContainer;
 }
 
-export function renderTextToCanvas(canvas, content) {
-  const ctx = canvas.getContext('2d');
+export function renderTextToCanvas(
+  canvas,
+  content,
+  { x = 0, y = 0, color = "black", textSize = 14, textAlign = "left" } = {}
+) {
+  const ctx = canvas.getContext("2d");
   const render = initFont(font, ctx);
 
+  if (textAlign === "center") {
+    const textWidth = content.split("").length * textSize * 0.85;
+    x = (canvas.width / 2) - (textWidth / 2);
+  }
+
+  render(content, x, y, textSize, color);
+}
+
+export function clearAndRenderTextToCanvas(canvas, ...args) {
+  const ctx = canvas.getContext("2d");
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  render(content, 0, 0, 14);
+  renderTextToCanvas(canvas, ...args);
 }
 
 export function destroyText(textContainer, { container, ttl = 0 } = {}) {
@@ -38,4 +53,18 @@ export function destroyText(textContainer, { container, ttl = 0 } = {}) {
   setTimeout(() => {
     container.removeChild(textContainer);
   }, ttl * 1000);
+}
+
+export function renderLines(canvas, lines) {
+  const ctx = canvas.getContext("2d");
+  const render = initFont(font, ctx);
+
+  lines.forEach((line, i) => {
+    renderTextToCanvas(canvas, line.text.toUpperCase(), {
+      y: i * 40,
+      color: "white",
+      textSize: line.textSize,
+      textAlign: line.textAlign,
+    });
+  });
 }
