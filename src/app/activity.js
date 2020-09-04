@@ -3,6 +3,7 @@ import { collides } from "./helper/collision-detection";
 import { renderText, destroyText } from "./helper/text";
 import { nakedComplaint } from "./story";
 import { keyPressed, SPACE } from "./controls";
+import Menu, { MenuItem } from "./menu";
 
 export const TOGGLE_THRESHOLD = 500;
 
@@ -28,6 +29,7 @@ export default class Activity {
   }
 
   appendTo(container) {
+    this.gameContainer = container;
     container.appendChild(this.container);
     this.container.classList.add(this.config.name, "activity");
 
@@ -37,9 +39,11 @@ export default class Activity {
   update() {
     if (this.hasCurrent()) {
       this.state.investedTime += gameConfig.minutesPerTick;
+      this.state.currentItem.remainingTime = this.state.currentItem.requirements.time - this.state.investedTime;
 
       if (this.state.investedTime >= this.state.currentItem.requirements.time) {
         this.state.investedTime = 0;
+        delete this.state.currentItem.remainingTime;
 
         Object.keys(this.state.currentItem.effects).forEach((prop) => {
           this.player.updateStat(prop, this.state.currentItem.effects[prop]);
@@ -49,20 +53,8 @@ export default class Activity {
       }
     }
 
-    if (this.state.showItems && this.listContainer) {
-      this.listContainer.querySelectorAll("li").forEach((li) => {
-        const liTitle = li.querySelector(".title").innerText;
-        const liItem = this.config.items.find((i) => i.title === liTitle);
-        const requirementsFulfilled = this.requirementsFulfilled(
-          liItem.requirements
-        );
-
-        li.classList.toggle("disabled", !requirementsFulfilled);
-        li.classList.toggle(
-          "hidden",
-          !requirementsFulfilled && !!liItem.hideIfRequirementsNotMet
-        );
-      });
+    if (this.state.showItems && this.itemMenu) {
+      this.itemMenu.update();
     }
 
     if (this.hostContainer) {
@@ -74,9 +66,10 @@ export default class Activity {
       if (
         this.state.highlight &&
         keyPressed(SPACE) &&
-        this.canBeToggledViaKeyboard()
+        this.canBeToggledViaKeyboard() &&
+        !this.state.currentItem
       ) {
-        if(this.config.name !== 'home' && !this.player.state.dressed) {
+        if (this.config.name !== "home" && !this.player.state.dressed) {
           nakedComplaint();
         } else {
           this.toggle();
@@ -87,7 +80,9 @@ export default class Activity {
       }
 
       if (this.state.highlight && !this.state.textContainer) {
-        this.state.textContainer = renderText(`${this.config.name} - press space to open`);
+        this.state.textContainer = renderText(
+          `${this.config.name} - press space to open`
+        );
       }
 
       if (!this.state.highlight && this.state.textContainer) {
@@ -99,45 +94,19 @@ export default class Activity {
   render() {
     if (this.requirementsFulfilled(this.config.requirements || {})) {
       this.renderHost();
-      this.renderItems();
+      this.state.showItems && this.renderItems();
     }
   }
 
   renderItems() {
-    if (!this.listContainer) {
-      this.listContainer = document.createElement("ul");
-      this.listContainer.classList.add("list");
-
-      this.config.items.forEach((item) => {
-        const itemContainer = document.createElement("li");
-
-        itemContainer.addEventListener("click", () => this.onItemClick(item));
-        itemContainer.innerHTML = `
-            <span class="title">${item.title}</span>
-            <span class="earnings">${Object.entries(item.effects)}</span>
-            <span class="requirements">${Object.entries(
-              item.requirements
-            )}</span>
-          `;
-        this.listContainer.appendChild(itemContainer);
-      });
+    if (!this.itemMenu) {
+      this.itemMenu = new Menu(
+        this.config.items.map((i) => new MenuItem(i)),
+        (item) => this.onItemSelect(item)
+      ).appendTo(this.gameContainer);
     }
 
-    if (!this.container.contains(this.listContainer)) {
-      this.container.appendChild(this.listContainer);
-    }
-
-    if (this.hasCurrent()) {
-      this.listContainer.querySelectorAll("li").forEach((li) => {
-        const liTitle = li.querySelector(".title").innerText;
-        li.classList.toggle(
-          "current",
-          liTitle === this.state.currentItem.title
-        );
-      });
-    }
-
-    this.listContainer.classList.toggle("hidden", !this.state.showItems);
+    this.itemMenu.render();
   }
 
   renderHost() {
@@ -145,7 +114,6 @@ export default class Activity {
       this.hostContainer = document.createElement("div");
       this.hostContainer.classList.add("host");
       this.hostContainer.innerHTML = this.config.host;
-      this.hostContainer.addEventListener("click", () => this.toggle());
     }
 
     if (!this.container.contains(this.hostContainer)) {
@@ -157,31 +125,28 @@ export default class Activity {
 
   toggle(force) {
     if (force !== undefined) {
-      return (this.state.showItems = force);
+      this.state.showItems = force;
+    } else {
+      this.state.showItems = !this.state.showItems;
     }
 
-    this.state.showItems = !this.state.showItems;
+    if (!this.state.showItems && this.itemMenu) {
+      this.itemMenu.destroy();
+      this.itemMenu = undefined;
+    }
   }
 
   canBeToggledViaKeyboard() {
     return new Date() - this.state.toggledViaKeyboardAt > TOGGLE_THRESHOLD;
   }
 
-  onItemClick(item) {
-    if (
-      !this.hasCurrent() &&
-      !this.findItemContainer(item).classList.contains("disabled")
-    ) {
-      this.state.currentItem = item;
-      this.state.investedTime = 0;
-    }
+  onItemSelect(item) {
+    this.state.currentItem = item;
+    this.state.investedTime = 0;
   }
 
   resetCurrent() {
-    this.container.querySelectorAll("li").forEach((li) => {
-      li.classList.remove("current");
-    });
-
+    this.itemMenu.reset();
     this.state.currentItem = null;
     this.toggle(false);
   }
@@ -193,7 +158,7 @@ export default class Activity {
   }
 
   findItemContainer(item) {
-    return Array.from(this.listContainer.querySelectorAll("li")).find(
+    return Array.from(this.itemMenu.querySelectorAll("li")).find(
       (li) => li.querySelector(".title").innerText === item.title
     );
   }

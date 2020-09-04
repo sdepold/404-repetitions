@@ -13,6 +13,7 @@ import World from "./world";
 import { renderText } from "./helper/text";
 import { initDialog } from "./story";
 import WelcomeScreen from "./screens/welcome";
+import Menu, { MenuItem } from "./menu";
 
 export default class Game {
   constructor() {

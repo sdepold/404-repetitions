@@ -40,10 +40,14 @@ export function renderTextToCanvas(
   render(content, x, y, textSize, color);
 }
 
-export function clearAndRenderTextToCanvas(canvas, ...args) {
+export function clearCanvas(canvas) {
   const ctx = canvas.getContext("2d");
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+export function clearAndRenderTextToCanvas(canvas, ...args) {
+  clearCanvas(canvas);
   renderTextToCanvas(canvas, ...args);
 }
 
@@ -61,8 +65,8 @@ export function renderLines(canvas, lines) {
 
   lines.forEach((line, i) => {
     renderTextToCanvas(canvas, line.text.toUpperCase(), {
-      y: i * 40,
-      color: "white",
+      y: line.y || i * 40,
+      color: line.color || "white",
       textSize: line.textSize,
       textAlign: line.textAlign,
     });
