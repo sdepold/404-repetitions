@@ -9,12 +9,15 @@ import { keyPressed, UP, DOWN, SPACE } from "./controls";
 
 const INTERACTION_DELAY = 200;
 
+const notHidden = (menuItem) =>
+  menuItem.item.hidden === undefined || menuItem.item.hidden === false;
+
 export default class Menu {
   constructor(items, onSelect) {
     this.items = [...items, EXIT_ACTIVITY];
     this.state = {
-      selectedItem: this.items[0],
-      selectedItemIndex: 0,
+      selectedItem: this.items.find(notHidden),
+      selectedItemIndex: this.items.findIndex(notHidden),
       allowToggle: true,
       allowSelect: false,
     };
@@ -57,9 +60,14 @@ export default class Menu {
       this.state.selectedItem = this.items[this.state.selectedItemIndex];
     }
 
-    if (this.state.allowSelect && keyPressed(SPACE)) {
+    if (this.state.allowSelect && keyPressed(SPACE) && this.state.selectedItem.item.requirementsFulfilled) {
       this.state.allowSelect = this.state.allowToggle = false;
-      this.onSelect(this.state.selectedItem);
+      this.onSelect(this.state.selectedItem.item);
+    }
+
+    if (!notHidden(this.state.selectedItem)) {
+      this.state.selectedItem = this.items.find(notHidden);
+      this.state.selectedItemIndex = this.items.findIndex(notHidden);
     }
   }
   render() {
@@ -70,10 +78,11 @@ export default class Menu {
     clearCanvas(this.canvas);
     let offsetY = 0;
 
-    this.items.forEach((item, index) => {
+    this.items.filter(notHidden).forEach((item) => {
       item.render(this.canvas, offsetY);
-      const delta = (item === this.state.selectedItem && item !== EXIT_ACTIVITY) ? 90 : 30;
-      offsetY += delta
+      const delta =
+        item === this.state.selectedItem && item !== EXIT_ACTIVITY ? 90 : 30;
+      offsetY += delta;
     });
   }
 
@@ -84,17 +93,15 @@ export default class Menu {
   }
 
   reset() {
-      setTimeout(() => {
-          this.state.allowSelect = this.state.allowToggle = true;
-      }, INTERACTION_DELAY)
+    setTimeout(() => {
+      this.state.allowSelect = this.state.allowToggle = true;
+    }, INTERACTION_DELAY);
   }
 }
 
 export class MenuItem {
-  constructor({ title, requirements, effects }) {
-    this.title = title;
-    this.requirements = requirements;
-    this.effects = effects;
+  constructor(item) {
+    this.item = item;
     this.state = { selected: false };
   }
 
@@ -110,22 +117,37 @@ export class MenuItem {
     return `${prefix}: ${text}`;
   }
 
+  getColor() {
+    if (this.item.requirementsFulfilled === false) {
+      return "red";
+    }
+
+    if (this.state.selected) {
+      return "black";
+    }
+
+    return "grey";
+  }
+
   render(canvas, y) {
-    const color = this.state.selected ? "black" : "grey";
-    const titleSuffix = (this !== EXIT_ACTIVITY && this.remainingTime) ? ` ${this.remainingTime} sec` : "";
+    const color = this.getColor();
+    const titleSuffix =
+      this !== EXIT_ACTIVITY && this.item.remainingTime
+        ? ` ${this.item.remainingTime} sec`
+        : "";
     const lines = [
-      { text: `${this.title}${titleSuffix}`.toUpperCase(), y, color },
+      { text: `${this.item.title}${titleSuffix}`.toUpperCase(), y, color },
     ];
 
     if (this !== EXIT_ACTIVITY && this.state.selected) {
       lines.push({
-        text: this.format("Requirements", this.requirements),
+        text: this.format("Requirements", this.item.requirements),
         y: y + 30,
         color,
         textSize: 10,
       });
       lines.push({
-        text: this.format("Effect", this.effects),
+        text: this.format("Effect", this.item.effects),
         y: y + 50,
         color,
         textSize: 10,
@@ -137,7 +159,7 @@ export class MenuItem {
 }
 
 export const EXIT_ACTIVITY = new MenuItem({
-    title: 'Exit venue',
-    requirements: { time: 5 },
-    effects: {}
-  });
+  title: "Exit venue",
+  requirements: { time: 5 },
+  effects: {},
+});

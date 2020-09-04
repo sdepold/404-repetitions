@@ -55,6 +55,14 @@ export default class Activity {
     }
 
     if (this.state.showItems && this.itemMenu) {
+      this.itemMenu.items.forEach((menuItem) => {
+        menuItem.item.requirementsFulfilled = this.requirementsFulfilled(
+          menuItem.item.requirements
+        );
+        menuItem.item.hidden =
+          !menuItem.item.requirementsFulfilled &&
+          !!menuItem.item.hideIfRequirementsNotMet;
+      });
       this.itemMenu.update();
     }
 

@@ -21,7 +21,8 @@
         "effects": {
           "stamina": 100
         }
-      }, {
+      }, 
+      {
           "title": "Quick nap",
           "requirements": {
             "time": 120
