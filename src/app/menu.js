@@ -11,9 +11,9 @@ const INTERACTION_DELAY = 200;
 
 export default class Menu {
   constructor(items, onSelect) {
-    this.items = items;
+    this.items = [EXIT_ACTIVITY, ...items];
     this.state = {
-      selectedItem: items[0],
+      selectedItem: this.items[0],
       selectedItemIndex: 0,
       allowToggle: true,
       allowSelect: false,
@@ -70,9 +70,10 @@ export default class Menu {
     clearCanvas(this.canvas);
     let offsetY = 0;
 
-    this.items.forEach((i, index) => {
-      i.render(this.canvas, offsetY);
-      offsetY += i === this.state.selectedItem ? 90 : 30;
+    this.items.forEach((item, index) => {
+      item.render(this.canvas, offsetY);
+      const delta = (item === this.state.selectedItem && item !== EXIT_ACTIVITY) ? 90 : 30;
+      offsetY += delta
     });
   }
 
@@ -83,7 +84,9 @@ export default class Menu {
   }
 
   reset() {
-    this.state.allowSelect = this.state.allowToggle = true;
+      setTimeout(() => {
+          this.state.allowSelect = this.state.allowToggle = true;
+      }, INTERACTION_DELAY)
   }
 }
 
@@ -109,12 +112,12 @@ export class MenuItem {
 
   render(canvas, y) {
     const color = this.state.selected ? "black" : "grey";
-    const titleSuffix = this.remainingTime ? ` ${this.remainingTime} sec` : "";
+    const titleSuffix = (this !== EXIT_ACTIVITY && this.remainingTime) ? ` ${this.remainingTime} sec` : "";
     const lines = [
       { text: `${this.title}${titleSuffix}`.toUpperCase(), y, color },
     ];
 
-    if (this.state.selected) {
+    if (this !== EXIT_ACTIVITY && this.state.selected) {
       lines.push({
         text: this.format("Requirements", this.requirements),
         y: y + 30,
@@ -132,3 +135,9 @@ export class MenuItem {
     renderLines(canvas, lines);
   }
 }
+
+export const EXIT_ACTIVITY = new MenuItem({
+    title: 'Exit venue',
+    requirements: { time: 5 },
+    effects: {}
+  });

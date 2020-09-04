@@ -3,7 +3,7 @@ import { collides } from "./helper/collision-detection";
 import { renderText, destroyText } from "./helper/text";
 import { nakedComplaint } from "./story";
 import { keyPressed, SPACE } from "./controls";
-import Menu, { MenuItem } from "./menu";
+import Menu, { MenuItem, EXIT_ACTIVITY } from "./menu";
 
 export const TOGGLE_THRESHOLD = 500;
 
@@ -39,7 +39,8 @@ export default class Activity {
   update() {
     if (this.hasCurrent()) {
       this.state.investedTime += gameConfig.minutesPerTick;
-      this.state.currentItem.remainingTime = this.state.currentItem.requirements.time - this.state.investedTime;
+      this.state.currentItem.remainingTime =
+        this.state.currentItem.requirements.time - this.state.investedTime;
 
       if (this.state.investedTime >= this.state.currentItem.requirements.time) {
         this.state.investedTime = 0;
@@ -129,11 +130,6 @@ export default class Activity {
     } else {
       this.state.showItems = !this.state.showItems;
     }
-
-    if (!this.state.showItems && this.itemMenu) {
-      this.itemMenu.destroy();
-      this.itemMenu = undefined;
-    }
   }
 
   canBeToggledViaKeyboard() {
@@ -146,9 +142,10 @@ export default class Activity {
   }
 
   resetCurrent() {
-    this.itemMenu.reset();
+    this.itemMenu.destroy();
     this.state.currentItem = null;
     this.toggle(false);
+    this.itemMenu = undefined;
   }
 
   requirementsFulfilled(requirements) {
