@@ -5,7 +5,7 @@ import Activity from "./activity";
 import competitionConfig from "../config/competition.json";
 import foodConfig from "../config/food.json";
 import gameConfig from "../config/game.json";
-import homeConfig from "../config/home.json";
+import homeConfig from "../config/home";
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
 import Stats from "./stats";
@@ -75,6 +75,6 @@ export default class Game {
 
   start() {
     this.state.started = true;
-    initDialog();
+    initDialog(this.player);
   }
 }

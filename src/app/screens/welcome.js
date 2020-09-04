@@ -1,6 +1,7 @@
 import "./welcome.less";
 import { renderLines } from "../helper/text";
 import { keyPressed, SPACE } from "../controls";
+import { initAudio } from "../audio";
 
 export default class WelcomeScreen {
   constructor(game) {
@@ -35,7 +36,14 @@ export default class WelcomeScreen {
       clearInterval(this.spaceInterval);
       this.hostContainer.removeChild(this.container);
       this.container = undefined;
-      this.game.start();
+      initAudio().then(
+        () => {
+          this.game.start();
+        },
+        () => {
+          this.game.start();
+        }
+      );
     }
 
     if (this.container) {
@@ -58,6 +66,11 @@ export default class WelcomeScreen {
         { text: "" },
         {
           text: this.state.showSpaceLine ? "Press SPACE to start" : "",
+          textAlign: "center",
+        },
+        {
+          text: "The game will ask for access to your audio system!",
+          textSize: 8,
           textAlign: "center",
         },
       ]);

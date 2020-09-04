@@ -1,4 +1,4 @@
-{
+export default {
     "host": "",
     "name": "home",
     "items": [
@@ -11,6 +11,7 @@
         "effects": {
           "dressed": true
         },
+        "soundEffect": [,,528,.01,,.48,,.6,-11.6,,,,.32,4.2],
         "hideIfRequirementsNotMet": true
       },
       {

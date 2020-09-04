@@ -147,6 +147,10 @@ export default class Activity {
   onItemSelect(item) {
     this.state.currentItem = item;
     this.state.investedTime = 0;
+
+    if(item.soundEffect) {
+      zzfx(...item.soundEffect);
+    }
   }
 
   resetCurrent() {
