@@ -1,32 +1,32 @@
 .stats {
   position: absolute;
   background: white;
-    height: 15px;
-    overflow: hidden;
-    border: 3px solid black;
-    border-radius: 3px;
-    left: 3px;
-    top: 3px;
-    right: 3px;
-    padding: 3px;
+  height: 15px;
+  overflow: hidden;
+  border: 3px solid black;
+  border-radius: 3px;
+  left: 3px;
+  top: 3px;
+  right: 3px;
+  padding: 3px;
 
-    canvas {
-      position: absolute;
-
-      &.stat-container__stamina {
-        left: 130px;
-      }
-
-      &.stat-container__money {
-        left: 270px;
-      }
-    }
-
-  .icon {
-    border-right: 1px solid black;
+  &.stats-bottom {
+    top: initial;
+    bottom: 3px;
   }
 
-  .icon,
+  canvas {
+    position: absolute;
+
+    &.stat-container__stamina {
+      left: 130px;
+    }
+
+    &.stat-container__money {
+      left: 270px;
+    }
+  }
+
   .value {
     padding: 10px;
     display: inline-block;

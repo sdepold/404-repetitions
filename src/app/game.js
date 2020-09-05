@@ -28,7 +28,7 @@ export default class Game {
     };
     this.renderables = [
       new World().appendTo(this.ui.game),
-      new Stats(this.player).appendTo(this.ui.game),
+      new Stats(this).appendTo(this.ui.game),
       new Activity(this.player, competitionConfig).appendTo(this.ui.game),
       new Activity(this.player, foodConfig).appendTo(this.ui.game),
       new Activity(this.player, homeConfig).appendTo(this.ui.game),
@@ -66,7 +66,6 @@ export default class Game {
           this.player.updateStat("stamina", -gameConfig.staminaPerTick);
         }
 
-        this.ui.updateTime(this.time);
       }
       this.renderables.forEach((a) => a.update());
       this.renderables.forEach((a) => a.render());

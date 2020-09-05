@@ -14,7 +14,6 @@ export function initAudio() {
         // The audio data will be in e.inputBuffer
         if (!receivedAudio) {
           receivedAudio = true;
-          console.log("Received audio", e);
         }
       };
     };

@@ -2,31 +2,30 @@ import { changeableLevelStats } from "./player";
 import { renderTextToCanvas, clearAndRenderTextToCanvas } from "./helper/text";
 
 export default class Stats {
-  constructor(player) {
-    this.container = document.createElement("div");
-    this.player = player;
+  constructor(game) {
+    this.containerTop = document.createElement("div");
+    this.containerBottom = document.createElement("div");
+    this.player = game.player;
+    this.time = game.time;
 
     this.init();
   }
 
-  initStatContainer(name, icon) {
+  initStatContainer(name, host) {
     const id = `${name}Container`;
     const container = (this[id] = document.createElement("canvas"));
 
     container.classList.add(`stat-container`, `stat-container__${name}`);
-    this.container.appendChild(container);
-
-    // container.innerHTML = `
-    //     <span class="icon">${icon}</span>
-    //     <span class="value"></span>
-    // `;
+    host.appendChild(container);
   }
 
   init() {
-    this.initStatContainer("rank", "🏅");
-    this.initStatContainer("stamina", "🏃‍♂️");
-    this.initStatContainer("money", "💰");
-    this.initStatContainer("level", "💡");
+    this.initStatContainer("rank", this.containerTop);
+    this.initStatContainer("stamina", this.containerTop);
+    this.initStatContainer("money", this.containerTop);
+    this.initStatContainer("level", this.containerTop);
+
+    this.initStatContainer("time", this.containerBottom);
 
     // this.levelStatContainer = document.createElement("ul");
 
@@ -47,19 +46,26 @@ export default class Stats {
   }
 
   appendTo(container) {
-    container.appendChild(this.container);
-    this.container.classList.add("stats");
+    this.hostContainer = container;
+
+    container.appendChild(this.containerTop);
+    container.appendChild(this.containerBottom);
+    this.containerTop.classList.add("stats", "stats-top");
+    this.containerBottom.classList.add("stats", "stats-bottom");
 
     return this;
   }
 
   updateItem(statName, value) {
     const canvas = this[`${statName}Container`];
-    render;
     container.querySelector(".value").innerHTML = value;
   }
 
   update() {
+    this.containerBottom.classList.toggle(
+      "hidden",
+      this.hostContainer && this.hostContainer.querySelector(".text-overlay")
+    );
     // this.updateItem("rank", this.player.currentStats.rank);
     // this.updateItem("stamina", ~~this.player.currentStats.stamina);
     // this.updateItem("power", this.player.levelStats.strength);
@@ -100,7 +106,17 @@ export default class Stats {
         content = content.toFixed(2);
       }
 
-      clearAndRenderTextToCanvas(canvas, `${statName.toUpperCase()}: ${content}`);
+      clearAndRenderTextToCanvas(
+        canvas,
+        `${statName.toUpperCase()}: ${content}`
+      );
     });
+
+    const timeString = `Day ${this.time.day} ${pad(this.time.hours)}:${pad(this.time.minutes)}`;
+    const canvas = this.timeContainer;
+
+    clearAndRenderTextToCanvas(canvas, timeString.toUpperCase());
   }
 }
+
+const pad = (num) => (num >= 10 ? num : `0${num}`);
