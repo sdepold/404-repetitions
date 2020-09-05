@@ -26,6 +26,7 @@ export default class Stats {
     this.initStatContainer("level", this.containerTop);
 
     this.initStatContainer("time", this.containerBottom);
+    this.initStatContainer("level", this.containerBottom);
 
     // this.levelStatContainer = document.createElement("ul");
 
@@ -96,7 +97,11 @@ export default class Stats {
   }
 
   render() {
-    ["rank", "stamina", "money"].forEach((statName) => {
+    const statNameMap = {
+      level: "lvl",
+    };
+
+    ["rank", "stamina", "money", "level"].forEach((statName) => {
       const canvas = this[`${statName}Container`];
       let content = this.player.currentStats[statName];
 
@@ -104,18 +109,27 @@ export default class Stats {
         content = ~~this.player.currentStats.stamina;
       } else if (statName === "money") {
         content = content.toFixed(2);
+      } else if (statName === "level") {
+        content = pad(content);
       }
 
       clearAndRenderTextToCanvas(
         canvas,
-        `${statName.toUpperCase()}: ${content}`
+        `${(statNameMap[statName] || statName).toUpperCase()}: ${content}`
       );
     });
 
-    const timeString = `Day ${this.time.day} ${pad(this.time.hours)}:${pad(this.time.minutes)}`;
+    const timeString = `Day ${this.time.day} ${pad(this.time.hours)}:${pad(
+      this.time.minutes
+    )}`;
     const canvas = this.timeContainer;
 
     clearAndRenderTextToCanvas(canvas, timeString.toUpperCase());
+
+    const levelProgress = 100.0 * this.player.currentStats.experience / this.player.levelStats.requiredExperience;
+    const levelColor = '#FFD700';
+
+    this.containerBottom.style.background = `linear-gradient(to right, ${levelColor}, ${levelColor} ${levelProgress}%, white ${levelProgress}%, white 100%)`;
   }
 }
 
