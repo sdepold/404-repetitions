@@ -2,7 +2,7 @@ import "./player.less";
 
 import { gettingDressedDialog } from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
-export const changeableLevelStats = ["stamina", "strength", "luck"];
+export const changeableLevelStats = ["stamina", "strength"/*, "luck"*/];
 
 export default class Player {
   constructor() {
@@ -22,7 +22,7 @@ export default class Player {
       money: 4.04,
       experience: 0,
       level: 1,
-      availableStatPoints: 0,
+      availableStatPoints: 10,
     };
     this.position = {
       x: 10,
@@ -44,6 +44,12 @@ export default class Player {
       return (this.state.dressed = delta);
     }
 
+    if(property.includes('.')) {
+      const [statScope, propertyName] = property.split('.');
+      this[statScope][propertyName] += delta;
+      return;
+    }
+
     this.currentStats[property] += delta;
 
     while (
@@ -57,9 +63,9 @@ export default class Player {
     }
 
     if (property === "stamina") {
-      this.currentStats.stamina = Math.min(
-        this.currentStats.stamina,
-        this.statsLimits.stamina
+      this.currentStats.stamina = Math.max(
+        Math.min(this.currentStats.stamina, this.statsLimits.stamina),
+        0
       );
     }
   }

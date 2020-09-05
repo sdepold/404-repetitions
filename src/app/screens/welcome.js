@@ -63,7 +63,6 @@ export default class WelcomeScreen {
         { text: "" },
         { text: "" },
         { text: "" },
-        { text: "" },
         {
           text: this.state.showSpaceLine ? "Press SPACE to start" : "",
           textAlign: "center",

@@ -27,23 +27,6 @@ export default class Stats {
 
     this.initStatContainer("time", this.containerBottom);
     this.initStatContainer("level", this.containerBottom);
-
-    // this.levelStatContainer = document.createElement("ul");
-
-    // changeableLevelStats.forEach((stat) => {
-    //   const container = document.createElement("li");
-
-    //   container.statName = stat;
-    //   container.innerHTML = `
-    //         <span class="stat-name">${stat}</span>
-    //         <span class="stat-value">${this.player.levelStats[stat]}</span>
-    //         <span class="stat-action"></span>
-    //     `;
-
-    //   this.levelStatContainer.appendChild(container);
-    // });
-
-    // this.container.appendChild(this.levelStatContainer);
   }
 
   appendTo(container) {
@@ -67,33 +50,6 @@ export default class Stats {
       "hidden",
       this.hostContainer && this.hostContainer.querySelector(".text-overlay")
     );
-    // this.updateItem("rank", this.player.currentStats.rank);
-    // this.updateItem("stamina", ~~this.player.currentStats.stamina);
-    // this.updateItem("power", this.player.levelStats.strength);
-    // this.updateItem("money", this.player.currentStats.money.toFixed(2));
-    // this.updateItem(
-    //   "level",
-    //   `Level: ${this.player.currentStats.level} | ${this.player.currentStats.experience} XP `
-    // );
-    // Array.from(this.levelStatContainer.querySelectorAll("li")).forEach((li) => {
-    //   const valueSpan = li.querySelector(".stat-value");
-    //   const actionSpan = li.querySelector(".stat-action");
-    //   valueSpan.innerHTML = this.player.levelStats[li.statName];
-    //   if (this.player.currentStats.availableStatPoints > 0) {
-    //     if (!actionSpan.querySelector(".increase-button")) {
-    //       const increaseButton = document.createElement("button");
-    //       increaseButton.classList.add("increase-button");
-    //       increaseButton.innerText = "+";
-    //       actionSpan.appendChild(increaseButton);
-    //       increaseButton.addEventListener("click", () => {
-    //         this.player.updateLevelStat(li.statName, 1);
-    //       });
-    //     }
-    //   } else {
-    //     const increaseButton = actionSpan.querySelector(".increase-button");
-    //     increaseButton && actionSpan.removeChild(increaseButton);
-    //   }
-    // });
   }
 
   render() {
@@ -126,8 +82,10 @@ export default class Stats {
 
     clearAndRenderTextToCanvas(canvas, timeString.toUpperCase());
 
-    const levelProgress = 100.0 * this.player.currentStats.experience / this.player.levelStats.requiredExperience;
-    const levelColor = '#FFD700';
+    const levelProgress =
+      (100.0 * this.player.currentStats.experience) /
+      this.player.levelStats.requiredExperience;
+    const levelColor = "#FFD700";
 
     this.containerBottom.style.background = `linear-gradient(to right, ${levelColor}, ${levelColor} ${levelProgress}%, white ${levelProgress}%, white 100%)`;
   }

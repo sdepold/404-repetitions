@@ -115,7 +115,7 @@ export default class Activity {
       ).appendTo(this.gameContainer);
     }
 
-    this.itemMenu.render();
+    this.itemMenu.render(this.player);
   }
 
   renderHost() {
