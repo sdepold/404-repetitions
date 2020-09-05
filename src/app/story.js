@@ -1,4 +1,5 @@
 import { renderText } from "./helper/text";
+import { playConfused } from "./audio";
 
 window.blockMovement = false;
 
@@ -17,9 +18,15 @@ function confusePlayer(player) {
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
       player.container.classList.toggle("inverse");
-      zzfx(...[, 0.1, 75, 0.03, 0.08, 0.17, 1, 1.88, 7.83, , , , , 0.4]);
+      playConfused();
     }, i * 1000);
   }
+}
+
+async function withoutMovement(fun) {
+  window.blockMovement = true;
+  await fun();
+  window.blockMovement = false;
 }
 
 export async function initDialog(player) {
@@ -27,20 +34,20 @@ export async function initDialog(player) {
     return;
   }
 
-  window.blockMovement = true;
-  confusePlayer(player);
-  await renderDelayText("Ooof!?! Location not found!?!", { ttl: 2 });
-  await renderDelayText("Ooof!?! Where am I?", { ttl: 2 });
-  window.blockMovement = false;
+  await withoutMovement(async () => {
+    confusePlayer(player);
+    await renderDelayText("Ooof!?! Location not found!?!", { ttl: 2 });
+    await renderDelayText("Ooof!?! Where am I?", { ttl: 2 });
+  });
 
-  setTimeout(async () => {
-    window.blockMovement = true;
+  await wait(1500);
+
+  await withoutMovement(async () => {
     confusePlayer(player);
     await renderDelayText("Hmm... Clothes not found!", { ttl: 2 });
     await renderDelayText("Hmm... Why am I naked?!", { ttl: 2 });
     await renderDelayText("I better head home!", { ttl: 3 });
-    window.blockMovement = false;
-  }, 1500);
+  });
 }
 
 export async function gettingDressedDialog() {
@@ -48,13 +55,24 @@ export async function gettingDressedDialog() {
     return;
   }
 
-  window.blockMovement = true;
-  await renderDelayText("Aaah. Better.", { ttl: 2 });
-  await renderDelayText("I feel the urge to exercise!", { ttl: 2 });
-  await renderDelayText("Off to the gym!", { ttl: 2 });
-  window.blockMovement = false;
+  await withoutMovement(async () => {
+    await renderDelayText("Aaah. Better.", { ttl: 2 });
+    await renderDelayText("I feel the urge to exercise!", { ttl: 2 });
+    await renderDelayText("Off to the gym!", { ttl: 2 });
+  });
 }
 
 export async function nakedComplaint() {
   await renderDelayText("I am naked! Need my clothes!", { ttl: 2 });
+}
+
+export async function firstLevelUp() {
+  await withoutMovement(async () => {
+    await renderDelayText("Oooh! Level up!", { ttl: 2 });
+    await renderDelayText("I can up my stats at home!", {ttl: 2});
+  });
+}
+
+export async function levelUp() {
+  await renderDelayText("Another levle up!", { ttl: 2 });
 }

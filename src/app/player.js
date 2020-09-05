@@ -1,8 +1,9 @@
 import "./player.less";
 
-import { gettingDressedDialog } from "./story";
+import { gettingDressedDialog, firstLevelUp } from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
-export const changeableLevelStats = ["stamina", "strength"/*, "luck"*/];
+import { playLevelUp } from "./audio";
+export const changeableLevelStats = ["stamina", "strength" /*, "luck"*/];
 
 export default class Player {
   constructor() {
@@ -44,8 +45,8 @@ export default class Player {
       return (this.state.dressed = delta);
     }
 
-    if(property.includes('.')) {
-      const [statScope, propertyName] = property.split('.');
+    if (property.includes(".")) {
+      const [statScope, propertyName] = property.split(".");
       this[statScope][propertyName] += delta;
       return;
     }
@@ -60,6 +61,11 @@ export default class Player {
       this.currentStats.level += 1;
       this.currentStats.experience -= this.levelStats.requiredExperience;
       this.levelStats.requiredExperience *= 2;
+
+      setTimeout(() => {
+        playLevelUp();
+        this.currentStats.level === 2 ? firstLevelUp() : levelUp();
+      }, 50);
     }
 
     if (property === "stamina") {

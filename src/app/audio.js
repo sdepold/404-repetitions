@@ -22,3 +22,11 @@ export function initAudio() {
       .getUserMedia({ audio: true, video: false })
       .then(handleSuccess);
 }
+
+export function playLevelUp () {
+  zzfx(...[,,80,.3,.4,.7,2,.1,-0.73,3.42,-430,.09,.17,,,,.19])
+}
+
+export function playConfused() {
+  zzfx(...[, 0.1, 75, 0.03, 0.08, 0.17, 1, 1.88, 7.83, , , , , 0.4])
+}
