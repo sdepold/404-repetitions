@@ -1,6 +1,6 @@
 import "./player.less";
 
-import { gettingDressedDialog, firstLevelUp } from "./story";
+import { gettingDressedDialog, firstLevelUp, levelUp, competitionsUnlocked } from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
 import { playLevelUp } from "./audio";
 export const changeableLevelStats = ["stamina", "strength" /*, "luck"*/];
@@ -23,14 +23,14 @@ export default class Player {
       money: 4.04,
       experience: 0,
       level: 1,
-      availableStatPoints: 10,
+      availableStatPoints: 0,
     };
     this.position = {
       x: 10,
       y: 40,
     };
     this.state = {
-      dressed: false,
+      dressed: true,
     };
   }
 
@@ -64,7 +64,12 @@ export default class Player {
 
       setTimeout(() => {
         playLevelUp();
-        this.currentStats.level === 2 ? firstLevelUp() : levelUp();
+
+        switch(this.currentStats.level) {
+          case 2: firstLevelUp(); break;
+          case 4: competitionsUnlocked(); break;
+          default: levelUp();
+        }
       }, 50);
     }
 

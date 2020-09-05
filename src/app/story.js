@@ -69,10 +69,20 @@ export async function nakedComplaint() {
 export async function firstLevelUp() {
   await withoutMovement(async () => {
     await renderDelayText("Oooh! Level up!", { ttl: 2 });
-    await renderDelayText("I can up my stats at home!", {ttl: 2});
+    await renderDelayText("I can up my stats at home!", { ttl: 2 });
   });
 }
 
 export async function levelUp() {
-  await renderDelayText("Another levle up!", { ttl: 2 });
+  await renderDelayText("Another level up!", { ttl: 2 });
+}
+
+export async function competitionsUnlocked() {
+  await withoutMovement(async () => {
+    await renderDelayText("Yay! I reached level 4.04!", { ttl: 2 });
+    await renderDelayText("I can now join competitions...", {
+      ttl: 2,
+    });
+    await renderDelayText("... and improve my rank!", { ttl: 2 });
+  });
 }
