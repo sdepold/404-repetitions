@@ -74,6 +74,7 @@ export default class Menu {
     window.blockMovement = true;
     this.canvas.width = this.hostContainer.clientWidth - 44;
     this.canvas.height = this.items.length * 30 + 60;
+    this.container.style.top = `${this.hostContainer.clientHeight - 48 - this.canvas.height}px`;
 
     clearCanvas(this.canvas);
     let offsetY = 0;
