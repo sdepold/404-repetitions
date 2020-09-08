@@ -1,6 +1,10 @@
 import "./mini-game.less";
 import { DOWN, UP, RIGHT, LEFT } from "../controls";
-import { collides, containsHorizontally, rightOf } from "../helper/collision-detection";
+import {
+  collides,
+  containsHorizontally,
+  rightOf,
+} from "../helper/collision-detection";
 
 const controls = [LEFT, RIGHT, UP, DOWN];
 const controlsToCharMap = {
@@ -19,6 +23,8 @@ export default class MiniGame {
       started: false,
       spawnTarget: true,
       spawnDelay: 3000,
+      enemySpeed: 2,
+      changeDifficulty: true,
     };
     this.enemies = [];
   }
@@ -31,12 +37,12 @@ export default class MiniGame {
     return this;
   }
 
-  initSpawnReset() {
-    this.state.spawnTarget = false;
+  initStateChange(property, delay) {
+    this.state[property] = false;
 
     setTimeout(() => {
-      this.state.spawnTarget = true;
-    }, this.state.spawnDelay);
+      this.state[property] = true;
+    }, delay);
   }
 
   spawnEnemy() {
@@ -48,6 +54,7 @@ export default class MiniGame {
         x: -50,
       },
       highlight: false,
+      speed: this.state.enemySpeed,
     };
 
     enemy.container.innerHTML = controlsToCharMap[control];
@@ -58,12 +65,25 @@ export default class MiniGame {
   }
 
   updateEnemies() {
+    this.enemies = this.enemies.filter((enemy) => {
+      const leftScreen = rightOf(this.container, enemy.container);
+
+      if (leftScreen) {
+        enemy.container.parentNode.removeChild(enemy.container);
+      }
+
+      return !leftScreen;
+    });
+
     this.enemies.forEach((enemy) => {
-      enemy.position.x += 2;
+      enemy.position.x += enemy.speed;
 
       if (this.targetContainer) {
         enemy.collides = collides(this.targetContainer, enemy.container);
-        enemy.contains = containsHorizontally(this.targetContainer, enemy.container);
+        enemy.contains = containsHorizontally(
+          this.targetContainer,
+          enemy.container
+        );
         enemy.missed = rightOf(this.targetContainer, enemy.container);
       }
     });
@@ -71,8 +91,14 @@ export default class MiniGame {
 
   update() {
     if (this.state.spawnTarget) {
-      this.initSpawnReset();
+      this.initStateChange("spawnTarget", this.state.spawnDelay);
       this.spawnEnemy();
+    }
+
+    if (this.state.changeDifficulty) {
+      this.initStateChange("changeDifficulty", 2000);
+      this.state.spawnDelay = Math.max(this.state.spawnDelay - 200, 400);
+      this.state.enemySpeed = Math.min(this.state.enemySpeed + 0.1, 7);
     }
 
     this.updateEnemies();
