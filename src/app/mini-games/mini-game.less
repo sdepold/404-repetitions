@@ -1,0 +1,44 @@
+.mini-game {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+
+  .enemy, .target {
+    position: absolute;
+    top: 70%;
+    
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid white;
+    margin-top: -10px;
+    color: white;
+    padding: 10px;
+
+    &.collides {
+      border: 2px solid yellow;
+      color: yellow;
+      z-index: 1;
+    }
+
+    &.contains {
+      border: 2px solid green;
+      color: green;
+      z-index: 1;
+    }
+    &.missed {
+      border: 2px solid red;
+      color: red;
+      z-index: 1;
+    }
+  }
+  
+  .target {
+    left: 50%;
+    height: 50px;
+    width: 50px;
+    margin-left: -26px;
+    margin-top: -25px;
+  }
+}

@@ -22,7 +22,7 @@ export default class Player {
       rank: 10000 + ~~(Math.random() * 10000),
       money: 4.04,
       experience: 0,
-      level: 1,
+      level: 4,
       availableStatPoints: 0,
     };
     this.position = {
@@ -30,7 +30,7 @@ export default class Player {
       y: 40,
     };
     this.state = {
-      dressed: true,
+      dressed: false,
     };
   }
 

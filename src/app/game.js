@@ -14,6 +14,8 @@ import { renderText } from "./helper/text";
 import { initDialog } from "./story";
 import WelcomeScreen from "./screens/welcome";
 import Menu, { MenuItem } from "./menu";
+import MiniGame from "./mini-games/mini-game";
+import JumpingJacks from "./mini-games/jumping-jacks";
 
 export default class Game {
   constructor() {
@@ -35,7 +37,8 @@ export default class Game {
       new Activity(this.player, workConfig).appendTo(this.ui.game),
       new Activity(this.player, workoutConfig).appendTo(this.ui.game),
       this.player.appendTo(this.ui.game),
-      new WelcomeScreen(this).appendTo(this.ui.game)
+      // new WelcomeScreen(this).appendTo(this.ui.game),
+      new JumpingJacks(this.player).appendTo(this.ui.game)
     ];
   }
 
