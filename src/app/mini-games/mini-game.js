@@ -1,10 +1,11 @@
 import "./mini-game.less";
-import { DOWN, UP, RIGHT, LEFT } from "../controls";
+import { DOWN, UP, RIGHT, LEFT, keyPressed } from "../controls";
 import {
   collides,
   containsHorizontally,
   rightOf,
 } from "../helper/collision-detection";
+import { destroyText } from "../helper/text";
 
 const controls = [LEFT, RIGHT, UP, DOWN];
 const controlsToCharMap = {
@@ -52,6 +53,7 @@ export default class MiniGame {
       control,
       position: {
         x: -50,
+        y: this.targetContainer.offsetTop + 25,
       },
       highlight: false,
       speed: this.state.enemySpeed,
@@ -64,21 +66,24 @@ export default class MiniGame {
     this.enemies.push(enemy);
   }
 
+  removeEnemy(enemy) {
+    enemy.container.parentNode.removeChild(enemy.container);
+    this.enemies = this.enemies.filter((someEnemy) => enemy !== someEnemy);
+  }
+
   updateEnemies() {
-    this.enemies = this.enemies.filter((enemy) => {
-      const leftScreen = rightOf(this.container, enemy.container);
-
-      if (leftScreen) {
-        enemy.container.parentNode.removeChild(enemy.container);
+    [...this.enemies].forEach((enemy) => {
+      if (rightOf(this.container, enemy.container)) {
+        this.removeEnemy(enemy);
       }
-
-      return !leftScreen;
     });
 
     this.enemies.forEach((enemy) => {
-      enemy.position.x += enemy.speed;
-
-      if (this.targetContainer) {
+      if (enemy.destroyed) {
+        enemy.contains = enemy.missed = enemy.collides = false;
+        enemy.position.y -= 2;
+      } else {
+        enemy.position.x += enemy.speed;
         enemy.collides = collides(this.targetContainer, enemy.container);
         enemy.contains = containsHorizontally(
           this.targetContainer,
@@ -89,7 +94,18 @@ export default class MiniGame {
     });
   }
 
+  destroyEnemy(enemy) {
+    enemy.destroyed = true;
+    setTimeout(() => this.removeEnemy(enemy), 1000);
+  }
+
   update() {
+    if (!this.targetContainer) {
+      this.targetContainer = document.createElement("div");
+      this.targetContainer.classList.add("target");
+      this.container.appendChild(this.targetContainer);
+    }
+
     if (this.state.spawnTarget) {
       this.initStateChange("spawnTarget", this.state.spawnDelay);
       this.spawnEnemy();
@@ -102,20 +118,22 @@ export default class MiniGame {
     }
 
     this.updateEnemies();
+
+    const targetedEnemy = this.enemies.find((enemy) => enemy.collides);
+
+    if (targetedEnemy && keyPressed(targetedEnemy.control)) {
+      this.destroyEnemy(targetedEnemy);
+    }
   }
 
   render() {
-    if (!this.targetContainer) {
-      this.targetContainer = document.createElement("div");
-      this.targetContainer.classList.add("target");
-      this.container.appendChild(this.targetContainer);
-    }
-
     this.enemies.forEach((enemy) => {
       enemy.container.style.left = `${enemy.position.x}px`;
+      enemy.container.style.top = `${enemy.position.y}px`;
       enemy.container.classList.toggle("collides", enemy.collides);
       enemy.container.classList.toggle("contains", enemy.contains);
       enemy.container.classList.toggle("missed", enemy.missed);
+      enemy.container.classList.toggle("destroyed", enemy.destroyed);
     });
   }
 }
