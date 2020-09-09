@@ -3,7 +3,7 @@ import { keyPressed, SPACE } from "../controls";
 
 export default class JumpingJacks extends MiniGame {
   constructor(player) {
-    super(player);
+    super(player, 'Jumping Jacks');
 
     this.container.classList.add("jumping-jacks");
     this.state = {
@@ -35,7 +35,13 @@ export default class JumpingJacks extends MiniGame {
   update() {
     MiniGame.prototype.update.call(this);
 
-    if (this.state.allowJump) {
+    if(this.state.completed) {
+      this.onComplete()
+      return;
+      
+    }
+
+    if (this.state.allowJump && this.state.started) {
       this.state.allowJump = false;
       if (Math.random() < 0.1) {
         this.player.container.classList.toggle("inverse");

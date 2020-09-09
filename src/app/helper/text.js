@@ -1,4 +1,5 @@
 import { initFont, font } from "tinyfont";
+import { destroyNode } from "./node";
 
 export function renderText(content, { container, ttl } = {}) {
   container = container || document.querySelector("#game");
@@ -55,7 +56,7 @@ export function destroyText(textContainer, { container, ttl = 0 } = {}) {
   container = container || document.querySelector("#game");
 
   setTimeout(() => {
-    container.removeChild(textContainer);
+    destroyNode(textContainer);
   }, ttl * 1000);
 }
 
@@ -65,6 +66,7 @@ export function renderLines(canvas, lines) {
 
   lines.forEach((line, i) => {
     renderTextToCanvas(canvas, line.text.toUpperCase(), {
+      x: line.x,
       y: line.y || i * 40,
       color: line.color || "white",
       textSize: line.textSize,

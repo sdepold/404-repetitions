@@ -38,8 +38,16 @@ export default class Game {
       new Activity(this.player, workoutConfig).appendTo(this.ui.game),
       this.player.appendTo(this.ui.game),
       // new WelcomeScreen(this).appendTo(this.ui.game),
-      new JumpingJacks(this.player).appendTo(this.ui.game)
+      new JumpingJacks(this.player)
+        .appendTo(this.ui.game)
+        .onComplete((miniGame) => {
+          this.removeRenderable(miniGame);
+        }),
     ];
+  }
+
+  removeRenderable(renderable) {
+    this.renderables = this.renderables.filter((r) => r !== renderable);
   }
 
   increaseTime() {
@@ -68,7 +76,6 @@ export default class Game {
         ) {
           this.player.updateStat("stamina", -gameConfig.staminaPerTick);
         }
-
       }
       this.renderables.forEach((a) => a.update());
       this.renderables.forEach((a) => a.render());

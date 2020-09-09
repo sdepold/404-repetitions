@@ -6,6 +6,7 @@ import {
 } from "./helper/text";
 import "./menu.less";
 import { keyPressed, UP, DOWN, SPACE } from "./controls";
+import { destroyNode } from "./helper/node";
 
 const INTERACTION_DELAY = 200;
 
@@ -95,8 +96,8 @@ export default class Menu {
 
   destroy() {
     window.blockMovement = false;
-    this.container.removeChild(this.canvas);
-    this.hostContainer.removeChild(this.container);
+    destroyNode(this.canvas);
+    destroyNode(this.container)
   }
 
   reset() {

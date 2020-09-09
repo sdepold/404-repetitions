@@ -2,6 +2,7 @@ import "./welcome.less";
 import { renderLines } from "../helper/text";
 import { keyPressed, SPACE } from "../controls";
 import { initAudio } from "../audio";
+import { destroyNode } from "../helper/node";
 
 export default class WelcomeScreen {
   constructor(game) {
@@ -34,7 +35,7 @@ export default class WelcomeScreen {
   render() {
     if (keyPressed(SPACE) && this.container) {
       clearInterval(this.spaceInterval);
-      this.hostContainer.removeChild(this.container);
+      destroyNode(this.container)
       this.container = undefined;
       initAudio().then(
         () => {
