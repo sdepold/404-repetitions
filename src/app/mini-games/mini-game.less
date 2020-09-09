@@ -1,3 +1,37 @@
+@keyframes pulse-green {
+  0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
+  }
+  
+  70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
+  }
+  
+  100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+  }
+  
+  70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+  }
+  
+  100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+  }
+}
+
 .mini-game {
   position: absolute;
   top: 0;
@@ -14,22 +48,30 @@
     margin-top: -10px;
     color: white;
     padding: 10px;
+  }
+
+  .enemy {
+    z-index: 1;
 
     &.collides {
-      border: 2px solid yellow;
-      color: yellow;
-      z-index: 1;
+      border: 2px solid rgba(255, 177, 66, 1);
+      color: rgba(255, 177, 66, 1);
     }
 
     &.contains {
-      border: 2px solid green;
-      color: green;
-      z-index: 1;
+      border: 2px solid rgba(51, 217, 178, 1);
+      color: rgba(51, 217, 178, 1);
     }
     &.missed {
-      border: 2px solid red;
-      color: red;
-      z-index: 1;
+      border: 2px solid rgba(255, 82, 82, 1);
+      color: rgba(255, 82, 82, 1);
+      animation: pulse-red 2s infinite;
+    }
+    &.destroyed {
+      border: 2px solid rgba(51, 217, 178, 1);
+      color: rgba(51, 217, 178, 1);
+      
+      animation: pulse-green 2s infinite;
     }
   }
   

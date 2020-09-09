@@ -35,6 +35,8 @@ export default class MiniGame {
     this.hostContainer = container;
     this.container.classList.add("mini-game");
 
+    window.blockMovement = true;
+
     return this;
   }
 
@@ -57,6 +59,7 @@ export default class MiniGame {
       },
       highlight: false,
       speed: this.state.enemySpeed,
+      destroyed: false,
     };
 
     enemy.container.innerHTML = controlsToCharMap[control];
