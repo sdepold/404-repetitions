@@ -32,6 +32,7 @@ export default class MiniGame {
       remainingTime: 40.4,
       completed: false,
       renderSpaceHint: true,
+      completionTriggered: false,
     };
     this.enemies = [];
     this.scoreCanvas = document.createElement("canvas");
@@ -124,6 +125,11 @@ export default class MiniGame {
 
   onComplete(fun) {
     this.onComplete = () => {
+      if (this.state.completionTriggered) {
+        return;
+      }
+      this.state.completionTriggered = true;
+
       setTimeout(() => {
         destroyNode(this.scoreCanvas);
         destroyNode(this.container);
@@ -134,6 +140,7 @@ export default class MiniGame {
         fun(this);
       }, 2000);
     };
+
     return this;
   }
 
@@ -159,7 +166,7 @@ export default class MiniGame {
 
     if (this.state.changeDifficulty) {
       this.initStateChange("changeDifficulty", 2000);
-      this.state.spawnDelay = Math.max(this.state.spawnDelay - 200, 400);
+      this.state.spawnDelay = Math.max(this.state.spawnDelay - 200, 500);
       this.state.enemySpeed = Math.min(this.state.enemySpeed + 0.1, 7);
     }
 
