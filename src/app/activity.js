@@ -4,14 +4,16 @@ import { renderText, destroyText } from "./helper/text";
 import { nakedComplaint } from "./story";
 import { keyPressed, SPACE } from "./controls";
 import Menu, { MenuItem, EXIT_ACTIVITY } from "./menu";
+import JumpingJacks from "./mini-games/jumping-jacks";
 
 export const TOGGLE_THRESHOLD = 500;
 
 export default class Activity {
-  constructor(player, config, { onActivityStart, onActivityEnd } = {}) {
+  constructor(game, config, { onActivityStart, onActivityEnd } = {}) {
     this.container = document.createElement("div");
 
-    this.player = player;
+    this.game = game;
+    this.player = game.player;
     this.config = config;
     this.state = {
       showItems: false,
@@ -36,6 +38,12 @@ export default class Activity {
     return this;
   }
 
+  applyItemEffects(item) {
+    Object.keys(item.effects).forEach((prop) => {
+      this.player.updateStat(prop, item.effects[prop]);
+    });
+  }
+
   update() {
     if (this.hasCurrent()) {
       this.state.investedTime += gameConfig.minutesPerTick;
@@ -46,10 +54,7 @@ export default class Activity {
         this.state.investedTime = 0;
         delete this.state.currentItem.remainingTime;
 
-        Object.keys(this.state.currentItem.effects).forEach((prop) => {
-          this.player.updateStat(prop, this.state.currentItem.effects[prop]);
-        });
-
+        this.applyItemEffects(this.state.currentItem);
         this.resetCurrent();
       }
     }
@@ -145,10 +150,26 @@ export default class Activity {
   }
 
   onItemSelect(item) {
+    console.log(item);
+    if (item.miniGame) {
+      setTimeout(() => this.resetCurrent());
+      this.game.renderables.push(
+        new JumpingJacks(this.player)
+          .appendTo(this.game.ui.game)
+          .onComplete((miniGame) => {
+            console.log(item);
+            this.game.removeRenderable(miniGame);
+            this.applyItemEffects(item);
+            this.resetCurrent();
+          })
+      );
+      return;
+    }
+
     this.state.currentItem = item;
     this.state.investedTime = 0;
 
-    if(item.soundEffect) {
+    if (item.soundEffect) {
       zzfx(...item.soundEffect);
     }
   }

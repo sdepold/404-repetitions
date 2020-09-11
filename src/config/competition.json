@@ -14,7 +14,8 @@
         "effects": {
           "experience": 200,
           "rank": -50
-        }
+        },
+        "miniGame": true
       },
       {
         "title": "State competition",
@@ -25,7 +26,8 @@
         "effects": {
           "experience": 2000,
           "rank": -200
-        }
+        },
+        "miniGame": true
       },
       {
         "title": "National competition",
@@ -36,7 +38,8 @@
         "effects": {
           "experience": 5000,
           "rank": -500
-        }
+        },
+        "miniGame": true
       },
       {
         "title": "World championship",
@@ -47,7 +50,8 @@
         "effects": {
           "experience": 10000,
           "rank": -1000
-        }
+        },
+        "miniGame": true
       }
     ]
   }

@@ -31,18 +31,13 @@ export default class Game {
     this.renderables = [
       new World().appendTo(this.ui.game),
       new Stats(this).appendTo(this.ui.game),
-      new Activity(this.player, competitionConfig).appendTo(this.ui.game),
-      new Activity(this.player, foodConfig).appendTo(this.ui.game),
-      new Activity(this.player, homeConfig).appendTo(this.ui.game),
-      new Activity(this.player, workConfig).appendTo(this.ui.game),
-      new Activity(this.player, workoutConfig).appendTo(this.ui.game),
+      new Activity(this, competitionConfig).appendTo(this.ui.game),
+      new Activity(this, foodConfig).appendTo(this.ui.game),
+      new Activity(this, homeConfig).appendTo(this.ui.game),
+      new Activity(this, workConfig).appendTo(this.ui.game),
+      new Activity(this, workoutConfig).appendTo(this.ui.game),
       this.player.appendTo(this.ui.game),
-      // new WelcomeScreen(this).appendTo(this.ui.game),
-      new JumpingJacks(this.player)
-        .appendTo(this.ui.game)
-        .onComplete((miniGame) => {
-          this.removeRenderable(miniGame);
-        }),
+      // new WelcomeScreen(this).appendTo(this.ui.game)
     ];
   }
 

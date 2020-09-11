@@ -29,7 +29,7 @@ export default class MiniGame {
       enemySpeed: 2,
       changeDifficulty: true,
       score: 0,
-      remainingTime: 40.4,
+      remainingTime: 4.4,
       completed: false,
       renderSpaceHint: true,
       completionTriggered: false,
@@ -47,8 +47,6 @@ export default class MiniGame {
     this.scoreCanvas.classList.add("score");
     this.container.appendChild(this.startCanvas);
     this.startCanvas.classList.add("start-mini-game");
-
-    window.blockMovement = true;
 
     setInterval(() => {
       this.state.renderSpaceHint = !this.state.renderSpaceHint;
@@ -145,6 +143,8 @@ export default class MiniGame {
   }
 
   update() {
+    window.blockMovement = true;
+
     if (!this.targetContainer) {
       this.targetContainer = document.createElement("div");
       this.targetContainer.classList.add("target");
