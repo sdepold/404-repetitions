@@ -2,7 +2,7 @@ import "./player.less";
 
 import { gettingDressedDialog, firstLevelUp, levelUp, competitionsUnlocked } from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
-import { playLevelUp } from "./audio";
+import { plu } from "./audio";
 export const changeableLevelStats = ["stamina", "strength" /*, "luck"*/];
 
 export default class Player {
@@ -63,7 +63,7 @@ export default class Player {
       this.levelStats.requiredExperience *= 2;
 
       setTimeout(() => {
-        playLevelUp();
+        plu();
 
         switch(this.currentStats.level) {
           case 2: firstLevelUp(); break;

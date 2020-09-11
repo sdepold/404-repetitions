@@ -1,4 +1,3 @@
-import "./style.less";
 import Ground from './ground';
 export default class World {
   constructor() {
@@ -16,8 +15,4 @@ export default class World {
 
     return this;
   }
-
-  update() {}
-
-  render() {}
 }

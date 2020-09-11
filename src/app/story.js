@@ -1,5 +1,5 @@
 import { renderText } from "./helper/text";
-import { playConfused } from "./audio";
+import { pc } from "./audio";
 
 window.blockMovement = false;
 
@@ -18,7 +18,7 @@ function confusePlayer(player) {
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
       player.container.classList.toggle("inverse");
-      playConfused();
+      pc();
     }, i * 1000);
   }
 }

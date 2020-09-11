@@ -13,7 +13,7 @@ export default {
       effects: {
         dressed: true,
       },
-      soundEffect: [, , 528, 0.01, , 0.48, , 0.6, -11.6, , , , 0.32, 4.2],
+      soundEffect: ',,528,.01,,.48,,.6,-11.6,,,,.32,4.2',
       hideIfRequirementsNotMet: true,
     },
     {

@@ -5,6 +5,7 @@ import { nakedComplaint } from "./story";
 import { keyPressed, SPACE } from "./controls";
 import Menu, { MenuItem, EXIT_ACTIVITY } from "./menu";
 import JumpingJacks from "./mini-games/jumping-jacks";
+import { pa } from "./audio";
 
 export const TOGGLE_THRESHOLD = 500;
 
@@ -150,14 +151,12 @@ export default class Activity {
   }
 
   onItemSelect(item) {
-    console.log(item);
     if (item.miniGame) {
       setTimeout(() => this.resetCurrent());
       this.game.renderables.push(
         new JumpingJacks(this.player)
           .appendTo(this.game.ui.game)
           .onComplete((miniGame) => {
-            console.log(item);
             this.game.removeRenderable(miniGame);
             this.applyItemEffects(item);
             this.resetCurrent();
@@ -170,7 +169,7 @@ export default class Activity {
     this.state.investedTime = 0;
 
     if (item.soundEffect) {
-      zzfx(...item.soundEffect);
+      pa(item.soundEffect);
     }
   }
 

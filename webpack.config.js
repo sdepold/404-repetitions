@@ -1,13 +1,14 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
-const isProduction = process.env.npm_lifecycle_event === 'build'
+const isProduction = process.env.npm_lifecycle_event === "build";
 
 module.exports = {
-  entry: './src',
-  devtool: !isProduction && 'source-map',
+  entry: "./src",
+  devtool: !isProduction && "source-map",
   module: {
     rules: [
       {
@@ -15,21 +16,21 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader'
-          }
-        ]
+            loader: "css-loader",
+          },
+        ],
       },
       {
         test: /\.less$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: "style-loader",
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
           },
           {
-            loader: 'less-loader',
+            loader: "less-loader",
             options: {
               lessOptions: {
                 strictMath: true,
@@ -40,26 +41,44 @@ module.exports = {
       },
       {
         test: /\.gif|\.png$/,
-        use: "base64-inline-loader?limit=10000&name=[name].[ext]"
-      }
-    ]
+        use: "base64-inline-loader?limit=10000&name=[name].[ext]",
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: "src/index.html",
       minify: isProduction && {
-        collapseWhitespace: true
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+        minifyJS: true,
       },
-      inlineSource: isProduction && '\.(js|css)$'
+      inlineSource: isProduction && ".(js|css)$",
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new OptimizeCssAssetsPlugin({}),
     new MiniCssExtractPlugin({
-      filename: '[name].css'
-    })
+      filename: "[name].css",
+    }),
   ],
+  optimization: {
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
+    minimize: true,
+    usedExports: true,
+    minimizer: [
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+      }),
+    ],
+  },
   devServer: {
-    stats: 'minimal',
-    overlay: true
-  }
-}
+    stats: "minimal",
+    overlay: true,
+  },
+};
