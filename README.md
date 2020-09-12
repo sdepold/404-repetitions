@@ -8,8 +8,3 @@ It comes with a prototypical stats system, a mini game engine and tiny town in w
 ## Controls
 
 The game is played exclusively with the keyboard. Use arrow keys or WASD and the SPACE bar to move the character around and to interact with the environment.
-
-curl -X POST \
-  --form bundle=@dist/build.zip \
-  --form category=desktop \
-  https://iw8sii1h9b.execute-api.eu-west-1.amazonaws.com/stage/analyze-bundle
