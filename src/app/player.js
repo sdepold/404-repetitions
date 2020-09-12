@@ -20,11 +20,11 @@ export default class Player {
     };
     this.currentStats = {
       stamina: this.maxStamina,
-      rank: 10404,
+      rank: 4040,
       money: 4.04,
       experience: 0,
       level: 1,
-      availableStatPoints: 0,
+      points: 0,
     };
     this.position = {
       x: 10,
@@ -41,7 +41,7 @@ export default class Player {
 
   updateLevelStat(property, delta) {
     this.levelStats[property] += delta;
-    this.currentStats.availableStatPoints -= delta;
+    this.currentStats.points -= delta;
   }
 
   updateStat(property, delta) {
@@ -62,7 +62,7 @@ export default class Player {
       property === "experience" &&
       this.currentStats.experience >= this.levelStats.requiredExperience
     ) {
-      this.currentStats.availableStatPoints += this.currentStats.level;
+      this.currentStats.points += 1;
       this.currentStats.level += 1;
       this.currentStats.experience -= this.levelStats.requiredExperience;
       this.levelStats.requiredExperience *= 2;

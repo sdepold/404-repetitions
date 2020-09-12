@@ -71,10 +71,7 @@ export default class Activity {
     }
 
     if (this.hostContainer) {
-      this.s.highlight = collides(
-        this.p.container,
-        this.hostContainer
-      );
+      this.s.highlight = collides(this.p.container, this.hostContainer);
 
       if (
         this.s.highlight &&
@@ -149,16 +146,18 @@ export default class Activity {
 
   onItemSelect(item) {
     if (item.miniGame) {
-      setTimeout(() => this.resetCurrent());
-      this.game.r.push(
-        new JumpingJacks(this.p)
-          .at(this.game.ui.game)
-          .onComplete((miniGame) => {
-            this.game.rr(miniGame);
-            this.applyItemEffects(item);
-            this.resetCurrent();
-          })
-      );
+      setTimeout(() => {
+        this.resetCurrent();
+        this.game.r.push(
+          new JumpingJacks(this.p)
+            .at(this.game.ui.game)
+            .onComplete((miniGame) => {
+              this.game.rr(miniGame);
+              this.applyItemEffects(item);
+              this.resetCurrent();
+            })
+        );
+      }, 100);
       return;
     }
 

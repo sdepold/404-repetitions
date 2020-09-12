@@ -21,7 +21,7 @@ export default class MiniGame {
   constructor(player, challengeName) {
     this.container = document.createElement("div");
     this.p = player;
-    this.originalPlayerPosition = { ...p.position };
+    this.originalPlayerPosition = { ...this.p.position };
     this.challengeName = challengeName;
     this.s = {
       started: false,
@@ -40,7 +40,7 @@ export default class MiniGame {
     this.startCanvas = document.createElement("canvas");
   }
 
-  appendTo(container) {
+  at(container) {
     container.appendChild(this.container);
     this.hostContainer = container;
     this.container.classList.add("mini-game");
@@ -119,7 +119,7 @@ export default class MiniGame {
   }
 
   scoreEnemy(enemy) { 
-    this.s.score += enemy.contains ? 2 : 1;
+    this.s.score += enemy.contains ? 4 : 1;
   }
 
   onComplete(fun) {
@@ -178,7 +178,7 @@ export default class MiniGame {
     if (this.s.changeDifficulty) {
       this.initStateChange("changeDifficulty", 2000);
       this.s.spawnDelay = Math.max(this.s.spawnDelay - 200, 500);
-      this.s.enemySpeed = Math.min(this.s.enemySpeed + 0.1, 7);
+      this.s.enemySpeed = Math.min(this.s.enemySpeed + 0.1, 9);
     }
 
     if (this.s.remainingTime === 0) {

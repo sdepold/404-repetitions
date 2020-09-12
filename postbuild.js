@@ -53,10 +53,8 @@ let html = fs.readFileSync("./dist/index.html").toString();
   "updateLevelStat",
   "textSize",
   "currentStats",
-  "availableStatPoints",
   "updateStat",
   "maxStamina",
-  "dressed",
   "blockMovement",
   "spawnTarget",
   "spawnDelay",
@@ -71,7 +69,8 @@ let html = fs.readFileSync("./dist/index.html").toString();
   "controlsToCharMap",
   "playAudio",
   "playConfused",
-  "playLevelUp"
+  "playLevelUp",
+  "selectedItemIndex"
 ].forEach((token, i) => {
   html = html.replace(new RegExp(token, "g"), `a${i}`);
 });

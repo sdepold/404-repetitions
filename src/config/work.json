@@ -2,6 +2,18 @@
   "name": "office",
   "items": [
     {
+      "title": "Paperboy",
+      "requirements": {
+        "time": 60,
+        "stamina": 5
+      },
+      "effects": {
+        "stamina": -5,
+        "money": 20,
+        "experience": 202
+      }
+    },
+    {
       "title": "Chop wood",
       "requirements": {
         "strength": 2,
@@ -11,20 +23,20 @@
       "effects": {
         "stamina": -30,
         "experience": 25,
-        "money": 50
+        "money": 101
       }
     },
     {
-      "title": "Dog walk",
+      "title": "Construction work",
       "requirements": {
-        "strength": 0,
-        "time": 10,
-        "stamina": 15
+        "strength": 4,
+        "time": 240,
+        "stamina": 50
       },
       "effects": {
-        "money": 10,
-        "experience": 10,
-        "stamina": -15
+        "stamina": -50,
+        "experience": 404,
+        "money": 404
       }
     }
   ]

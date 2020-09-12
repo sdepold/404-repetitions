@@ -16,31 +16,22 @@ export default {
       hideIfRequirementsNotMet: true,
     },
     {
-      title: "Thorough sleep",
+      title: "Sleep",
       requirements: {
-        time: 480,
+        time: 120,
       },
       effects: {
         stamina: 100,
       },
     },
-    {
-      title: "Quick nap",
-      requirements: {
-        time: 120,
-      },
-      effects: {
-        stamina: 50,
-      },
-    },
     ...changeableLevelStats.map((statName) => ({
       title: (player) => `Up ${statName} / Current: ${player.levelStats[statName]}`,
       requirements: {
-        availableStatPoints: 1,
+        points: 1,
         time: 10,
       },
       effects: {
-        availableStatPoints: -1,
+        points: -1,
         [`levelStats.${statName}`]: 1,
       },
       hideIfRequirementsNotMet: true,

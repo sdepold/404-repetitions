@@ -2,11 +2,22 @@
   "name": "gym",
   "items": [
     {
-      "title": "WOTD XYZ",
+      "title": "Yoga",
       "requirements": {
-        "strength": 1,
-        "time": 30,
-        "stamina": "50"
+        "time": 45,
+        "stamina": 10
+      },
+      "effects": {
+        "stamina": -10,
+        "experience": 50
+      }
+    },
+    {
+      "title": "HIIT",
+      "requirements": {
+        "strength": 2,
+        "time": 60,
+        "stamina": 50
       },
       "effects": {
         "stamina": -50,
