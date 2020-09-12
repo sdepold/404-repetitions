@@ -11,8 +11,8 @@
           "time": 120
         },
         "effects": {
-          "experience": 404,
-          "rank": -101
+          "experience": 808,
+          "rank": -404
         },
         "miniGame": true
       },
@@ -23,8 +23,8 @@
           "time": 720
         },
         "effects": {
-          "experience": 808,
-          "rank": -202
+          "experience": 1212,
+          "rank": -808
         },
         "miniGame": true
       },
@@ -35,8 +35,8 @@
           "time": 1200
         },
         "effects": {
-          "experience": 1212,
-          "rank": -404
+          "experience": 4040,
+          "rank": -1212
         },
         "miniGame": true
       }

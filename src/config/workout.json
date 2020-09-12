@@ -9,7 +9,7 @@
       },
       "effects": {
         "stamina": -10,
-        "experience": 50
+        "experience": 101
       }
     },
     {
@@ -21,7 +21,7 @@
       },
       "effects": {
         "stamina": -50,
-        "experience": 225
+        "experience": 404
       }
     }
   ]

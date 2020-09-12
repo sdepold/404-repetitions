@@ -65,7 +65,7 @@ export default class Player {
       this.currentStats.points += 1;
       this.currentStats.level += 1;
       this.currentStats.experience -= this.levelStats.requiredExperience;
-      this.levelStats.requiredExperience *= 2;
+      this.levelStats.requiredExperience += 250;
 
       setTimeout(() => {
         playLevelUp();
