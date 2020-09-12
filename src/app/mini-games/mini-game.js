@@ -30,7 +30,7 @@ export default class MiniGame {
       enemySpeed: 2,
       changeDifficulty: true,
       score: 0,
-      remainingTime: 4.4,
+      remainingTime: 40.4,
       completed: false,
       renderSpaceHint: true,
       completionTriggered: false,

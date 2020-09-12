@@ -1,19 +1,18 @@
 {
-    "host": "",
     "name": "competition",
     "requirements": {
         "level": 4
     },
     "items": [
       {
-        "title": "Local junior competition",
+        "title": "Local competition",
         "requirements": {
           "level": 4,
           "time": 120
         },
         "effects": {
           "experience": 200,
-          "rank": -50
+          "rank": -4
         },
         "miniGame": true
       },
@@ -25,19 +24,7 @@
         },
         "effects": {
           "experience": 2000,
-          "rank": -200
-        },
-        "miniGame": true
-      },
-      {
-        "title": "National competition",
-        "requirements": {
-          "level": 15,
-          "time": 2880
-        },
-        "effects": {
-          "experience": 5000,
-          "rank": -500
+          "rank": -40
         },
         "miniGame": true
       },
@@ -49,7 +36,7 @@
         },
         "effects": {
           "experience": 10000,
-          "rank": -1000
+          "rank": -404
         },
         "miniGame": true
       }

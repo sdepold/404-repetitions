@@ -128,7 +128,6 @@ export default class Activity {
     if (!this.hostContainer) {
       this.hostContainer = document.createElement("div");
       this.hostContainer.classList.add("host");
-      this.hostContainer.innerHTML = this.config.host;
     }
 
     if (!this.container.contains(this.hostContainer)) {

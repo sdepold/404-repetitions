@@ -8,7 +8,7 @@ import {
 } from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
 import { plu } from "./audio";
-export const changeableLevelStats = ["stamina", "strength" /*, "luck"*/];
+export const changeableLevelStats = ["stamina", "strength"];
 
 export default class Player {
   constructor() {
@@ -16,7 +16,6 @@ export default class Player {
     this.levelStats = {
       stamina: 1,
       strength: 1,
-      luck: 1,
       requiredExperience: 100,
     };
     this.currentStats = {
@@ -24,7 +23,7 @@ export default class Player {
       rank: 10000 + ~~(Math.random() * 10000),
       money: 4.04,
       experience: 0,
-      level: 4,
+      level: 1,
       availableStatPoints: 0,
     };
     this.position = {

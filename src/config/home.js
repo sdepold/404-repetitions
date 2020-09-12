@@ -1,7 +1,6 @@
 import { changeableLevelStats } from "../app/player";
 
 export default {
-  host: "",
   name: "home",
   items: [
     {
