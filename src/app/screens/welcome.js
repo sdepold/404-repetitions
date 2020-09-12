@@ -1,6 +1,6 @@
 import "./welcome.less";
 import { renderLines, el } from "../helper/text";
-import { keyPressed, SPACE } from "../controls";
+import { keyPressed, SPACE, resetKeys } from "../controls";
 import { initAudio } from "../audio";
 import { destroyNode } from "../helper/node";
 
@@ -33,16 +33,14 @@ export default class WelcomeScreen {
   render() {
     if (keyPressed(SPACE) && this.container) {
       clearInterval(this.spaceInterval);
-      destroyNode(this.container)
+      destroyNode(this.container);
       this.container = undefined;
-      initAudio().then(
-        () => {
-          this.game.start();
-        },
-        () => {
-          this.game.start();
-        }
-      );
+      initAudio()
+        .then(
+          () => this.game.start(),
+          () => this.game.start()
+        )
+        .then(resetKeys);
     }
 
     if (this.container) {

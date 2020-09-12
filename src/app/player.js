@@ -7,7 +7,7 @@ import {
   competitionsUnlocked,
 } from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
-import { plu } from "./audio";
+import { playLevelUp } from "./audio";
 export const changeableLevelStats = ["stamina", "strength"];
 
 export default class Player {
@@ -68,7 +68,7 @@ export default class Player {
       this.levelStats.requiredExperience *= 2;
 
       setTimeout(() => {
-        plu();
+        playLevelUp();
 
         switch (this.currentStats.level) {
           case 2:

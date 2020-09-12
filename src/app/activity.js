@@ -4,7 +4,7 @@ import { renderText, destroyText } from "./helper/text";
 import { nakedComplaint } from "./story";
 import { keyPressed, SPACE } from "./controls";
 import Menu, { MenuItem, EXIT_ACTIVITY } from "./menu";
-import { pa } from "./audio";
+import { playAudio } from "./audio";
 import JumpingJacks from "./mini-games/jumping-jacks";
 
 export const TOGGLE_THRESHOLD = 500;
@@ -166,7 +166,7 @@ export default class Activity {
     this.s.investedTime = 0;
 
     if (item.soundEffect) {
-      pa(item.soundEffect);
+      playAudio(item.soundEffect);
     }
   }
 

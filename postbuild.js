@@ -65,6 +65,13 @@ let html = fs.readFileSync("./dist/index.html").toString();
   "remainingTime",
   "renderSpaceHint",
   "completionTriggered",
+  "scoreCanvas",
+  "startCanvas",
+  "originalPlayerPosition",
+  "controlsToCharMap",
+  "playAudio",
+  "playConfused",
+  "playLevelUp"
 ].forEach((token, i) => {
   html = html.replace(new RegExp(token, "g"), `a${i}`);
 });

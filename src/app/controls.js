@@ -4,19 +4,24 @@ export const UP = "up";
 export const DOWN = "down";
 export const SPACE = "space";
 
-const currentKeyPresses = {
-  [UP]: false,
-  [LEFT]: false,
-  [RIGHT]: false,
-  [DOWN]: false,
-  [SPACE]: false,
-};
-
+let currentKeyPresses;
 let keyboardIsObserved = false;
 
 export function keyPressed(name) {
   return currentKeyPresses[name];
 }
+
+export function resetKeys() {
+  currentKeyPresses = {
+    [UP]: false,
+    [LEFT]: false,
+    [RIGHT]: false,
+    [DOWN]: false,
+    [SPACE]: false,
+  }
+}
+
+resetKeys();
 
 function observeKeyboard() {
   const setKeyPressed = (prop, value) => (currentKeyPresses[prop] = value);

@@ -23,14 +23,14 @@ export function initAudio() {
       .then(handleSuccess);
 }
 
-export function plu () { // playLevelUp
-  pa(',,80,.3,.4,.7,2,.1,-0.73,3.42,-430,.09,.17,,,,.19');
+export function playLevelUp () { // playLevelUp
+  playAudio(',,80,.3,.4,.7,2,.1,-0.73,3.42,-430,.09,.17,,,,.19');
 }
 
-export function pc() { // playConfused
-  pa(',.1,75,.03,.08,.17,1,1.88,7.83,,,,,.4')
+export function playConfused() { // playConfused
+  playAudio(',.1,75,.03,.08,.17,1,1.88,7.83,,,,,.4')
 }
 
-export function pa(seq) { // playAudio
+export function playAudio(seq) { // playAudio
   zzfx(...eval(`[${seq}]`))
 }
