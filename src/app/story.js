@@ -36,17 +36,17 @@ export async function initDialog(player) {
 
   await withoutMovement(async () => {
     confusePlayer(player);
-    await renderDelayText("Ooof!?! Location not found!?!", { ttl: 2 });
-    await renderDelayText("Ooof!?! Where am I?", { ttl: 2 });
+    await renderDelayText("Ooof!?! Location not found!?!", { ttl: 1.5 });
+    await renderDelayText("Ooof!?! Where am I?", { ttl: 1.5 });
   });
 
-  await wait(1500);
+  await wait(2);
 
   await withoutMovement(async () => {
     confusePlayer(player);
-    await renderDelayText("Hmm... Clothes not found!", { ttl: 2 });
-    await renderDelayText("Hmm... Why am I naked?!", { ttl: 2 });
-    await renderDelayText("I better head home!", { ttl: 3 });
+    await renderDelayText("Hmm... Clothes not found!", { ttl: 1.5 });
+    await renderDelayText("Hmm... Why am I naked?!", { ttl: 1.5 });
+    await renderDelayText("I better head home!", { ttl: 1.5 });
   });
 }
 
@@ -80,7 +80,7 @@ export async function levelUp() {
 export async function competitionsUnlocked() {
   await withoutMovement(async () => {
     await renderDelayText("Yay! I reached level 4.04!", { ttl: 2 });
-    await renderDelayText("I can now join competitions...", {
+    await renderDelayText("Let us join a competition ...", {
       ttl: 2,
     });
     await renderDelayText("... and improve my rank!", { ttl: 2 });

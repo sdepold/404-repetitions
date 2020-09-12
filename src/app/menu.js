@@ -120,8 +120,7 @@ export class MenuItem {
   format(prefix, o) {
     const text = Object.entries(o)
       .map(([key, value]) => `${key}: ${value}`)
-      .join(", ")
-      .toUpperCase();
+      .join(", ");
     return `${prefix}: ${text}`;
   }
 
@@ -148,7 +147,7 @@ export class MenuItem {
         ? this.item.title(player)
         : this.item.title;
     const lines = [
-      { text: `${title}${titleSuffix}`.toUpperCase(), y, color },
+      { text: `${title}${titleSuffix}`, y, color },
     ];
 
     if (this !== EXIT_ACTIVITY && this.state.selected) {

@@ -29,7 +29,7 @@ export default class MiniGame {
       enemySpeed: 2,
       changeDifficulty: true,
       score: 0,
-      remainingTime: 4.4,
+      remainingTime: 40.4,
       completed: false,
       renderSpaceHint: true,
       completionTriggered: false,
@@ -207,7 +207,7 @@ export default class MiniGame {
     this.startCanvas.width = this.scoreCanvas.width = this.hostContainer.clientWidth;
     clearAndRenderTextToCanvas(
       this.scoreCanvas,
-      `Score: ${this.state.score}       Time: ${this.state.remainingTime}`.toUpperCase(),
+      `Score: ${this.state.score}       Time: ${this.state.remainingTime}`,
       { color: "white", textAlign: "center" }
     );
     renderLines(this.startCanvas, [

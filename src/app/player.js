@@ -1,6 +1,11 @@
 import "./player.less";
 
-import { gettingDressedDialog, firstLevelUp, levelUp, competitionsUnlocked } from "./story";
+import {
+  gettingDressedDialog,
+  firstLevelUp,
+  levelUp,
+  competitionsUnlocked,
+} from "./story";
 import { keyPressed, LEFT, RIGHT, UP, DOWN } from "./controls";
 import { plu } from "./audio";
 export const changeableLevelStats = ["stamina", "strength" /*, "luck"*/];
@@ -14,15 +19,12 @@ export default class Player {
       luck: 1,
       requiredExperience: 100,
     };
-    this.statsLimits = {
-      stamina: this.levelStats.stamina * 100,
-    };
     this.currentStats = {
-      stamina: this.statsLimits.stamina,
+      stamina: this.maxStamina,
       rank: 10000 + ~~(Math.random() * 10000),
       money: 4.04,
       experience: 0,
-      level: 4,
+      level: 1,
       availableStatPoints: 0,
     };
     this.position = {
@@ -32,6 +34,10 @@ export default class Player {
     this.state = {
       dressed: false,
     };
+  }
+
+  get maxStamina() {
+    return this.levelStats.stamina * 100;
   }
 
   updateLevelStat(property, delta) {
@@ -65,17 +71,22 @@ export default class Player {
       setTimeout(() => {
         plu();
 
-        switch(this.currentStats.level) {
-          case 2: firstLevelUp(); break;
-          case 4: competitionsUnlocked(); break;
-          default: levelUp();
+        switch (this.currentStats.level) {
+          case 2:
+            firstLevelUp();
+            break;
+          case 4:
+            competitionsUnlocked();
+            break;
+          default:
+            levelUp();
         }
       }, 50);
     }
 
     if (property === "stamina") {
       this.currentStats.stamina = Math.max(
-        Math.min(this.currentStats.stamina, this.statsLimits.stamina),
+        Math.min(this.currentStats.stamina, this.maxStamina),
         0
       );
     }
@@ -124,18 +135,13 @@ export default class Player {
   }
 
   render() {
-    if (
+    this.container.classList.toggle(
+      "walk",
       keyPressed(UP) ||
-      keyPressed(DOWN) ||
-      keyPressed(LEFT) ||
-      keyPressed(RIGHT)
-    ) {
-      this.container.classList.contains("walk") ||
-        this.container.classList.add("walk");
-    } else {
-      this.container.classList.contains("walk") &&
-        this.container.classList.remove("walk");
-    }
+        keyPressed(DOWN) ||
+        keyPressed(LEFT) ||
+        keyPressed(RIGHT)
+    );
 
     if (keyPressed(LEFT) && !this.container.classList.contains("inverse")) {
       this.container.classList.add("inverse");

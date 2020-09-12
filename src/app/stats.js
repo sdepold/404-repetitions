@@ -71,7 +71,7 @@ export default class Stats {
 
       clearAndRenderTextToCanvas(
         canvas,
-        `${(statNameMap[statName] || statName).toUpperCase()}: ${content}`
+        `${(statNameMap[statName] || statName)}: ${content}`
       );
     });
 
@@ -80,7 +80,7 @@ export default class Stats {
     )}`;
     const canvas = this.timeContainer;
 
-    clearAndRenderTextToCanvas(canvas, timeString.toUpperCase());
+    clearAndRenderTextToCanvas(canvas, timeString);
 
     const levelProgress =
       (100.0 * this.player.currentStats.experience) /

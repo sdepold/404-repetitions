@@ -27,15 +27,16 @@ function createText(content, container) {
 
 export function renderTextToCanvas(
   canvas,
-  content,
+  _content,
   { x = 0, y = 0, color = "black", textSize = 14, textAlign = "left" } = {}
 ) {
   const ctx = canvas.getContext("2d");
   const render = initFont(font, ctx);
+  const content = _content.toUpperCase();
 
   if (textAlign === "center") {
     const textWidth = content.split("").length * textSize * 0.85;
-    x = (canvas.width / 2) - (textWidth / 2);
+    x = canvas.width / 2 - textWidth / 2;
   }
 
   render(content, x, y, textSize, color);
@@ -65,7 +66,7 @@ export function renderLines(canvas, lines) {
   const render = initFont(font, ctx);
 
   lines.forEach((line, i) => {
-    renderTextToCanvas(canvas, line.text.toUpperCase(), {
+    renderTextToCanvas(canvas, line.text, {
       x: line.x,
       y: line.y || i * 40,
       color: line.color || "white",
