@@ -20,7 +20,7 @@ export default class Player {
     };
     this.currentStats = {
       stamina: this.maxStamina,
-      rank: 10000 + ~~(Math.random() * 10000),
+      rank: 10404,
       money: 4.04,
       experience: 0,
       level: 1,

@@ -16,6 +16,7 @@ import WelcomeScreen from "./screens/welcome";
 import Menu, { MenuItem } from "./menu";
 import MiniGame from "./mini-games/mini-game";
 import JumpingJacks from "./mini-games/jumping-jacks";
+import EndScreen from "./screens/end";
 
 export default class Game {
   constructor() {
@@ -27,6 +28,7 @@ export default class Game {
       renderWorkMenu: false,
       renderWorkoutMenu: false,
       started: false,
+      finished: false,
     };
     this.renderables = [
       new World().appendTo(this.ui.game),
@@ -37,7 +39,7 @@ export default class Game {
       new Activity(this, workConfig).appendTo(this.ui.game),
       new Activity(this, workoutConfig).appendTo(this.ui.game),
       this.player.appendTo(this.ui.game),
-      new WelcomeScreen(this).appendTo(this.ui.game)
+      new WelcomeScreen(this).appendTo(this.ui.game),
     ];
   }
 
@@ -72,6 +74,13 @@ export default class Game {
           this.player.updateStat("stamina", -gameConfig.staminaPerTick);
         }
       }
+
+      if (!this.state.finished && this.player.currentStats.rank <= 404) {
+        window.blockMovement = this.state.finished = true;
+        this.player.currentStats.rank = 404;
+        this.renderables.push(new EndScreen(this).appendTo(this.ui.game));
+      }
+
       this.renderables.forEach((a) => a.update && a.update());
       this.renderables.forEach((a) => a.render && a.render());
     }, gameConfig.tickDelay);
