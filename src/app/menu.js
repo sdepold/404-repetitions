@@ -16,7 +16,7 @@ const notHidden = (menuItem) =>
 export default class Menu {
   constructor(items, onSelect) {
     this.items = [...items, EXIT_ACTIVITY];
-    this.state = {
+    this.s = {
       selectedItem: this.items.find(notHidden),
       selectedItemIndex: this.items.findIndex(notHidden),
       allowToggle: true,
@@ -26,7 +26,7 @@ export default class Menu {
     this.onSelect = onSelect;
 
     setTimeout(() => {
-      this.state.allowSelect = true;
+      this.s.allowSelect = true;
     }, INTERACTION_DELAY);
   }
 
@@ -43,39 +43,39 @@ export default class Menu {
 
   update() {
     this.items.forEach((i) => i.update({ selected: false }));
-    this.state.selectedItem.update({ selected: true });
+    this.s.selectedItem.update({ selected: true });
 
-    if (this.state.allowToggle && (keyPressed(UP) || keyPressed(DOWN))) {
-      this.state.allowToggle = false;
+    if (this.s.allowToggle && (keyPressed(UP) || keyPressed(DOWN))) {
+      this.s.allowToggle = false;
       setTimeout(() => {
-        this.state.allowToggle = true;
+        this.s.allowToggle = true;
       }, INTERACTION_DELAY);
 
       const delta = keyPressed(UP) ? -1 : 1;
 
       do {
-        const newSelectedItemIndex = this.state.selectedItemIndex + delta;
+        const newSelectedItemIndex = this.s.selectedItemIndex + delta;
         const sanitizedNewIndex =
           newSelectedItemIndex >= 0
             ? newSelectedItemIndex % this.items.length
             : this.items.length - 1;
-        this.state.selectedItemIndex = sanitizedNewIndex;
-        this.state.selectedItem = this.items[this.state.selectedItemIndex];
-      } while (!notHidden(this.state.selectedItem));
+        this.s.selectedItemIndex = sanitizedNewIndex;
+        this.s.selectedItem = this.items[this.s.selectedItemIndex];
+      } while (!notHidden(this.s.selectedItem));
     }
 
     if (
-      this.state.allowSelect &&
+      this.s.allowSelect &&
       keyPressed(SPACE) &&
-      this.state.selectedItem.item.requirementsFulfilled
+      this.s.selectedItem.item.requirementsFulfilled
     ) {
-      this.state.allowSelect = this.state.allowToggle = false;
-      this.onSelect(this.state.selectedItem.item);
+      this.s.allowSelect = this.s.allowToggle = false;
+      this.onSelect(this.s.selectedItem.item);
     }
 
-    if (!notHidden(this.state.selectedItem)) {
-      this.state.selectedItem = this.items.find(notHidden);
-      this.state.selectedItemIndex = this.items.findIndex(notHidden);
+    if (!notHidden(this.s.selectedItem)) {
+      this.s.selectedItem = this.items.find(notHidden);
+      this.s.selectedItemIndex = this.items.findIndex(notHidden);
     }
   }
   render(player) {
@@ -91,7 +91,7 @@ export default class Menu {
     this.items.filter(notHidden).forEach((item) => {
       item.render(this.canvas, offsetY, player);
       const delta =
-        item === this.state.selectedItem && item !== EXIT_ACTIVITY ? 90 : 30;
+        item === this.s.selectedItem && item !== EXIT_ACTIVITY ? 90 : 30;
       offsetY += delta;
     });
   }
@@ -104,7 +104,7 @@ export default class Menu {
 
   reset() {
     setTimeout(() => {
-      this.state.allowSelect = this.state.allowToggle = true;
+      this.s.allowSelect = this.s.allowToggle = true;
     }, INTERACTION_DELAY);
   }
 }
@@ -112,11 +112,11 @@ export default class Menu {
 export class MenuItem {
   constructor(item) {
     this.item = item;
-    this.state = { selected: false };
+    this.s = { selected: false };
   }
 
   update(newState) {
-    this.state = { ...this.state, ...newState };
+    this.s = { ...this.s, ...newState };
   }
 
   format(prefix, o) {
@@ -131,7 +131,7 @@ export class MenuItem {
       return "red";
     }
 
-    if (this.state.selected) {
+    if (this.s.selected) {
       return "black";
     }
 
@@ -150,7 +150,7 @@ export class MenuItem {
         : this.item.title;
     const lines = [{ text: `${title}${titleSuffix}`, y, color }];
 
-    if (this !== EXIT_ACTIVITY && this.state.selected) {
+    if (this !== EXIT_ACTIVITY && this.s.selected) {
       lines.push({
         text: this.format("Requirements", this.item.requirements),
         y: y + 30,

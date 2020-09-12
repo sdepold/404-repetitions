@@ -1,36 +1,16 @@
 @keyframes player-walk {
   100% {
-    background-position-x: -80px;
+    background-position-x: -420px;
   }
 }
 
 .player {
   position: absolute;
-  font-size: 50px;
-  background: url("../char.png");
-  background-size: 80px;
-  width: 40px;
-  height: 40px;
-  // z-index: 1;
-
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-crisp-edges;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-
-  // &:before {
-  //   content: "";
-  //   display: block;
-  //   width: 30px;
-  //   height: 14px;
-  //   background: rgba(0, 0, 0, 0.5);
-  //   position: absolute;
-  //   top: 29px;
-  //   z-index: 0;
-  //   border-radius: 50%;
-  //   box-shadow: 0px 0px 15px black;
-  //   left: 5px;
-  // }
+  background: url("../sprite.png");
+  background-size: 420px;
+  width: 33px;
+  height: 46px;
+  background-position: -354px -6px;
 
   &.walk {
     animation: player-walk 0.4s steps(2) infinite;
@@ -41,6 +21,6 @@
   }
 
   &.dressed {
-    background-position-y: -40px;
+    background-position-y: -65px;
   }
 }

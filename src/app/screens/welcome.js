@@ -1,5 +1,5 @@
 import "./welcome.less";
-import { renderLines } from "../helper/text";
+import { renderLines, el } from "../helper/text";
 import { keyPressed, SPACE } from "../controls";
 import { initAudio } from "../audio";
 import { destroyNode } from "../helper/node";
@@ -9,12 +9,12 @@ export default class WelcomeScreen {
     this.game = game;
     this.container = document.createElement("div");
     this.hostContainer;
-    this.state = {
+    this.s = {
       showSpaceLine: true,
     };
 
     this.spaceInterval = setInterval(() => {
-      this.state.showSpaceLine = !this.state.showSpaceLine;
+      this.s.showSpaceLine = !this.s.showSpaceLine;
     }, 400);
   }
 
@@ -29,8 +29,6 @@ export default class WelcomeScreen {
 
     return this;
   }
-
-  update() {}
 
   render() {
     if (keyPressed(SPACE) && this.container) {
@@ -52,20 +50,20 @@ export default class WelcomeScreen {
       this.canvas.height = this.hostContainer.clientHeight;
 
       renderLines(this.canvas, [
-        { text: "" },
-        { text: "" },
-        { text: "" },
+        el,
+        el,
+        el,
         { text: "404", textSize: 28, textAlign: "center" },
         { text: "repetitions", textSize: 28, textAlign: "center" },
-        { text: "" },
-        { text: "" },
-        { text: "" },
-        { text: "" },
-        { text: "" },
-        { text: "" },
-        { text: "" },
+        el,
+        el,
+        el,
+        el,
+        el,
+        el,
+        el,
         {
-          text: this.state.showSpaceLine ? "Press SPACE to start" : "",
+          text: this.s.showSpaceLine ? "Press SPACE to start" : "",
           textAlign: "center",
         },
         {

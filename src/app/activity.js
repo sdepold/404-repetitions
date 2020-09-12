@@ -10,25 +10,23 @@ import { pa } from "./audio";
 export const TOGGLE_THRESHOLD = 500;
 
 export default class Activity {
-  constructor(game, config, { onActivityStart, onActivityEnd } = {}) {
+  constructor(game, config = {}) {
     this.container = document.createElement("div");
 
     this.game = game;
-    this.player = game.player;
+    this.p = game.p;
     this.config = config;
-    this.state = {
+    this.s = {
       showItems: false,
       currentItem: null,
       investedTime: null,
       highlight: false,
       toggledViaKeyboardAt: new Date(),
     };
-    this.onActivityStart = onActivityStart;
-    this.onActivityEnd = onActivityEnd;
   }
 
   hasCurrent() {
-    return !!this.state.currentItem;
+    return !!this.s.currentItem;
   }
 
   appendTo(container) {
@@ -41,26 +39,26 @@ export default class Activity {
 
   applyItemEffects(item) {
     Object.keys(item.effects).forEach((prop) => {
-      this.player.updateStat(prop, item.effects[prop]);
+      this.p.updateStat(prop, item.effects[prop]);
     });
   }
 
   update() {
     if (this.hasCurrent()) {
-      this.state.investedTime += gameConfig.minutesPerTick;
-      this.state.currentItem.remainingTime =
-        this.state.currentItem.requirements.time - this.state.investedTime;
+      this.s.investedTime += gameConfig.minutesPerTick;
+      this.s.currentItem.remainingTime =
+        this.s.currentItem.requirements.time - this.s.investedTime;
 
-      if (this.state.investedTime >= this.state.currentItem.requirements.time) {
-        this.state.investedTime = 0;
-        delete this.state.currentItem.remainingTime;
+      if (this.s.investedTime >= this.s.currentItem.requirements.time) {
+        this.s.investedTime = 0;
+        delete this.s.currentItem.remainingTime;
 
-        this.applyItemEffects(this.state.currentItem);
+        this.applyItemEffects(this.s.currentItem);
         this.resetCurrent();
       }
     }
 
-    if (this.state.showItems && this.itemMenu) {
+    if (this.s.showItems && this.itemMenu) {
       this.itemMenu.items.forEach((menuItem) => {
         menuItem.item.requirementsFulfilled = this.requirementsFulfilled(
           menuItem.item.requirements
@@ -73,35 +71,35 @@ export default class Activity {
     }
 
     if (this.hostContainer) {
-      this.state.highlight = collides(
-        this.player.container,
+      this.s.highlight = collides(
+        this.p.container,
         this.hostContainer
       );
 
       if (
-        this.state.highlight &&
+        this.s.highlight &&
         keyPressed(SPACE) &&
         this.canBeToggledViaKeyboard() &&
-        !this.state.currentItem
+        !this.s.currentItem
       ) {
-        if (this.config.name !== "home" && !this.player.state.dressed) {
+        if (this.config.name !== "home" && !this.p.s.dressed) {
           nakedComplaint();
         } else {
           this.toggle();
-          this.state.toggledViaKeyboardAt = new Date();
+          this.s.toggledViaKeyboardAt = new Date();
         }
-      } else if (!this.state.highlight) {
+      } else if (!this.s.highlight) {
         this.toggle(false);
       }
 
-      if (this.state.highlight && !this.state.textContainer) {
-        this.state.textContainer = renderText(
+      if (this.s.highlight && !this.s.textContainer) {
+        this.s.textContainer = renderText(
           `${this.config.name} - press space to open`
         );
       }
 
-      if (!this.state.highlight && this.state.textContainer) {
-        this.state.textContainer = destroyText(this.state.textContainer);
+      if (!this.s.highlight && this.s.textContainer) {
+        this.s.textContainer = destroyText(this.s.textContainer);
       }
     }
   }
@@ -109,7 +107,7 @@ export default class Activity {
   render() {
     if (this.requirementsFulfilled(this.config.requirements || {})) {
       this.renderHost();
-      this.state.showItems && this.renderItems();
+      this.s.showItems && this.renderItems();
     }
   }
 
@@ -121,7 +119,7 @@ export default class Activity {
       ).appendTo(this.gameContainer);
     }
 
-    this.itemMenu.render(this.player);
+    this.itemMenu.render(this.p);
   }
 
   renderHost() {
@@ -134,29 +132,29 @@ export default class Activity {
       this.container.appendChild(this.hostContainer);
     }
 
-    this.hostContainer.classList.toggle("highlight", this.state.highlight);
+    this.hostContainer.classList.toggle("highlight", this.s.highlight);
   }
 
   toggle(force) {
     if (force !== undefined) {
-      this.state.showItems = force;
+      this.s.showItems = force;
     } else {
-      this.state.showItems = !this.state.showItems;
+      this.s.showItems = !this.s.showItems;
     }
   }
 
   canBeToggledViaKeyboard() {
-    return new Date() - this.state.toggledViaKeyboardAt > TOGGLE_THRESHOLD;
+    return new Date() - this.s.toggledViaKeyboardAt > TOGGLE_THRESHOLD;
   }
 
   onItemSelect(item) {
     if (item.miniGame) {
       setTimeout(() => this.resetCurrent());
-      this.game.renderables.push(
-        new JumpingJacks(this.player)
+      this.game.r.push(
+        new JumpingJacks(this.p)
           .appendTo(this.game.ui.game)
           .onComplete((miniGame) => {
-            this.game.removeRenderable(miniGame);
+            this.game.rr(miniGame);
             this.applyItemEffects(item);
             this.resetCurrent();
           })
@@ -164,8 +162,8 @@ export default class Activity {
       return;
     }
 
-    this.state.currentItem = item;
-    this.state.investedTime = 0;
+    this.s.currentItem = item;
+    this.s.investedTime = 0;
 
     if (item.soundEffect) {
       pa(item.soundEffect);
@@ -174,14 +172,14 @@ export default class Activity {
 
   resetCurrent() {
     this.itemMenu && this.itemMenu.destroy();
-    this.state.currentItem = null;
+    this.s.currentItem = null;
     this.toggle(false);
     this.itemMenu = undefined;
   }
 
   requirementsFulfilled(requirements) {
     return Object.entries(requirements).every(([statName, minValue]) =>
-      this.player.hasStat(statName, minValue)
+      this.p.hasStat(statName, minValue)
     );
   }
 

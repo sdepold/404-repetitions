@@ -20,17 +20,17 @@ import EndScreen from "./screens/end";
 
 export default class Game {
   constructor() {
-    this.player = new Player();
+    this.p = new Player();
     this.ui = new UI();
     this.time = { day: 0, hours: 0, minutes: 0 };
-    this.state = {
+    this.s = {
       busy: false,
       renderWorkMenu: false,
       renderWorkoutMenu: false,
       started: false,
       finished: false,
     };
-    this.renderables = [
+    this.r = [
       new World().appendTo(this.ui.game),
       new Stats(this).appendTo(this.ui.game),
       new Activity(this, competitionConfig).appendTo(this.ui.game),
@@ -38,13 +38,13 @@ export default class Game {
       new Activity(this, homeConfig).appendTo(this.ui.game),
       new Activity(this, workConfig).appendTo(this.ui.game),
       new Activity(this, workoutConfig).appendTo(this.ui.game),
-      this.player.appendTo(this.ui.game),
+      this.p.appendTo(this.ui.game),
       new WelcomeScreen(this).appendTo(this.ui.game),
     ];
   }
 
-  removeRenderable(renderable) {
-    this.renderables = this.renderables.filter((r) => r !== renderable);
+  rr(_r) {
+    this.r = this.r.filter((r) => r !== _r);
   }
 
   increaseTime() {
@@ -63,31 +63,31 @@ export default class Game {
 
   run() {
     setInterval(() => {
-      if (this.state.started) {
+      if (this.s.started) {
         this.increaseTime();
 
         if (
-          !this.renderables.find(
+          !this.r.find(
             (activity) => activity.hasCurrent && activity.hasCurrent()
           )
         ) {
-          this.player.updateStat("stamina", -gameConfig.staminaPerTick);
+          this.p.updateStat("stamina", -gameConfig.staminaPerTick);
         }
       }
 
-      if (!this.state.finished && this.player.currentStats.rank <= 404) {
-        window.blockMovement = this.state.finished = true;
-        this.player.currentStats.rank = 404;
-        this.renderables.push(new EndScreen(this).appendTo(this.ui.game));
+      if (!this.s.finished && this.p.currentStats.rank <= 404) {
+        window.blockMovement = this.s.finished = true;
+        this.p.currentStats.rank = 404;
+        this.r.push(new EndScreen(this).appendTo(this.ui.game));
       }
 
-      this.renderables.forEach((a) => a.update && a.update());
-      this.renderables.forEach((a) => a.render && a.render());
+      this.r.forEach((a) => a.update && a.update());
+      this.r.forEach((a) => a.render && a.render());
     }, gameConfig.tickDelay);
   }
 
   start() {
-    this.state.started = true;
-    initDialog(this.player);
+    this.s.started = true;
+    initDialog(this.p);
   }
 }

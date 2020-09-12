@@ -30,10 +30,6 @@ async function withoutMovement(fun) {
 }
 
 export async function initDialog(player) {
-  if (location.href.includes("skipStory")) {
-    return;
-  }
-
   await withoutMovement(async () => {
     confusePlayer(player);
     await renderDelayText("Ooof!?! Location not found!?!");
@@ -51,10 +47,6 @@ export async function initDialog(player) {
 }
 
 export async function gettingDressedDialog() {
-  if (location.href.includes("skipStory")) {
-    return;
-  }
-
   await withoutMovement(async () => {
     await renderDelayText("Aaah. Better.");
     await renderDelayText("I feel the urge to exercise!");

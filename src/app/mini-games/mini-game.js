@@ -20,10 +20,10 @@ const controlsToCharMap = {
 export default class MiniGame {
   constructor(player, challengeName) {
     this.container = document.createElement("div");
-    this.player = player;
-    this.originalPlayerPosition = { ...player.position };
+    this.p = player;
+    this.originalPlayerPosition = { ...p.position };
     this.challengeName = challengeName;
-    this.state = {
+    this.s = {
       started: false,
       spawnTarget: true,
       spawnDelay: 3000,
@@ -50,17 +50,17 @@ export default class MiniGame {
     this.startCanvas.classList.add("start-mini-game");
 
     setInterval(() => {
-      this.state.renderSpaceHint = !this.state.renderSpaceHint;
+      this.s.renderSpaceHint = !this.s.renderSpaceHint;
     }, 750);
 
     return this;
   }
 
   initStateChange(property, delay) {
-    this.state[property] = false;
+    this.s[property] = false;
 
     setTimeout(() => {
-      this.state[property] = true;
+      this.s[property] = true;
     }, delay);
   }
 
@@ -74,7 +74,7 @@ export default class MiniGame {
         y: this.targetContainer.offsetTop + 25,
       },
       highlight: false,
-      speed: this.state.enemySpeed,
+      speed: this.s.enemySpeed,
       destroyed: false,
     };
 
@@ -119,28 +119,28 @@ export default class MiniGame {
   }
 
   scoreEnemy(enemy) { 
-    this.state.score += enemy.contains ? 2 : 1;
+    this.s.score += enemy.contains ? 2 : 1;
   }
 
   onComplete(fun) {
     this.onComplete = () => {
-      if (this.state.completionTriggered) {
+      if (this.s.completionTriggered) {
         return;
       }
-      this.state.completionTriggered = true;
+      this.s.completionTriggered = true;
 
       setTimeout(() => {
         destroyNode(this.scoreCanvas);
         destroyNode(this.container);
 
-        this.player.position = this.originalPlayerPosition;
-        this.player.updateStat("rank", -this.state.score);
+        this.p.position = this.originalPlayerPosition;
+        this.p.updateStat("rank", -this.s.score);
 
         window.blockMovement = false;
 
         setTimeout(async()=>{
-        if(!this.player.hasCompletedCompetition) {
-          this.player.hasCompletedCompetition = true;
+        if(!this.p.hasCompletedCompetition) {
+          this.p.hasCompletedCompetition = true;
           await ultimateGoal();
         }
       }, 1000);
@@ -162,28 +162,28 @@ export default class MiniGame {
       this.container.appendChild(this.targetContainer);
     }
 
-    if (!this.state.started) {
+    if (!this.s.started) {
       if (keyPressed(SPACE)) {
-        this.state.started = true;
+        this.s.started = true;
       } else {
         return;
       }
     }
 
-    if (this.state.spawnTarget) {
-      this.initStateChange("spawnTarget", this.state.spawnDelay);
+    if (this.s.spawnTarget) {
+      this.initStateChange("spawnTarget", this.s.spawnDelay);
       this.spawnEnemy();
     }
 
-    if (this.state.changeDifficulty) {
+    if (this.s.changeDifficulty) {
       this.initStateChange("changeDifficulty", 2000);
-      this.state.spawnDelay = Math.max(this.state.spawnDelay - 200, 500);
-      this.state.enemySpeed = Math.min(this.state.enemySpeed + 0.1, 7);
+      this.s.spawnDelay = Math.max(this.s.spawnDelay - 200, 500);
+      this.s.enemySpeed = Math.min(this.s.enemySpeed + 0.1, 7);
     }
 
-    if (this.state.remainingTime === 0) {
+    if (this.s.remainingTime === 0) {
       this.enemies.forEach((e) => this.destroyEnemy(e));
-      this.state.completed = true;
+      this.s.completed = true;
     }
 
     this.updateEnemies();
@@ -197,10 +197,10 @@ export default class MiniGame {
 
     if (!this.timeIntervalId) {
       this.timeIntervalId = setInterval(() => {
-        if (this.state.remainingTime === 0) {
+        if (this.s.remainingTime === 0) {
           return clearInterval(this.timeIntervalId);
         }
-        this.state.remainingTime = ~~(this.state.remainingTime - 1);
+        this.s.remainingTime = ~~(this.s.remainingTime - 1);
       }, 1000);
     }
   }
@@ -218,14 +218,14 @@ export default class MiniGame {
     this.startCanvas.width = this.scoreCanvas.width = this.hostContainer.clientWidth;
     clearAndRenderTextToCanvas(
       this.scoreCanvas,
-      `Score: ${this.state.score}       Time: ${this.state.remainingTime}`,
+      `Score: ${this.s.score}       Time: ${this.s.remainingTime}`,
       { color: "white", textAlign: "center" }
     );
     renderLines(this.startCanvas, [
       { text: this.challengeName, textSize: 24, x: 50 },
       {
         text:
-          !this.state.started && this.state.renderSpaceHint
+          !this.s.started && this.s.renderSpaceHint
             ? "Press SPACE to start competition"
             : "",
         textAlign: "center",

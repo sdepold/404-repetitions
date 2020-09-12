@@ -3,15 +3,15 @@ import { renderTextToCanvas, clearAndRenderTextToCanvas } from "./helper/text";
 
 export default class Stats {
   constructor(game) {
-    this.containerTop = document.createElement("div");
-    this.containerBottom = document.createElement("div");
-    this.player = game.player;
-    this.time = game.time;
+    this.ct = document.createElement("div");
+    this.cb = document.createElement("div");
+    this.p = game.p;
+    this.t = game.time;
 
     this.init();
   }
 
-  initStatContainer(name, host) {
+  isc(name, host) {
     const id = `${name}Container`;
     const container = (this[id] = document.createElement("canvas"));
 
@@ -20,22 +20,22 @@ export default class Stats {
   }
 
   init() {
-    this.initStatContainer("rank", this.containerTop);
-    this.initStatContainer("stamina", this.containerTop);
-    this.initStatContainer("money", this.containerTop);
-    this.initStatContainer("level", this.containerTop);
+    this.isc("rank", this.ct);
+    this.isc("stamina", this.ct);
+    this.isc("money", this.ct);
+    this.isc("level", this.ct);
 
-    this.initStatContainer("time", this.containerBottom);
-    this.initStatContainer("level", this.containerBottom);
+    this.isc("time", this.cb);
+    this.isc("level", this.cb);
   }
 
   appendTo(container) {
     this.hostContainer = container;
 
-    container.appendChild(this.containerTop);
-    container.appendChild(this.containerBottom);
-    this.containerTop.classList.add("stats", "stats-top");
-    this.containerBottom.classList.add("stats", "stats-bottom");
+    container.appendChild(this.ct);
+    container.appendChild(this.cb);
+    this.ct.classList.add("stats", "stats-top");
+    this.cb.classList.add("stats", "stats-bottom");
 
     return this;
   }
@@ -46,7 +46,7 @@ export default class Stats {
   }
 
   update() {
-    this.containerBottom.classList.toggle(
+    this.cb.classList.toggle(
       "hidden",
       this.hostContainer && this.hostContainer.querySelector(".text-overlay")
     );
@@ -59,10 +59,10 @@ export default class Stats {
 
     ["rank", "stamina", "money", "level"].forEach((statName) => {
       const canvas = this[`${statName}Container`];
-      let content = this.player.currentStats[statName];
+      let content = this.p.currentStats[statName];
 
       if (statName === "stamina") {
-        content = ~~this.player.currentStats.stamina;
+        content = ~~this.p.currentStats.stamina;
       } else if (statName === "money") {
         content = content.toFixed(2);
       } else if (statName === "level") {
@@ -75,19 +75,19 @@ export default class Stats {
       );
     });
 
-    const timeString = `Day ${this.time.day} ${pad(this.time.hours)}:${pad(
-      this.time.minutes
+    const timeString = `Day ${this.t.day} ${pad(this.t.hours)}:${pad(
+      this.t.minutes
     )}`;
     const canvas = this.timeContainer;
 
     clearAndRenderTextToCanvas(canvas, timeString);
 
     const levelProgress =
-      (100.0 * this.player.currentStats.experience) /
-      this.player.levelStats.requiredExperience;
+      (100.0 * this.p.currentStats.experience) /
+      this.p.levelStats.requiredExperience;
     const levelColor = "#FFD700";
 
-    this.containerBottom.style.background = `linear-gradient(to right, ${levelColor}, ${levelColor} ${levelProgress}%, white ${levelProgress}%, white 100%)`;
+    this.cb.style.background = `linear-gradient(to right, ${levelColor}, ${levelColor} ${levelProgress}%, white ${levelProgress}%, white 100%)`;
   }
 }
 

@@ -1,26 +1,22 @@
-@originalTileWidth: 30px;
-@originalTileHeight: 15px;
-@tileMultiplier: 3;
-@tileWidth: calc(@originalTileWidth * @tileMultiplier);
-@tileHeight: calc(@originalTileHeight * @tileMultiplier);
-
 .ground {
   position: absolute;
-  left: calc(-1 * @tileWidth / 2);
-  top: calc(-1 * @tileHeight / 2);
+  left: -45px;
+  top: -22.5px;
   width: 120%;
 
   .tile {
     position: absolute;
-    width: @tileWidth;
-    height: @tileHeight;
+    width: 90px;
+    height: 45px;
     float: left;
 
-    background: url("./ground.png");
-    background-size: calc(2 * @tileWidth);
+    background: url("../../sprite.png");
+    background-size: 420px;
+    background-position: -180px -72px;
+    filter: brightness(0.7);
 
     &.grass {
-      background-position-x: @tileWidth;
+      filter: initial;
     }
   }
 }

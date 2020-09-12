@@ -30,7 +30,7 @@ export default class Player {
       x: 10,
       y: 40,
     };
-    this.state = {
+    this.s = {
       dressed: false,
     };
   }
@@ -47,7 +47,7 @@ export default class Player {
   updateStat(property, delta) {
     if (property === "dressed") {
       gettingDressedDialog();
-      return (this.state.dressed = delta);
+      return (this.s.dressed = delta);
     }
 
     if (property.includes(".")) {
@@ -102,7 +102,7 @@ export default class Player {
       return this.levelStats[statName] >= value;
     }
 
-    if (statName === "dressed") return this.state.dressed === value;
+    if (statName === "dressed") return this.s.dressed === value;
 
     return false;
   }
@@ -148,6 +148,6 @@ export default class Player {
     if (keyPressed(RIGHT) && this.container.classList.contains("inverse")) {
       this.container.classList.remove("inverse");
     }
-    this.container.classList.toggle("dressed", this.state.dressed);
+    this.container.classList.toggle("dressed", this.s.dressed);
   }
 }

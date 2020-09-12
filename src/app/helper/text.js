@@ -1,6 +1,8 @@
 import { initFont, font } from "tinyfont";
 import { destroyNode } from "./node";
 
+export const el = { text: "" };
+
 export function renderText(content, { container, ttl } = {}) {
   container = container || document.querySelector("#game");
 

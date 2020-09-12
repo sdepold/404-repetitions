@@ -1,5 +1,5 @@
 import "./welcome.less";
-import { renderLines } from "../helper/text";
+import { renderLines, el } from "../helper/text";
 
 export default class EndScreen {
   constructor(game) {
@@ -22,21 +22,21 @@ export default class EndScreen {
     this.canvas.width = this.hostContainer.clientWidth;
     this.canvas.height = this.hostContainer.clientHeight;
 
-    this.game.player.position.x = 180;
-    this.game.player.position.y = 350;
+    this.game.p.position.x = 180;
+    this.game.p.position.y = 350;
 
     renderLines(this.canvas, [
-      { text: "" },
-      { text: "" },
-      { text: "" },
-      { text: "" },
+      el,
+      el,
+      el,
+      el,
       { text: "Congratulations", textSize: 28, textAlign: "center" },
-      { text: "" },
+      el,
       { text: "you have reached rank 404", textAlign: "center" },
       { text: `in just ${this.game.time.day} days`, textAlign: "center" },
-      { text: "" },
-      { text: "" },
-      { text: "" },
+      el,
+      el,
+      el,
       { text: "Thanks for playing", textAlign: "center" },
       { text: "404 repetitions", textAlign: "center", textSize: 24 },
     ]);

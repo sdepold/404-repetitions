@@ -6,8 +6,8 @@ export default class JumpingJacks extends MiniGame {
     super(player, 'Jumping Jacks');
 
     this.container.classList.add("jumping-jacks");
-    this.state = {
-      ...this.state,
+    this.s = {
+      ...this.s,
       repetitions: 0,
       countdown: 404,
       started: false,
@@ -18,16 +18,16 @@ export default class JumpingJacks extends MiniGame {
   }
 
   jump() {
-    const originalY = this.player.position.y;
-    this.state.yDelta = -3;
+    const originalY = this.p.position.y;
+    this.s.yDelta = -3;
 
     setTimeout(() => {
-      this.state.yDelta *= -1;
+      this.s.yDelta *= -1;
 
       setTimeout(() => {
-        this.state.yDelta = 0;
-        this.player.position.y = originalY;
-        this.state.allowJump = true;
+        this.s.yDelta = 0;
+        this.p.position.y = originalY;
+        this.s.allowJump = true;
       }, 200);
     }, 200);
   }
@@ -35,25 +35,25 @@ export default class JumpingJacks extends MiniGame {
   update() {
     MiniGame.prototype.update.call(this);
 
-    if(this.state.completed) {
+    if(this.s.completed) {
       this.onComplete()
       return;
       
     }
 
-    if (this.state.allowJump && this.state.started) {
-      this.state.allowJump = false;
+    if (this.s.allowJump && this.s.started) {
+      this.s.allowJump = false;
       if (Math.random() < 0.1) {
-        this.player.container.classList.toggle("inverse");
+        this.p.container.classList.toggle("inverse");
       }
       this.jump();
     }
 
-    if (this.state.playerHoisted) {
-      this.player.position.y += this.state.yDelta;
+    if (this.s.playerHoisted) {
+      this.p.position.y += this.s.yDelta;
 
-      if (this.state.allowJump === undefined) {
-        this.state.allowJump = true;
+      if (this.s.allowJump === undefined) {
+        this.s.allowJump = true;
       }
     }
   }
@@ -61,11 +61,11 @@ export default class JumpingJacks extends MiniGame {
   render() {
     MiniGame.prototype.render.call(this);
 
-    if (!this.state.playerHoisted) {
-      this.player.container.style.zIndex = 999;
-      this.player.position.x = this.hostContainer.clientWidth / 2 - 20;
-      this.player.position.y = this.hostContainer.clientHeight / 2 - 20;
-      this.state.playerHoisted = true;
+    if (!this.s.playerHoisted) {
+      this.p.container.style.zIndex = 999;
+      this.p.position.x = this.hostContainer.clientWidth / 2 - 20;
+      this.p.position.y = this.hostContainer.clientHeight / 2 - 20;
+      this.s.playerHoisted = true;
     }
   }
 }
