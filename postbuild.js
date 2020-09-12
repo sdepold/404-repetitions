@@ -57,7 +57,14 @@ let html = fs.readFileSync("./dist/index.html").toString();
   "updateStat",
   "maxStamina",
   "dressed",
-  "blockMovement"
+  "blockMovement",
+  "spawnTarget",
+  "spawnDelay",
+  "enemySpeed",
+  "changeDifficulty",
+  "remainingTime",
+  "renderSpaceHint",
+  "completionTriggered",
 ].forEach((token, i) => {
   html = html.replace(new RegExp(token, "g"), `a${i}`);
 });
