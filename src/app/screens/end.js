@@ -7,7 +7,7 @@ export default class EndScreen {
     this.container = document.createElement("div");
   }
 
-  appendTo(container) {
+  at(container) {
     this.hostContainer = container;
     this.container.classList.add("end-screen");
     this.canvas = document.createElement("canvas");

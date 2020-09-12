@@ -4,8 +4,8 @@ import { renderText, destroyText } from "./helper/text";
 import { nakedComplaint } from "./story";
 import { keyPressed, SPACE } from "./controls";
 import Menu, { MenuItem, EXIT_ACTIVITY } from "./menu";
-import JumpingJacks from "./mini-games/jumping-jacks";
 import { pa } from "./audio";
+import JumpingJacks from "./mini-games/jumping-jacks";
 
 export const TOGGLE_THRESHOLD = 500;
 
@@ -29,7 +29,7 @@ export default class Activity {
     return !!this.s.currentItem;
   }
 
-  appendTo(container) {
+  at(container) {
     this.gameContainer = container;
     container.appendChild(this.container);
     this.container.classList.add(this.config.name, "activity");
@@ -116,7 +116,7 @@ export default class Activity {
       this.itemMenu = new Menu(
         this.config.items.map((i) => new MenuItem(i)),
         (item) => this.onItemSelect(item)
-      ).appendTo(this.gameContainer);
+      ).at(this.gameContainer);
     }
 
     this.itemMenu.render(this.p);
@@ -152,7 +152,7 @@ export default class Activity {
       setTimeout(() => this.resetCurrent());
       this.game.r.push(
         new JumpingJacks(this.p)
-          .appendTo(this.game.ui.game)
+          .at(this.game.ui.game)
           .onComplete((miniGame) => {
             this.game.rr(miniGame);
             this.applyItemEffects(item);

@@ -1,7 +1,5 @@
 import {
   clearCanvas,
-  renderText,
-  renderTextToCanvas,
   renderLines,
 } from "./helper/text";
 import "./menu.less";
@@ -30,7 +28,7 @@ export default class Menu {
     }, INTERACTION_DELAY);
   }
 
-  appendTo(container) {
+  at(container) {
     this.hostContainer = container;
     container.appendChild(this.container);
     this.container.classList.add("menu");

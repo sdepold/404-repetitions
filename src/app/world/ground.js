@@ -42,13 +42,9 @@ export default class Ground {
     }
   }
 
-  appendTo(container) {
+  at(container) {
     container.appendChild(this.container);
 
     return this;
   }
-
-  update() {}
-
-  render() {}
 }

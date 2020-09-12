@@ -18,7 +18,7 @@ export default class WelcomeScreen {
     }, 400);
   }
 
-  appendTo(container) {
+  at(container) {
     this.hostContainer = container;
     this.container.classList.add("welcome-screen");
 

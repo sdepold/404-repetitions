@@ -9,14 +9,10 @@ import homeConfig from "../config/home";
 import workConfig from "../config/work.json";
 import workoutConfig from "../config/workout.json";
 import Stats from "./stats";
-import World from "./world";
-import { renderText } from "./helper/text";
 import { initDialog } from "./story";
 import WelcomeScreen from "./screens/welcome";
-import Menu, { MenuItem } from "./menu";
-import MiniGame from "./mini-games/mini-game";
-import JumpingJacks from "./mini-games/jumping-jacks";
 import EndScreen from "./screens/end";
+import Ground from "./world/ground";
 
 export default class Game {
   constructor() {
@@ -31,15 +27,15 @@ export default class Game {
       finished: false,
     };
     this.r = [
-      new World().appendTo(this.ui.game),
-      new Stats(this).appendTo(this.ui.game),
-      new Activity(this, competitionConfig).appendTo(this.ui.game),
-      new Activity(this, foodConfig).appendTo(this.ui.game),
-      new Activity(this, homeConfig).appendTo(this.ui.game),
-      new Activity(this, workConfig).appendTo(this.ui.game),
-      new Activity(this, workoutConfig).appendTo(this.ui.game),
-      this.p.appendTo(this.ui.game),
-      new WelcomeScreen(this).appendTo(this.ui.game),
+      new Ground().at(this.ui.game),
+      new Stats(this).at(this.ui.game),
+      new Activity(this, competitionConfig).at(this.ui.game),
+      new Activity(this, foodConfig).at(this.ui.game),
+      new Activity(this, homeConfig).at(this.ui.game),
+      new Activity(this, workConfig).at(this.ui.game),
+      new Activity(this, workoutConfig).at(this.ui.game),
+      this.p.at(this.ui.game),
+      new WelcomeScreen(this).at(this.ui.game),
     ];
   }
 
@@ -78,7 +74,7 @@ export default class Game {
       if (!this.s.finished && this.p.currentStats.rank <= 404) {
         window.blockMovement = this.s.finished = true;
         this.p.currentStats.rank = 404;
-        this.r.push(new EndScreen(this).appendTo(this.ui.game));
+        this.r.push(new EndScreen(this).at(this.ui.game));
       }
 
       this.r.forEach((a) => a.update && a.update());

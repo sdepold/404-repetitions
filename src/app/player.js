@@ -107,7 +107,7 @@ export default class Player {
     return false;
   }
 
-  appendTo(container) {
+  at(container) {
     container.appendChild(this.container);
     this.container.classList.add("player");
 

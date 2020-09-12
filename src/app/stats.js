@@ -1,5 +1,4 @@
-import { changeableLevelStats } from "./player";
-import { renderTextToCanvas, clearAndRenderTextToCanvas } from "./helper/text";
+import { clearAndRenderTextToCanvas } from "./helper/text";
 
 export default class Stats {
   constructor(game) {
@@ -29,7 +28,7 @@ export default class Stats {
     this.isc("level", this.cb);
   }
 
-  appendTo(container) {
+  at(container) {
     this.hostContainer = container;
 
     container.appendChild(this.ct);

@@ -71,14 +71,29 @@ module.exports = {
     mergeDuplicateChunks: true,
     minimize: true,
     usedExports: true,
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         test: /\.js(\?.*)?$/i,
+        terserOptions: {
+          ecma: undefined,
+          parse: {},
+          compress: {},
+          mangle: true, // Note `mangle.properties` is `false` by default.
+          module: false,
+          output: null,
+          toplevel: true,
+          nameCache: null,
+          ie8: false,
+          keep_classnames: undefined,
+          keep_fnames: false,
+          safari10: false,
+        },
       }),
     ],
   },
   devServer: {
     stats: "minimal",
     overlay: true,
-  },
+  }
 };
