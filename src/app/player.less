@@ -11,13 +11,14 @@
   width: 33px;
   height: 46px;
   background-position: -354px -6px;
+  transform: scale(0.7);
 
   &.walk {
     animation: player-walk 0.4s steps(2) infinite;
   }
 
   &.inverse {
-    transform: scaleX(-1);
+    transform: scaleY(0.7) scaleX(-0.7);
   }
 
   &.dressed {
