@@ -52,13 +52,16 @@ export default class Menu {
       }, INTERACTION_DELAY);
 
       const delta = keyPressed(UP) ? -1 : 1;
-      const newSelectedItemIndex = this.state.selectedItemIndex + delta;
-      const sanitizedNewIndex =
-        newSelectedItemIndex >= 0
-          ? newSelectedItemIndex % this.items.length
-          : this.items.length - 1;
-      this.state.selectedItemIndex = sanitizedNewIndex;
-      this.state.selectedItem = this.items[this.state.selectedItemIndex];
+
+      do {
+        const newSelectedItemIndex = this.state.selectedItemIndex + delta;
+        const sanitizedNewIndex =
+          newSelectedItemIndex >= 0
+            ? newSelectedItemIndex % this.items.length
+            : this.items.length - 1;
+        this.state.selectedItemIndex = sanitizedNewIndex;
+        this.state.selectedItem = this.items[this.state.selectedItemIndex];
+      } while (!notHidden(this.state.selectedItem));
     }
 
     if (
@@ -85,7 +88,6 @@ export default class Menu {
 
     clearCanvas(this.canvas);
     let offsetY = 0;
-
     this.items.filter(notHidden).forEach((item) => {
       item.render(this.canvas, offsetY, player);
       const delta =
@@ -97,7 +99,7 @@ export default class Menu {
   destroy() {
     window.blockMovement = false;
     destroyNode(this.canvas);
-    destroyNode(this.container)
+    destroyNode(this.container);
   }
 
   reset() {
@@ -146,9 +148,7 @@ export class MenuItem {
       typeof this.item.title === "function"
         ? this.item.title(player)
         : this.item.title;
-    const lines = [
-      { text: `${title}${titleSuffix}`, y, color },
-    ];
+    const lines = [{ text: `${title}${titleSuffix}`, y, color }];
 
     if (this !== EXIT_ACTIVITY && this.state.selected) {
       lines.push({
