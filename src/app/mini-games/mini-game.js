@@ -7,6 +7,7 @@ import {
 } from "../helper/collision-detection";
 import { clearAndRenderTextToCanvas, renderLines } from "../helper/text";
 import { destroyNode } from "../helper/node";
+import { ultimateGoal } from "../story";
 
 const controls = [LEFT, RIGHT, UP, DOWN];
 const controlsToCharMap = {
@@ -29,7 +30,7 @@ export default class MiniGame {
       enemySpeed: 2,
       changeDifficulty: true,
       score: 0,
-      remainingTime: 40.4,
+      remainingTime: 4.4,
       completed: false,
       renderSpaceHint: true,
       completionTriggered: false,
@@ -117,7 +118,7 @@ export default class MiniGame {
     setTimeout(() => this.removeEnemy(enemy), 1000);
   }
 
-  scoreEnemy(enemy) {
+  scoreEnemy(enemy) { 
     this.state.score += enemy.contains ? 2 : 1;
   }
 
@@ -131,9 +132,19 @@ export default class MiniGame {
       setTimeout(() => {
         destroyNode(this.scoreCanvas);
         destroyNode(this.container);
+
         this.player.position = this.originalPlayerPosition;
         this.player.updateStat("rank", -this.state.score);
+
         window.blockMovement = false;
+
+        setTimeout(async()=>{
+        if(!this.player.hasCompletedCompetition) {
+          this.player.hasCompletedCompetition = true;
+          await ultimateGoal();
+        }
+      }, 1000);
+
 
         fun(this);
       }, 2000);

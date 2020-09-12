@@ -174,7 +174,7 @@ export default class Activity {
   }
 
   resetCurrent() {
-    this.itemMenu.destroy();
+    this.itemMenu && this.itemMenu.destroy();
     this.state.currentItem = null;
     this.toggle(false);
     this.itemMenu = undefined;
