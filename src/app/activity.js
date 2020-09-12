@@ -182,10 +182,4 @@ export default class Activity {
       this.p.hasStat(statName, minValue)
     );
   }
-
-  findItemContainer(item) {
-    return Array.from(this.itemMenu.querySelectorAll("li")).find(
-      (li) => li.querySelector(".title").innerText === item.title
-    );
-  }
 }

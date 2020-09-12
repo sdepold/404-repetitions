@@ -39,11 +39,6 @@ export default class Stats {
     return this;
   }
 
-  updateItem(statName, value) {
-    const canvas = this[`${statName}Container`];
-    container.querySelector(".value").innerHTML = value;
-  }
-
   update() {
     this.cb.classList.toggle(
       "hidden",

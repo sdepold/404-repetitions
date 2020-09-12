@@ -42,6 +42,28 @@ archive.on("error", function (err) {
   throw err;
 });
 
+let html = fs.readFileSync("./dist/index.html").toString();
+
+[
+  "applyItemEffects",
+  "hideIfRequirementsNotMet",
+  "requirementsFulfilled",
+  "changeDifficulty",
+  "requiredExperience",
+  "updateLevelStat",
+  "textSize",
+  "currentStats",
+  "availableStatPoints",
+  "updateStat",
+  "maxStamina",
+  "dressed",
+  "blockMovement"
+].forEach((token, i) => {
+  html = html.replace(new RegExp(token, "g"), `a${i}`);
+});
+
+fs.writeFileSync("./dist/index.html", html);
+
 archive.pipe(output);
 archive.append(fs.createReadStream("./dist/index.html"), {
   name: "index.html",
